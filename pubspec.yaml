@@ -1,0 +1,43 @@
+name: 'daisy_too'
+publish_to: 'none'
+environment:
+  sdk: ">=2.16.1 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  freezed_annotation:
+  json_annotation:
+  firebase_core:
+  firebase_messaging:
+  equatable:
+  flutter_bloc:
+  clipboard:
+  get_it:
+  flutter_native_splash:
+  flutter_local_notifications:
+  key_value:
+    path: '../key_value'
+  users:
+    path: 'packages/users'
+  messaging:
+    path: 'packages/messaging'
+  web_api:
+    path: 'packages/web_api'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  freezed:
+  json_serializable:
+  build_runner:
+
+  flutter_lints: ^1.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/kisses/request.png
+    - assets/kisses/boss-baby.png
