@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PairingRequest extends StatelessWidget {
   const PairingRequest({Key? key}) : super(key: key);
   static showModal(BuildContext context) {
+    // TODO fix height
     return showModalBottomSheet(
       context: context,
       builder: (_) => const PairingRequest(),

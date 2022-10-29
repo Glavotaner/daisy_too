@@ -12,6 +12,7 @@ class Pairing extends StatelessWidget {
   }) : super(key: key);
 
   static showModal(BuildContext context) {
+    // TODO clear on modal leave
     return showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -42,9 +43,11 @@ class Pairing extends StatelessWidget {
             ? const IgnorePointer()
             : const _PairingButton();
       },
+      // TODO set active ind
       steps: [
+        // TODO add ability to change
         Step(
-          state: isRegistered ? StepState.editing : StepState.disabled,
+          state: isRegistered ? StepState.editing : StepState.complete,
           title: const Text('Pair with'),
           content: const _PairInput(),
           subtitle: const _InputtedPair(),
