@@ -8,9 +8,13 @@ class PairingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UsersProvider.isOnboarded(context)
-        ? IconButton(
+        ? TextButton.icon(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+            ),
             onPressed: context.read<PairingProvider>().requestPairing,
             icon: const Icon(Icons.favorite),
+            label: const Text('Pair'),
           )
         : const IgnorePointer(ignoring: true);
   }
