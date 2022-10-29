@@ -47,6 +47,7 @@ class Pairing extends StatelessWidget {
           state: isRegistered ? StepState.editing : StepState.disabled,
           title: const Text('Pair with'),
           content: const _PairInput(),
+          subtitle: const _InputtedPair(),
         ),
         Step(
           state: PairingProvider.inputPair(context).isEmpty
@@ -83,5 +84,14 @@ class _PairInput extends StatelessWidget {
     return TextFormField(
       onChanged: context.read<PairingProvider>().onPairChange,
     );
+  }
+}
+
+class _InputtedPair extends StatelessWidget {
+  const _InputtedPair({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(context.select((PairingProvider value) => value.state.pair));
   }
 }
