@@ -12,7 +12,6 @@ class Pairing extends StatelessWidget {
   }) : super(key: key);
 
   static showModal(BuildContext context) {
-    // TODO clear on modal leave
     return showModalBottomSheet(
       context: context,
       builder: (_) {

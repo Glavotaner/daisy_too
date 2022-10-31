@@ -52,7 +52,7 @@ class _PairingListeners {
     listener: (context, state) async {
       final pairingProvider = context.read<PairingProvider>();
       await PairingRequest.showModal(context);
-      pairingProvider.finishPairingRequestHandling();
+      pairingProvider.clearPairingState();
     },
   );
 
@@ -63,7 +63,7 @@ class _PairingListeners {
     listener: (context, state) async {
       final pairingProvider = context.read<PairingProvider>();
       await Pairing.showModal(context);
-      pairingProvider.finishPairing();
+      pairingProvider.clearPairingState();
     },
   );
 }

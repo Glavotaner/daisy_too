@@ -90,12 +90,8 @@ class PairingCubit extends Cubit<PairingState> {
     ));
   }
 
-  finishPairing() {
-    emit(state.copyWith(pairingRequested: false));
-  }
-
-  finishPairingRequestHandling() {
-    emit(state.copyWith(requestReceived: false));
+  clearPairingState() {
+    emit(PairingState.initial);
   }
 
   copyPairingCode() async {
