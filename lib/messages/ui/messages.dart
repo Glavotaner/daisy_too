@@ -7,7 +7,6 @@ import 'package:daisy_too/users/ui/components/pairing_request.dart';
 import 'package:daisy_too/utils/listeners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:messaging/interface/message.dart' as m;
 
 part 'components/swipe_hint.dart';
 part 'components/pages_stack.dart';

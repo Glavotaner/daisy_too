@@ -6,7 +6,6 @@ import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/types/providers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
