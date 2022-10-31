@@ -12,6 +12,7 @@ class RootRouter extends RouterDelegate
   @override
   Widget build(BuildContext context) {
     final pages = <Page>[];
+    // TODO add splash screen
     if (UsersProvider.isOnboarded(context)) {
       pages.add(MessagesPage.page());
     } else {
