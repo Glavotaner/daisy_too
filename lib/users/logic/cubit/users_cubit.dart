@@ -62,9 +62,8 @@ class UsersCubit extends Cubit<UsersState> {
 
   registerUser() async {
     try {
-      final username = state.username;
-      await users.register(username: username, token: state.token);
-      await keyValueStorage.set<String>(key: 'user', value: username);
+      await users.register(username: state.username, token: state.token);
+      await keyValueStorage.set<String>(key: 'user', value: state.username);
       emit(state.copyWith(isRegistered: true));
     } catch (exception) {
       log(exception.toString());
