@@ -4,7 +4,6 @@ import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/types/providers.dart';
 import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:daisy_too/users/ui/components/pairing_request.dart';
-import 'package:daisy_too/utils/listeners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,10 +44,9 @@ class _PairingListeners {
       ];
 
   final requestReceived = PairingListener(
-    listenWhen: (previous, current) => objectChanged(
-      previous.requestReceived,
-      current.requestReceived,
-    ),
+    listenWhen: (previous, current) {
+      return previous.requestReceived != current.requestReceived;
+    },
     listener: (context, state) async {
       final pairingProvider = context.read<PairingProvider>();
       await PairingRequest.showModal(context);
@@ -75,10 +73,9 @@ class _MessagesListeners {
       ];
 
   final messageReceived = MessagesListener(
-    listenWhen: (previous, current) => objectChanged(
-      previous.receivedMessage,
-      current.receivedMessage,
-    ),
+    listenWhen: (previous, current) {
+      return previous.receivedMessage != current.receivedMessage;
+    },
     listener: (context, state) {
       final message = state.receivedMessage!;
       final response = message.data!;
@@ -95,10 +92,9 @@ class _MessagesListeners {
     },
   );
   final messageSent = MessagesListener(
-    listenWhen: (previous, current) => objectChanged(
-      previous.sentMessage,
-      current.sentMessage,
-    ),
+    listenWhen: (previous, current) {
+      return previous.sentMessage != current.sentMessage;
+    },
     listener: (context, state) async {
       MessagesProvider.sendToPair(context, message: state.sentMessage!);
     },
