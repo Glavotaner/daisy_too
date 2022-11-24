@@ -1,6 +1,7 @@
+import 'package:daisy_too/messages/logic/cubit/kiss_cubit.dart';
 import 'package:daisy_too/messages/models/kiss/kiss.dart';
 import 'package:daisy_too/messages/ui/components/kiss_tap.dart';
-import 'package:daisy_too/types/providers.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +17,7 @@ class _KissRequestState extends State<KissRequest> {
 
   _sendRequest(BuildContext context) {
     final request = Kiss.fromRequest(_controller.value.text);
-    context.read<KissProvider>().sendKiss(request);
+    context.read<KissCubit>().sendKiss(request);
     _controller.clear();
   }
 
@@ -34,17 +35,16 @@ class _KissRequestState extends State<KissRequest> {
         child: Column(
           children: [
             Expanded(
-              child: Stack(
-                children: [
-                  Center(
-                    child: Material(
-                      child: Image.asset('assets/kisses/request.png'),
-                    ),
+                child: Stack(
+              children: [
+                Center(
+                  child: Material(
+                    child: Image.asset('assets/kisses/request.png'),
                   ),
-                  KissTap(onTap: () => _sendRequest(context)),
-                ],
-              )
-            ),
+                ),
+                KissTap(onTap: () => _sendRequest(context)),
+              ],
+            )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextFormField(

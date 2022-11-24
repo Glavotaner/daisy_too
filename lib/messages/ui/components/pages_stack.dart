@@ -43,7 +43,7 @@ class _PagesStackState extends State<PagesStack> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<MessagesProvider>().checkReceivedRequestsOnAppResume();
+      context.read<MessagesCubit>().checkReceivedRequestsOnAppResume();
     }
   }
 }

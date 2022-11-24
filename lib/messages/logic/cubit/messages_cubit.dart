@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
-import 'package:daisy_too/types/providers.dart';
+import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +36,9 @@ class MessagesCubit extends Cubit<MessageState> {
     BuildContext context, {
     required Message message,
   }) {
-    context.read<MessagesProvider>().sendMessage(
+    context.read<MessagesCubit>().sendMessage(
           message: message,
-          to: context.read<UsersProvider>().state.pair,
+          to: context.read<UsersCubit>().state.pair,
         );
   }
 

@@ -1,4 +1,4 @@
-import 'package:daisy_too/types/providers.dart';
+import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +9,7 @@ class KissTap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canMessage = context.select((UsersProvider cubit) {
+    final canMessage = context.select((UsersCubit cubit) {
       return cubit.state.canMessage;
     });
     return IgnorePointer(

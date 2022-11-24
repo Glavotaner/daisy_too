@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:daisy_too/messages/logic/cubit/kiss_cubit.dart';
 import 'package:daisy_too/messages/models/kiss/kiss.dart';
 import 'package:daisy_too/messages/ui/components/kiss_tap.dart';
-import 'package:daisy_too/types/providers.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -64,20 +65,20 @@ class _KissSelectionState extends State<KissSelection>
                 }
                 final page = _pageController.page!;
                 final selectedIndex = page.roundToDouble();
-        
+
                 final pageScrollAmount = page - selectedIndex;
-        
+
                 final maxScrollDistance = kisses.length / 2;
-        
+
                 final pageDistanceFromSelected =
                     (selectedIndex - index + pageScrollAmount).abs();
-        
+
                 final percentFromCenter =
                     1.0 - pageDistanceFromSelected / maxScrollDistance;
-        
+
                 final itemScale = 0.5 + (percentFromCenter * 0.5);
                 final opacity = 0.25 + (percentFromCenter * 0.75);
-        
+
                 return Transform.scale(
                   scale: itemScale,
                   child: Opacity(
@@ -126,7 +127,7 @@ class _Kiss extends StatelessWidget {
           ),
           KissTap(
             onTap: () {
-              context.read<KissProvider>().sendKiss(kiss);
+              context.read<KissCubit>().sendKiss(kiss);
             },
           )
         ],

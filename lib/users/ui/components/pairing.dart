@@ -1,5 +1,7 @@
 import 'package:daisy_too/types/listeners.dart';
-import 'package:daisy_too/types/providers.dart';
+import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
+import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
+
 import 'package:daisy_too/users/ui/components/pairing_code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +38,7 @@ class Pairing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stepper(
-      currentStep: PairingProvider.pairingRequested(context) ? 1 : 0,
+      currentStep: PairingCubit.pairingRequested(context) ? 1 : 0,
       controlsBuilder: (context, detail) {
         return detail.currentStep == pairingRequestedStep
             ? const IgnorePointer()
@@ -52,7 +54,7 @@ class Pairing extends StatelessWidget {
           subtitle: const _InputtedPair(),
         ),
         Step(
-          state: PairingProvider.inputPair(context).isEmpty
+          state: PairingCubit.inputPair(context).isEmpty
               ? StepState.disabled
               : StepState.editing,
           title: const Text('Pairing code'),
@@ -69,8 +71,8 @@ class _PairingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: () => context.read<PairingProvider>().sendPairingRequest(
-            requestingUsername: context.read<UsersProvider>().state.username,
+      onPressed: () => context.read<PairingCubit>().sendPairingRequest(
+            requestingUsername: context.read<UsersCubit>().state.username,
           ),
       label: const Text('Pair'),
       icon: const Icon(Icons.favorite),
@@ -84,7 +86,7 @@ class _PairInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: context.read<PairingProvider>().onPairChange,
+      onChanged: context.read<PairingCubit>().onPairChange,
     );
   }
 }
@@ -94,6 +96,6 @@ class _InputtedPair extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(context.select((PairingProvider value) => value.state.pair));
+    return Text(context.select((PairingCubit value) => value.state.pair));
   }
 }

@@ -1,5 +1,5 @@
 import 'package:daisy_too/types/listeners.dart';
-import 'package:daisy_too/types/providers.dart';
+
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +50,7 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
               },
               listener: (context, _) {
                 focusNode.requestFocus();
-                context.read<PairingProvider>().onCellChange(widget.index);
+                context.read<PairingCubit>().onCellChange(widget.index);
               },
             ),
             PairingListener(
@@ -58,11 +58,11 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
                 return current.codeComplete;
               },
               listener: (context, _) {
-                context.read<PairingProvider>().sendPairingResponse();
+                context.read<PairingCubit>().sendPairingResponse();
               },
             )
           ],
-          child: BlocSelector<PairingProvider, PairingState, String>(
+          child: BlocSelector<PairingCubit, PairingState, String>(
             selector: (state) {
               return state.code[widget.index];
             },
@@ -71,8 +71,8 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
                 textAlign: TextAlign.center,
                 focusNode: focusNode,
                 initialValue: code,
-                onChanged: context.read<PairingProvider>().onCodeChange,
-                onTap: () => context.read<PairingProvider>().onCellChange(
+                onChanged: context.read<PairingCubit>().onCodeChange,
+                onTap: () => context.read<PairingCubit>().onCellChange(
                       widget.index,
                     ),
               );

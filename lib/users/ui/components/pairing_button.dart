@@ -1,4 +1,5 @@
-import 'package:daisy_too/types/providers.dart';
+import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
+import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,12 +8,12 @@ class PairingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UsersProvider.isOnboarded(context)
+    return UsersCubit.isOnboarded(context)
         ? TextButton.icon(
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.all(Colors.white),
             ),
-            onPressed: context.read<PairingProvider>().requestPairing,
+            onPressed: context.read<PairingCubit>().requestPairing,
             icon: const Icon(Icons.favorite),
             label: const Text('Pair'),
           )

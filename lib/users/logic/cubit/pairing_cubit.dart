@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
-import 'package:daisy_too/types/providers.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,25 +23,25 @@ class PairingCubit extends Cubit<PairingState> {
         super(PairingState.initial);
 
   static bool pairingRequested(BuildContext context) {
-    return context.select((PairingProvider cubit) {
+    return context.select((PairingCubit cubit) {
       return cubit.state.requestSent;
     });
   }
 
   static String inputPair(BuildContext context) {
-    return context.select((PairingProvider cubit) {
+    return context.select((PairingCubit cubit) {
       return cubit.state.pair;
     });
   }
 
   static bool pairingRequestReceived(BuildContext context) {
-    return context.select((PairingProvider cubit) {
+    return context.select((PairingCubit cubit) {
       return cubit.state.requestReceived;
     });
   }
 
   static String pairingCode(BuildContext context) {
-    return context.select((PairingProvider cubit) {
+    return context.select((PairingCubit cubit) {
       return cubit.state.pairingCode;
     });
   }

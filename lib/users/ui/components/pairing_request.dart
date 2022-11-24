@@ -1,4 +1,4 @@
-import 'package:daisy_too/types/providers.dart';
+import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +22,7 @@ class PairingRequest extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: TextButton.icon(
-              onPressed: context.read<PairingProvider>().copyPairingCode,
+              onPressed: context.read<PairingCubit>().copyPairingCode,
               label: const Text('Copy code'),
               icon: const Icon(Icons.note_alt),
             ),
@@ -39,7 +39,7 @@ class _PairingCode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      PairingProvider.pairingCode(context),
+      PairingCubit.pairingCode(context),
       style: const TextStyle(fontSize: 24),
     );
   }

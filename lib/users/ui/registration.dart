@@ -1,4 +1,4 @@
-import 'package:daisy_too/types/providers.dart';
+import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +19,7 @@ class Registration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _isRegistered = UsersProvider.isRegistered(context);
+    final _isRegistered = UsersCubit.isRegistered(context);
     return Center(
       child: Column(
         children: [
@@ -59,7 +59,7 @@ class _RegistrationStepper extends StatelessWidget {
         return isRegistered
             ? const IgnorePointer()
             : TextButton.icon(
-                onPressed: context.read<UsersProvider>().registerUser,
+                onPressed: context.read<UsersCubit>().registerUser,
                 label: const Text('Register'),
                 icon: const Icon(Icons.person),
               );
@@ -69,9 +69,9 @@ class _RegistrationStepper extends StatelessWidget {
           state: isRegistered ? StepState.complete : StepState.editing,
           title: const Text('Register yourself'),
           content: TextFormField(
-            onChanged: context.read<UsersProvider>().onUsernameChange,
+            onChanged: context.read<UsersCubit>().onUsernameChange,
             enabled: !isRegistered,
-            initialValue: context.read<UsersProvider>().state.username,
+            initialValue: context.read<UsersCubit>().state.username,
           ),
         ),
       ],
@@ -85,7 +85,7 @@ class _PairLaterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: context.read<UsersProvider>().onboardUser,
+      onPressed: context.read<UsersCubit>().onboardUser,
       child: const Text('Pair later'),
     );
   }

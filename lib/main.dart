@@ -4,7 +4,7 @@ import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/global/router/root_router.dart';
 import 'package:daisy_too/messages/logic/cubit/messages_cubit.dart';
 import 'package:daisy_too/types/listeners.dart';
-import 'package:daisy_too/types/providers.dart';
+
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing_button.dart';
@@ -60,9 +60,9 @@ Future<void> bootstrap() async {
 }
 
 class DaisyTooApp extends StatelessWidget {
-  final UsersProvider usersProvider;
-  final PairingProvider pairingProvider;
-  final MessagesProvider messagesProvider;
+  final UsersCubit usersProvider;
+  final PairingCubit pairingProvider;
+  final MessagesCubit messagesProvider;
   final StatusNotifierCubit statusNotifier;
 
   const DaisyTooApp({
@@ -96,8 +96,8 @@ class DaisyTooApp extends StatelessWidget {
               return current.responseSent && !previous.responseSent;
             },
             listener: (context, state) async {
-              final user = context.read<UsersProvider>().state.username;
-              final pairingState = context.read<PairingProvider>().state;
+              final user = context.read<UsersCubit>().state.username;
+              final pairingState = context.read<PairingCubit>().state;
               final pair = pairingState.pair;
               final pairingResponse = pairingState.pairingCode;
               try {
@@ -109,9 +109,9 @@ class DaisyTooApp extends StatelessWidget {
                 context.read<StatusNotifierCubit>().showSuccess(
                       'Pairing confirmed!',
                     );
-                context.read<UsersProvider>().savePair(pair: state.pair);
-                if (!context.read<UsersProvider>().state.isOnboarded) {
-                  context.read<UsersProvider>().onboardUser();
+                context.read<UsersCubit>().savePair(pair: state.pair);
+                if (!context.read<UsersCubit>().state.isOnboarded) {
+                  context.read<UsersCubit>().onboardUser();
                 }
               } catch (exception) {
                 log(exception.toString());

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
-import 'package:daisy_too/types/providers.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -24,19 +24,19 @@ class UsersCubit extends Cubit<UsersState> {
   }) : super(UsersState.initial);
 
   static isOnboarded(BuildContext context) {
-    return context.select((UsersProvider cubit) {
+    return context.select((UsersCubit cubit) {
       return cubit.state.isOnboarded;
     });
   }
 
   static bool isRegistered(BuildContext context) {
-    return context.select((UsersProvider cubit) {
+    return context.select((UsersCubit cubit) {
       return cubit.state.isRegistered;
     });
   }
 
   static bool isPaired(BuildContext context) {
-    return context.select((UsersProvider cubit) {
+    return context.select((UsersCubit cubit) {
       return cubit.state.hasPair;
     });
   }

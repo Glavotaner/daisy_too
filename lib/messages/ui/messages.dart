@@ -1,7 +1,11 @@
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
+import 'package:daisy_too/messages/logic/cubit/kiss_cubit.dart';
+import 'package:daisy_too/messages/logic/cubit/messages_cubit.dart';
 import 'package:daisy_too/messages/ui/components/kiss_pages_library.dart';
 import 'package:daisy_too/types/listeners.dart';
-import 'package:daisy_too/types/providers.dart';
+import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
+import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
+
 import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:daisy_too/users/ui/components/pairing_request.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +28,7 @@ class MessagesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => KissProvider(),
+      create: (context) => KissCubit(),
       child: MultiBlocListener(
         listeners: [
           ..._PairingListeners().listeners,
@@ -48,7 +52,7 @@ class _PairingListeners {
       return previous.requestReceived != current.requestReceived;
     },
     listener: (context, state) async {
-      final pairingProvider = context.read<PairingProvider>();
+      final pairingProvider = context.read<PairingCubit>();
       await PairingRequest.showModal(context);
       pairingProvider.clearPairingState();
     },
@@ -59,7 +63,7 @@ class _PairingListeners {
       return !previous.pairingRequested && current.pairingRequested;
     },
     listener: (context, state) async {
-      final pairingProvider = context.read<PairingProvider>();
+      final pairingProvider = context.read<PairingCubit>();
       await Pairing.showModal(context);
       pairingProvider.clearPairingState();
     },
@@ -80,12 +84,12 @@ class _MessagesListeners {
       final message = state.receivedMessage!;
       final response = message.data!;
       if (message.isPairingRequest) {
-        context.read<PairingProvider>().receivePairingRequest(
+        context.read<PairingCubit>().receivePairingRequest(
               pair: response.requestingUsername!,
               pairingCode: response.pairingCode!,
             );
       } else if (message.isPairingResponse) {
-        context.read<UsersProvider>().savePair(
+        context.read<UsersCubit>().savePair(
               pair: response.confirmedPair!,
             );
       }
@@ -96,7 +100,7 @@ class _MessagesListeners {
       return previous.sentMessage != current.sentMessage;
     },
     listener: (context, state) async {
-      MessagesProvider.sendToPair(context, message: state.sentMessage!);
+      MessagesCubit.sendToPair(context, message: state.sentMessage!);
     },
   );
 }
