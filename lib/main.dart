@@ -7,7 +7,7 @@ import 'package:daisy_too/types/listeners.dart';
 
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
-import 'package:daisy_too/users/ui/components/pairing_button.dart';
+import 'package:daisy_too/users/ui/components/app_bar_pairing_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -151,7 +151,7 @@ class _DaisyAppBarState extends State<DaisyAppBar> {
         statusBarColor: Colors.blue,
         systemNavigationBarColor: Colors.white,
       ),
-      actions: const [PairingButton()],
+      actions: const [AppBarPairingButton()],
       title: const Text('Daisy'),
     );
   }

@@ -3,8 +3,8 @@ import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PairingButton extends StatelessWidget {
-  const PairingButton({Key? key}) : super(key: key);
+class AppBarPairingButton extends StatelessWidget {
+  const AppBarPairingButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
