@@ -7,7 +7,7 @@ import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 
 import 'package:daisy_too/users/ui/components/pairing.dart';
-import 'package:daisy_too/users/ui/components/pairing_request.dart';
+import 'package:daisy_too/users/ui/components/received_pairing_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,7 +53,7 @@ class _PairingListeners {
     },
     listener: (context, state) async {
       final pairingProvider = context.read<PairingCubit>();
-      await PairingRequest.showModal(context);
+      await ReceivedPairingRequest.asModal(context);
       pairingProvider.clearPairingState();
     },
   );
@@ -64,7 +64,7 @@ class _PairingListeners {
     },
     listener: (context, state) async {
       final pairingProvider = context.read<PairingCubit>();
-      await Pairing.showModal(context);
+      await Pairing.asModal(context);
       pairingProvider.clearPairingState();
     },
   );

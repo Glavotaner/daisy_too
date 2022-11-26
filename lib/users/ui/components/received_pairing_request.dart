@@ -2,13 +2,13 @@ import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PairingRequest extends StatelessWidget {
-  const PairingRequest({Key? key}) : super(key: key);
-  static showModal(BuildContext context) {
+class ReceivedPairingRequest extends StatelessWidget {
+  const ReceivedPairingRequest({Key? key}) : super(key: key);
+  static asModal(BuildContext context) {
     return showModalBottomSheet(
       constraints: const BoxConstraints(maxHeight: 200),
       context: context,
-      builder: (_) => const PairingRequest(),
+      builder: (_) => const ReceivedPairingRequest(),
     );
   }
 
