@@ -1,19 +1,13 @@
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
-import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
-
 import 'package:daisy_too/users/ui/components/pairing_code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Pairing extends StatelessWidget {
-  final bool isRegistered;
-  const Pairing({
-    required this.isRegistered,
-    Key? key,
-  }) : super(key: key);
+  const Pairing({Key? key}) : super(key: key);
 
-  static showModal(BuildContext context) {
+  static asModal(BuildContext context) {
     return showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -26,76 +20,77 @@ class Pairing extends StatelessWidget {
           },
           child: const Padding(
             padding: EdgeInsets.only(bottom: 20),
-            child: Pairing(isRegistered: false),
+            child: Pairing(),
           ),
         );
       },
     );
   }
 
-  static const pairingRequestedStep = 1;
+  static const _pairingRequestStep = 0;
+  static const _pairingRequestedStep = 1;
 
   @override
   Widget build(BuildContext context) {
     return Stepper(
-      currentStep: PairingCubit.pairingRequested(context) ? 1 : 0,
-      controlsBuilder: (context, detail) {
-        return detail.currentStep == pairingRequestedStep
-            ? const IgnorePointer()
-            : const _PairingButton();
-      },
+      currentStep: _pairingStep(context),
+      controlsBuilder: _buildControls,
       // TODO set active ind
       steps: [
         // TODO add ability to change
-        Step(
-          state: isRegistered ? StepState.editing : StepState.complete,
-          title: const Text('Pair with'),
-          content: const _PairInput(),
-          subtitle: const _InputtedPair(),
-        ),
-        Step(
-          state: PairingCubit.inputPair(context).isEmpty
-              ? StepState.disabled
-              : StepState.editing,
-          title: const Text('Pairing code'),
-          content: const PairingCodeInput(),
-        ),
+        PairingSteps.pairWith,
+        PairingSteps.pairingInput,
       ],
     );
   }
+
+  Widget _buildControls(context, detail) {
+    return detail.currentStep == _pairingRequestedStep
+        ? const IgnorePointer()
+        : const RequestPairButton();
+  }
+
+  int _pairingStep(BuildContext context) {
+    final pairingRequested = context.select((PairingCubit value) {
+      return value.state.pairingRequested;
+    });
+    return pairingRequested ? _pairingRequestedStep : _pairingRequestStep;
+  }
 }
 
-class _PairingButton extends StatelessWidget {
-  const _PairingButton({Key? key}) : super(key: key);
+class RequestPairButton extends StatelessWidget {
+  const RequestPairButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: () => context.read<PairingCubit>().sendPairingRequest(
-            requestingUsername: context.read<UsersCubit>().state.username,
-          ),
-      label: const Text('Pair'),
-      icon: const Icon(Icons.favorite),
+    return TextButton(
+      onPressed: context.read<PairingCubit>().requestPairing,
+      child: const Text('Request pair'),
     );
   }
 }
 
-class _PairInput extends StatelessWidget {
-  const _PairInput({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      onChanged: context.read<PairingCubit>().onPairChange,
+class PairingSteps {
+  static get pairWith {
+    return Step(
+      title: const Text('Pair with'),
+      content: Builder(
+        builder: (context) => TextFormField(
+          onChanged: context.read<PairingCubit>().onPairChange,
+        ),
+      ),
+      subtitle: Builder(
+        builder: (context) => Text(
+          context.select((PairingCubit value) => value.state.pair),
+        ),
+      ),
     );
   }
-}
 
-class _InputtedPair extends StatelessWidget {
-  const _InputtedPair({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(context.select((PairingCubit value) => value.state.pair));
+  static get pairingInput {
+    return const Step(
+      title: Text('Pairing code'),
+      content: PairingCodeInput(),
+    );
   }
 }

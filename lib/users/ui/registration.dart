@@ -1,3 +1,4 @@
+import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:flutter/material.dart';
@@ -17,76 +18,85 @@ class Registration extends StatelessWidget {
     );
   }
 
+  static const _registrationStep = 0;
+  static const _pairingRequestStep = 1;
+  static const _pairingRequestedStep = 2;
+
   @override
   Widget build(BuildContext context) {
-    final _isRegistered = UsersCubit.isRegistered(context);
-    return Center(
-      child: Column(
-        children: [
-          _RegistrationStepper(isRegistered: _isRegistered),
-          Expanded(
-            child: AnimatedOpacity(
-              opacity: _isRegistered ? 1 : 0,
-              duration: const Duration(milliseconds: 250),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: Pairing(isRegistered: _isRegistered),
-                  ),
-                  if (_isRegistered) const _PairLaterButton(),
-                ],
+    return Column(
+      children: [
+        Stepper(
+          currentStep: _getRegistrationStep(context),
+          controlsBuilder: _buildControls,
+          steps: [
+            Step(
+              title: const Text('Register yourself'),
+              subtitle: const _Username(),
+              content: TextFormField(
+                onChanged: context.read<UsersCubit>().onUsernameChange,
+                initialValue: context.read<UsersCubit>().state.username,
               ),
             ),
-          )
-        ],
-      ),
+            PairingSteps.pairWith,
+            PairingSteps.pairingInput,
+          ],
+        ),
+        TextButton(
+          onPressed: context.read<UsersCubit>().onboardUser,
+          child: const Text('Pair later'),
+        ),
+      ],
     );
+  }
+
+  Widget _buildControls(context, control) {
+    switch (control.currentStep) {
+      case _registrationStep:
+        return const _RegisterButton();
+      case _pairingRequestStep:
+        return const RequestPairButton();
+      default:
+        return const IgnorePointer();
+    }
+  }
+
+  int _getRegistrationStep(BuildContext context) {
+    final selectedPair = context.select((PairingCubit value) {
+      return value.state.pair;
+    });
+    if (selectedPair.isNotEmpty) {
+      return _pairingRequestedStep;
+    } else {
+      final isRegistered = context.select((UsersCubit value) {
+        return value.state.isRegistered;
+      });
+      return isRegistered ? _pairingRequestStep : _registrationStep;
+    }
   }
 }
 
-class _RegistrationStepper extends StatelessWidget {
-  final bool isRegistered;
-  const _RegistrationStepper({
-    required this.isRegistered,
+class _Username extends StatelessWidget {
+  const _Username({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Stepper(
-      controlsBuilder: (_, __) {
-        return isRegistered
-            ? const IgnorePointer()
-            : TextButton.icon(
-                onPressed: context.read<UsersCubit>().registerUser,
-                label: const Text('Register'),
-                icon: const Icon(Icons.person),
-              );
-      },
-      steps: [
-        Step(
-          state: isRegistered ? StepState.complete : StepState.editing,
-          title: const Text('Register yourself'),
-          content: TextFormField(
-            onChanged: context.read<UsersCubit>().onUsernameChange,
-            enabled: !isRegistered,
-            initialValue: context.read<UsersCubit>().state.username,
-          ),
-        ),
-      ],
-    );
+    return Text(context.select((UsersCubit value) {
+      return value.state.username;
+    }));
   }
 }
 
-class _PairLaterButton extends StatelessWidget {
-  const _PairLaterButton({Key? key}) : super(key: key);
+class _RegisterButton extends StatelessWidget {
+  const _RegisterButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: context.read<UsersCubit>().onboardUser,
-      child: const Text('Pair later'),
+      onPressed: context.read<UsersCubit>().registerUser,
+      child: const Text('Register'),
     );
   }
 }
