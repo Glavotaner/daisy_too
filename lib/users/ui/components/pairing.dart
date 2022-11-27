@@ -83,6 +83,7 @@ class PairingSteps {
       content: Builder(
         builder: (context) => TextFormField(
           onChanged: context.read<PairingCubit>().onPairChange,
+          initialValue: context.read<UsersCubit>().state.pair,
         ),
       ),
       subtitle: const _Pair(),

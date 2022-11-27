@@ -5,8 +5,6 @@ class PairingState with _$PairingState {
   const PairingState._();
   factory PairingState({
     required bool pairingRequested,
-    required bool requestSent,
-    required bool responseSent,
     required String pair,
     required int focusedCellIndex,
     required List<String> code,
@@ -14,8 +12,6 @@ class PairingState with _$PairingState {
     Message? receivedPairingResponse,
   }) = _PairingState;
   static PairingState get initial => PairingState(
-        requestSent: false,
-        responseSent: false,
         pairingRequested: false,
         pair: '',
         code: List.generate(6, (_) => ''),

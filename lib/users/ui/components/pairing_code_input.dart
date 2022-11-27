@@ -1,6 +1,7 @@
 import 'package:daisy_too/types/listeners.dart';
 
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
+import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,7 +59,7 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
                 return current.codeComplete;
               },
               listener: (context, _) {
-                context.read<PairingCubit>().sendPairingResponse();
+                _sendPairingResponse(context);
               },
             )
           ],
@@ -81,5 +82,12 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
         ),
       ),
     );
+  }
+
+  void _sendPairingResponse(BuildContext context) {
+    final requestingUsername = context.read<UsersCubit>().state.username;
+    context.read<PairingCubit>().sendPairingResponse(
+          requestingUsername: requestingUsername,
+        );
   }
 }

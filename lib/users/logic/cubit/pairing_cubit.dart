@@ -37,15 +37,12 @@ class PairingCubit extends Cubit<PairingState> {
     emit(state.copyWith(pairingRequested: true));
   }
 
-  sendPairingRequest({
-    required String requestingUsername,
-  }) async {
+  sendPairingRequest({required String requestingUsername}) async {
     try {
       await _users.requestPair(
         requestingUsername: requestingUsername,
         pairUsername: state.pair,
       );
-      emit(state.copyWith(requestSent: true));
     } catch (exception) {
       log(exception.toString());
       if (exception is BadRequest) {
@@ -54,9 +51,13 @@ class PairingCubit extends Cubit<PairingState> {
     }
   }
 
-  sendPairingResponse() async {
+  sendPairingResponse({required String requestingUsername}) async {
     try {
-      emit(state.copyWith(responseSent: true));
+      await _users.respondPair(
+        pairingResponse: state.pairingCode,
+        respondingUsername: state.pair,
+        requestingUsername: requestingUsername,
+      );
     } catch (exception) {
       log(exception.toString());
       if (exception is BadRequest) {
@@ -97,12 +98,10 @@ class PairingCubit extends Cubit<PairingState> {
     } else if (value.isNotEmpty && focusedCellIndex != 5) {
       focusedCellIndex++;
     }
-    emit(
-      state.copyWith(
-        code: code,
-        focusedCellIndex: focusedCellIndex,
-      ),
-    );
+    emit(state.copyWith(
+      code: code,
+      focusedCellIndex: focusedCellIndex,
+    ));
   }
 
   onCellChange(int index) {

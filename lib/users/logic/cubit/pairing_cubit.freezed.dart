@@ -17,8 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PairingState {
   bool get pairingRequested => throw _privateConstructorUsedError;
-  bool get requestSent => throw _privateConstructorUsedError;
-  bool get responseSent => throw _privateConstructorUsedError;
   String get pair => throw _privateConstructorUsedError;
   int get focusedCellIndex => throw _privateConstructorUsedError;
   List<String> get code => throw _privateConstructorUsedError;
@@ -37,8 +35,6 @@ abstract class $PairingStateCopyWith<$Res> {
       _$PairingStateCopyWithImpl<$Res>;
   $Res call(
       {bool pairingRequested,
-      bool requestSent,
-      bool responseSent,
       String pair,
       int focusedCellIndex,
       List<String> code,
@@ -57,8 +53,6 @@ class _$PairingStateCopyWithImpl<$Res> implements $PairingStateCopyWith<$Res> {
   @override
   $Res call({
     Object? pairingRequested = freezed,
-    Object? requestSent = freezed,
-    Object? responseSent = freezed,
     Object? pair = freezed,
     Object? focusedCellIndex = freezed,
     Object? code = freezed,
@@ -69,14 +63,6 @@ class _$PairingStateCopyWithImpl<$Res> implements $PairingStateCopyWith<$Res> {
       pairingRequested: pairingRequested == freezed
           ? _value.pairingRequested
           : pairingRequested // ignore: cast_nullable_to_non_nullable
-              as bool,
-      requestSent: requestSent == freezed
-          ? _value.requestSent
-          : requestSent // ignore: cast_nullable_to_non_nullable
-              as bool,
-      responseSent: responseSent == freezed
-          ? _value.responseSent
-          : responseSent // ignore: cast_nullable_to_non_nullable
               as bool,
       pair: pair == freezed
           ? _value.pair
@@ -111,8 +97,6 @@ abstract class _$$_PairingStateCopyWith<$Res>
   @override
   $Res call(
       {bool pairingRequested,
-      bool requestSent,
-      bool responseSent,
       String pair,
       int focusedCellIndex,
       List<String> code,
@@ -134,8 +118,6 @@ class __$$_PairingStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? pairingRequested = freezed,
-    Object? requestSent = freezed,
-    Object? responseSent = freezed,
     Object? pair = freezed,
     Object? focusedCellIndex = freezed,
     Object? code = freezed,
@@ -146,14 +128,6 @@ class __$$_PairingStateCopyWithImpl<$Res>
       pairingRequested: pairingRequested == freezed
           ? _value.pairingRequested
           : pairingRequested // ignore: cast_nullable_to_non_nullable
-              as bool,
-      requestSent: requestSent == freezed
-          ? _value.requestSent
-          : requestSent // ignore: cast_nullable_to_non_nullable
-              as bool,
-      responseSent: responseSent == freezed
-          ? _value.responseSent
-          : responseSent // ignore: cast_nullable_to_non_nullable
               as bool,
       pair: pair == freezed
           ? _value.pair
@@ -184,8 +158,6 @@ class __$$_PairingStateCopyWithImpl<$Res>
 class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
   _$_PairingState(
       {required this.pairingRequested,
-      required this.requestSent,
-      required this.responseSent,
       required this.pair,
       required this.focusedCellIndex,
       required final List<String> code,
@@ -196,10 +168,6 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
 
   @override
   final bool pairingRequested;
-  @override
-  final bool requestSent;
-  @override
-  final bool responseSent;
   @override
   final String pair;
   @override
@@ -218,7 +186,7 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PairingState(pairingRequested: $pairingRequested, requestSent: $requestSent, responseSent: $responseSent, pair: $pair, focusedCellIndex: $focusedCellIndex, code: $code, receivedPairingRequest: $receivedPairingRequest, receivedPairingResponse: $receivedPairingResponse)';
+    return 'PairingState(pairingRequested: $pairingRequested, pair: $pair, focusedCellIndex: $focusedCellIndex, code: $code, receivedPairingRequest: $receivedPairingRequest, receivedPairingResponse: $receivedPairingResponse)';
   }
 
   @override
@@ -227,8 +195,6 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'PairingState'))
       ..add(DiagnosticsProperty('pairingRequested', pairingRequested))
-      ..add(DiagnosticsProperty('requestSent', requestSent))
-      ..add(DiagnosticsProperty('responseSent', responseSent))
       ..add(DiagnosticsProperty('pair', pair))
       ..add(DiagnosticsProperty('focusedCellIndex', focusedCellIndex))
       ..add(DiagnosticsProperty('code', code))
@@ -245,10 +211,6 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
             other is _$_PairingState &&
             const DeepCollectionEquality()
                 .equals(other.pairingRequested, pairingRequested) &&
-            const DeepCollectionEquality()
-                .equals(other.requestSent, requestSent) &&
-            const DeepCollectionEquality()
-                .equals(other.responseSent, responseSent) &&
             const DeepCollectionEquality().equals(other.pair, pair) &&
             const DeepCollectionEquality()
                 .equals(other.focusedCellIndex, focusedCellIndex) &&
@@ -263,8 +225,6 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(pairingRequested),
-      const DeepCollectionEquality().hash(requestSent),
-      const DeepCollectionEquality().hash(responseSent),
       const DeepCollectionEquality().hash(pair),
       const DeepCollectionEquality().hash(focusedCellIndex),
       const DeepCollectionEquality().hash(_code),
@@ -280,8 +240,6 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
 abstract class _PairingState extends PairingState {
   factory _PairingState(
       {required final bool pairingRequested,
-      required final bool requestSent,
-      required final bool responseSent,
       required final String pair,
       required final int focusedCellIndex,
       required final List<String> code,
@@ -291,10 +249,6 @@ abstract class _PairingState extends PairingState {
 
   @override
   bool get pairingRequested;
-  @override
-  bool get requestSent;
-  @override
-  bool get responseSent;
   @override
   String get pair;
   @override
