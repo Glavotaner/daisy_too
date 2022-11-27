@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:messaging/interface/message.dart';
 
@@ -15,11 +16,10 @@ class Kiss {
       : type = 'Kiss request',
         imageFile = null,
         customMessage = request;
-  // TODO fix
-  Kiss.fromMessage(Message message)
-      : type = kisses[0].type,
-        customMessage = null,
-        imageFile = kisses[0].imageFile;
+  Kiss.fromMessage(RemoteMessage message)
+      : type = message.data['kissType'],
+        customMessage = message.data['customMessage'],
+        imageFile = message.data['imageFile'];
 
   factory Kiss.fromJson(Map<String, dynamic> json) => _$KissFromJson(json);
 

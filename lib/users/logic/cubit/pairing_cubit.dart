@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/main.dart';
+import 'package:daisy_too/messages/extensions/message_x.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -24,11 +26,12 @@ class PairingCubit extends Cubit<PairingState> {
         super(PairingState.initial) {
     messaging.onMessageReceived.listen(_receiveMessagePairingRequest);
     messaging.onMessageTapped.listen(_receiveMessagePairingRequest);
-    // TODO dispose
   }
 
-  void _receiveMessagePairingRequest(Message message) {
+  void _receiveMessagePairingRequest(RemoteMessage remoteMessage) {
+    final message = remoteMessage.message;
     if (message.isPairingRequest) {
+      log('pairing request received');
       receivePairingRequest(message: message);
     }
   }

@@ -20,4 +20,8 @@ extension FcmMessages on RemoteMessage {
     }
     return Message(notification: notification, data: data);
   }
+
+  bool get isKiss {
+    return data.containsKey('kissType');
+  }
 }

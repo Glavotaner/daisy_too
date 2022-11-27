@@ -2,12 +2,13 @@ import 'dart:developer';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/main.dart';
+import 'package:daisy_too/messages/extensions/message_x.dart';
 
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:key_value/key_value.dart';
-import 'package:messaging/interface/message.dart';
 import 'package:users/users.dart';
 import 'package:web_api/implementation/web_api_http.dart';
 part 'users_cubit.freezed.dart';
@@ -26,7 +27,8 @@ class UsersCubit extends Cubit<UsersState> {
     messaging.onMessageTapped.listen(_savePairOnReceivedResponse);
   }
 
-  void _savePairOnReceivedResponse(Message message) {
+  void _savePairOnReceivedResponse(RemoteMessage remoteMessage) {
+    final message = remoteMessage.message;
     if (message.isPairingResponse) {
       savePair(pair: message.data!.confirmedPair!);
     }

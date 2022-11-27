@@ -20,10 +20,9 @@ class MessagingService {
     _setUpMessageHandlers();
   }
 
-  Stream<Message> get onMessageTapped =>
-      FirebaseMessaging.onMessageOpenedApp.map((event) => event.message);
-  Stream<Message> get onMessageReceived =>
-      FirebaseMessaging.onMessage.map((event) => event.message);
+  Stream<RemoteMessage> get onMessageTapped =>
+      FirebaseMessaging.onMessageOpenedApp;
+  Stream<RemoteMessage> get onMessageReceived => FirebaseMessaging.onMessage;
 
   Future<String?> getToken() {
     return FirebaseMessaging.instance.getToken();
