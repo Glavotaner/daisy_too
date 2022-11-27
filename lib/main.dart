@@ -1,13 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/global/router/root_router.dart';
-import 'package:daisy_too/messages/logic/cubit/messages_cubit.dart';
+import 'package:daisy_too/messages/logic/services/messaging.dart';
 import 'package:daisy_too/types/listeners.dart';
-
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/app_bar_pairing_button.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,7 @@ import 'package:key_value/key_value.dart';
 import 'package:messaging/messaging.dart';
 import 'package:users/users.dart';
 import 'package:web_api/implementation/web_api_http.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'firebase_options.dart';
 
 main() {
@@ -33,17 +34,17 @@ Future<void> bootstrap() async {
   final keyValueSharedPrefs = await KeyValueStorageSharedPrefs.instance;
   final apiProtocol = WebApiHttp();
   final users = Users(api: apiProtocol);
+  final messagingApi = Messaging(api: apiProtocol);
+  final messaging = MessagingService(
+    messaging: messagingApi,
+    keyValueStorage: keyValueSharedPrefs,
+  );
   GetIt.I.registerLazySingleton<Users>(() => users);
+  GetIt.I.registerLazySingleton<MessagingService>(() => messaging);
   final statusNotifier = StatusNotifierCubit();
   final usersProvider = UsersCubit(
     keyValueStorage: keyValueSharedPrefs,
     users: users,
-    statusNotifier: statusNotifier,
-  );
-  final messagingApi = Messaging(api: apiProtocol);
-  final messagesProvider = MessagesCubit(
-    keyValueStorage: keyValueSharedPrefs,
-    messaging: messagingApi,
     statusNotifier: statusNotifier,
   );
   final pairingProvider = PairingCubit(
@@ -53,7 +54,6 @@ Future<void> bootstrap() async {
   runApp(DaisyTooApp(
     usersProvider: usersProvider,
     pairingProvider: pairingProvider,
-    messagesProvider: messagesProvider,
     statusNotifier: statusNotifier,
   ));
   FlutterNativeSplash.remove();
@@ -62,13 +62,11 @@ Future<void> bootstrap() async {
 class DaisyTooApp extends StatelessWidget {
   final UsersCubit usersProvider;
   final PairingCubit pairingProvider;
-  final MessagesCubit messagesProvider;
   final StatusNotifierCubit statusNotifier;
 
   const DaisyTooApp({
     required this.usersProvider,
     required this.pairingProvider,
-    required this.messagesProvider,
     required this.statusNotifier,
     Key? key,
   }) : super(key: key);
@@ -80,7 +78,6 @@ class DaisyTooApp extends StatelessWidget {
       providers: [
         BlocProvider.value(value: statusNotifier),
         BlocProvider.value(value: usersProvider..checkUser()),
-        BlocProvider.value(value: messagesProvider..init()),
         BlocProvider.value(value: pairingProvider),
       ],
       child: MultiBlocListener(
@@ -91,38 +88,6 @@ class DaisyTooApp extends StatelessWidget {
               ..clearSnackBars()
               ..showSnackBar(state.snackBar!);
           }),
-          PairingListener(
-            listenWhen: (previous, current) {
-              return current.responseSent && !previous.responseSent;
-            },
-            listener: (context, state) async {
-              final user = context.read<UsersCubit>().state.username;
-              final pairingState = context.read<PairingCubit>().state;
-              final pair = pairingState.pair;
-              final pairingResponse = pairingState.pairingCode;
-              try {
-                await users.respondPair(
-                  requestingUsername: user,
-                  respondingUsername: pair,
-                  pairingResponse: pairingResponse,
-                );
-                context.read<StatusNotifierCubit>().showSuccess(
-                      'Pairing confirmed!',
-                    );
-                context.read<UsersCubit>().savePair(pair: state.pair);
-                if (!context.read<UsersCubit>().state.isOnboarded) {
-                  context.read<UsersCubit>().onboardUser();
-                }
-              } catch (exception) {
-                log(exception.toString());
-                if (exception is BadRequest) {
-                  context.read<StatusNotifierCubit>().showError(
-                        exception.message,
-                      );
-                }
-              }
-            },
-          ),
         ],
         child: Scaffold(
           appBar: DaisyAppBar(),
@@ -158,3 +123,4 @@ class _DaisyAppBarState extends State<DaisyAppBar> {
 }
 
 Users get users => GetIt.I<Users>();
+MessagingService get messaging => GetIt.I<MessagingService>();

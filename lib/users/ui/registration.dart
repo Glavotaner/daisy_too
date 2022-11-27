@@ -1,3 +1,4 @@
+import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing.dart';
@@ -18,34 +19,78 @@ class Registration extends StatelessWidget {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        PairingListener(
+          listenWhen: (previous, current) {
+            final previousResponse = previous.receivedPairingResponse;
+            final currentResponse = current.receivedPairingResponse;
+            return currentResponse != null &&
+                currentResponse != previousResponse;
+          },
+          listener: (context, state) {
+            final pair = state.receivedPairingResponse!.data!.confirmedPair!;
+            context.read<UsersCubit>().savePair(pair: pair);
+          },
+        ),
+        UsersListener(
+          listenWhen: (previous, current) {
+            return current.hasPair;
+          },
+          listener: (context, _) {
+            context.read<UsersCubit>().onboardUser();
+          },
+        ),
+      ],
+      child: Column(
+        children: const [
+          _RegistrationStepper(),
+          _PairLaterButton(),
+        ],
+      ),
+    );
+  }
+}
+
+class _PairLaterButton extends StatelessWidget {
+  const _PairLaterButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: context.read<UsersCubit>().onboardUser,
+      child: const Text('Pair later'),
+    );
+  }
+}
+
+class _RegistrationStepper extends StatelessWidget {
+  const _RegistrationStepper({Key? key}) : super(key: key);
+
   static const _registrationStep = 0;
   static const _pairingRequestStep = 1;
   static const _pairingRequestedStep = 2;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stepper(
-          currentStep: _getRegistrationStep(context),
-          controlsBuilder: _buildControls,
-          steps: [
-            Step(
-              title: const Text('Register yourself'),
-              subtitle: const _Username(),
-              content: TextFormField(
-                onChanged: context.read<UsersCubit>().onUsernameChange,
-                initialValue: context.read<UsersCubit>().state.username,
-              ),
-            ),
-            PairingSteps.pairWith,
-            PairingSteps.pairingInput,
-          ],
+    return Stepper(
+      currentStep: _getRegistrationStep(context),
+      controlsBuilder: _buildControls,
+      steps: [
+        Step(
+          title: const Text('Register yourself'),
+          subtitle: const _Username(),
+          content: TextFormField(
+            onChanged: context.read<UsersCubit>().onUsernameChange,
+            initialValue: context.read<UsersCubit>().state.username,
+          ),
         ),
-        TextButton(
-          onPressed: context.read<UsersCubit>().onboardUser,
-          child: const Text('Pair later'),
-        ),
+        PairingSteps.pairWith,
+        PairingSteps.pairingInput,
       ],
     );
   }
@@ -62,7 +107,7 @@ class Registration extends StatelessWidget {
   }
 
   int _getRegistrationStep(BuildContext context) {
-    final selectedPair = context.select((PairingCubit value) {
+    final selectedPair = context.select((UsersCubit value) {
       return value.state.pair;
     });
     if (selectedPair.isNotEmpty) {

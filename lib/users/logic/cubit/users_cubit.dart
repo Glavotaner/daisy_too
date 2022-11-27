@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
+import 'package:daisy_too/main.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:key_value/key_value.dart';
+import 'package:messaging/interface/message.dart';
 import 'package:users/users.dart';
 import 'package:web_api/implementation/web_api_http.dart';
 part 'users_cubit.freezed.dart';
@@ -21,24 +21,15 @@ class UsersCubit extends Cubit<UsersState> {
     required this.keyValueStorage,
     required this.users,
     required this.statusNotifier,
-  }) : super(UsersState.initial);
-
-  static isOnboarded(BuildContext context) {
-    return context.select((UsersCubit cubit) {
-      return cubit.state.isOnboarded;
-    });
+  }) : super(UsersState.initial) {
+    messaging.onMessageReceived.listen(_savePairOnReceivedResponse);
+    messaging.onMessageTapped.listen(_savePairOnReceivedResponse);
   }
 
-  static bool isRegistered(BuildContext context) {
-    return context.select((UsersCubit cubit) {
-      return cubit.state.isRegistered;
-    });
-  }
-
-  static bool isPaired(BuildContext context) {
-    return context.select((UsersCubit cubit) {
-      return cubit.state.hasPair;
-    });
+  void _savePairOnReceivedResponse(Message message) {
+    if (message.isPairingResponse) {
+      savePair(pair: message.data!.confirmedPair!);
+    }
   }
 
   checkUser() async {
@@ -92,7 +83,7 @@ class UsersCubit extends Cubit<UsersState> {
   }
 
   _refreshToken() async {
-    final token = await FirebaseMessaging.instance.getToken();
+    final token = await messaging.getToken();
     log('new token');
     emit(state.copyWith(token: token!));
   }

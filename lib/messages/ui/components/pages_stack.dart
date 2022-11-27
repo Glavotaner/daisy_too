@@ -41,9 +41,15 @@ class _PagesStackState extends State<PagesStack> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      context.read<MessagesCubit>().checkReceivedRequestsOnAppResume();
+      final message = await messaging.getStoredMessage();
+      if (message?.isPairingRequest) {
+        context.read<PairingCubit>().receivePairingRequest(message: message!);
+      } else if (message?.isPairingResponse) {
+        final pair = message!.data!.confirmedPair!;
+        context.read<UsersCubit>().savePair(pair: pair);
+      }
     }
   }
 }

@@ -1,12 +1,13 @@
 import 'dart:developer';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
+import 'package:daisy_too/main.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:messaging/interface/message.dart';
 import 'package:users/users.dart';
 import 'package:web_api/implementation/web_api_http.dart';
 
@@ -20,34 +21,19 @@ class PairingCubit extends Cubit<PairingState> {
     required Users users,
     required this.statusNotifier,
   })  : _users = users,
-        super(PairingState.initial);
-
-  static bool pairingRequested(BuildContext context) {
-    return context.select((PairingCubit cubit) {
-      return cubit.state.requestSent;
-    });
+        super(PairingState.initial) {
+    messaging.onMessageReceived.listen(_receiveMessagePairingRequest);
+    messaging.onMessageTapped.listen(_receiveMessagePairingRequest);
+    // TODO dispose
   }
 
-  static String inputPair(BuildContext context) {
-    return context.select((PairingCubit cubit) {
-      return cubit.state.pair;
-    });
+  void _receiveMessagePairingRequest(Message message) {
+    if (message.isPairingRequest) {
+      receivePairingRequest(message: message);
+    }
   }
 
-  static bool pairingRequestReceived(BuildContext context) {
-    return context.select((PairingCubit cubit) {
-      return cubit.state.requestReceived;
-    });
-  }
-
-  static String pairingCode(BuildContext context) {
-    return context.select((PairingCubit cubit) {
-      return cubit.state.pairingCode;
-    });
-  }
-
-  requestPairing() {
-    log('pairing requested');
+  requestPair() {
     emit(state.copyWith(pairingRequested: true));
   }
 
@@ -79,14 +65,11 @@ class PairingCubit extends Cubit<PairingState> {
     }
   }
 
-  receivePairingRequest({
-    required String pair,
-    required String pairingCode,
-  }) async {
+  receivePairingRequest({required Message message}) async {
     emit(state.copyWith(
-      requestReceived: true,
-      code: pairingCode.split(''),
-      pair: pair,
+      receivedPairingRequest: message,
+      code: message.data!.pairingCode!.split(''),
+      pair: message.data!.requestingUsername!,
     ));
   }
 
@@ -124,5 +107,9 @@ class PairingCubit extends Cubit<PairingState> {
 
   onCellChange(int index) {
     emit(state.copyWith(focusedCellIndex: index));
+  }
+
+  checkReceivedRequestsOnAppResume() async {
+    throw UnimplementedError();
   }
 }

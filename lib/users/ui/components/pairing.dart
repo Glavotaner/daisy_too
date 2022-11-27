@@ -1,5 +1,6 @@
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
+import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing_code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +65,12 @@ class RequestPairButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: context.read<PairingCubit>().requestPairing,
+      onPressed: () {
+        final requestingUsername = context.read<UsersCubit>().state.username;
+        context.read<PairingCubit>().sendPairingRequest(
+              requestingUsername: requestingUsername,
+            );
+      },
       child: const Text('Request pair'),
     );
   }
@@ -79,11 +85,7 @@ class PairingSteps {
           onChanged: context.read<PairingCubit>().onPairChange,
         ),
       ),
-      subtitle: Builder(
-        builder: (context) => Text(
-          context.select((PairingCubit value) => value.state.pair),
-        ),
-      ),
+      subtitle: const _Pair(),
     );
   }
 
@@ -91,6 +93,17 @@ class PairingSteps {
     return const Step(
       title: Text('Pairing code'),
       content: PairingCodeInput(),
+    );
+  }
+}
+
+class _Pair extends StatelessWidget {
+  const _Pair({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      context.select((PairingCubit value) => value.state.pair),
     );
   }
 }

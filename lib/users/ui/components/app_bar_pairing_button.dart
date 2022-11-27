@@ -8,12 +8,15 @@ class AppBarPairingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UsersCubit.isOnboarded(context)
+    final isOnboarded = context.select((UsersCubit cubit) {
+      return cubit.state.isOnboarded;
+    });
+    return isOnboarded
         ? TextButton.icon(
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.all(Colors.white),
             ),
-            onPressed: context.read<PairingCubit>().requestPairing,
+            onPressed: context.read<PairingCubit>().requestPair,
             icon: const Icon(Icons.favorite),
             label: const Text('Pair'),
           )

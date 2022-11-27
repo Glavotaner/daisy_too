@@ -1,6 +1,6 @@
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
+import 'package:daisy_too/main.dart';
 import 'package:daisy_too/messages/logic/cubit/kiss_cubit.dart';
-import 'package:daisy_too/messages/logic/cubit/messages_cubit.dart';
 import 'package:daisy_too/messages/ui/components/kiss_pages_library.dart';
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
@@ -32,7 +32,6 @@ class MessagesPage extends StatelessWidget {
       child: MultiBlocListener(
         listeners: [
           ..._PairingListeners().listeners,
-          ..._MessagesListeners().listeners,
           ..._KissListeners().listeners,
         ],
         child: const PagesStack(),
@@ -43,18 +42,33 @@ class MessagesPage extends StatelessWidget {
 
 class _PairingListeners {
   List<PairingListener> get listeners => [
-        requestReceived,
+        pairingRequestReceived,
+        pairingResponseReceived,
         pairingRequested,
       ];
 
-  final requestReceived = PairingListener(
+  final pairingRequestReceived = PairingListener(
     listenWhen: (previous, current) {
-      return previous.requestReceived != current.requestReceived;
+      final previousRequest = previous.receivedPairingRequest;
+      final currentRequest = current.receivedPairingRequest;
+      return currentRequest != null && currentRequest != previousRequest;
     },
     listener: (context, state) async {
       final pairingProvider = context.read<PairingCubit>();
       await ReceivedPairingRequest.asModal(context);
       pairingProvider.clearPairingState();
+    },
+  );
+
+  final pairingResponseReceived = PairingListener(
+    listenWhen: (previous, current) {
+      final previousResponse = previous.receivedPairingResponse;
+      final currentResponse = current.receivedPairingResponse;
+      return currentResponse != null && currentResponse != previousResponse;
+    },
+    listener: (context, state) {
+      final pair = state.receivedPairingResponse!.data!.confirmedPair!;
+      context.read<UsersCubit>().savePair(pair: pair);
     },
   );
 
@@ -70,62 +84,26 @@ class _PairingListeners {
   );
 }
 
-class _MessagesListeners {
-  List<MessagesListener> get listeners => [
-        messageReceived,
-        messageSent,
-      ];
-
-  final messageReceived = MessagesListener(
-    listenWhen: (previous, current) {
-      return previous.receivedMessage != current.receivedMessage;
-    },
-    listener: (context, state) {
-      final message = state.receivedMessage!;
-      final response = message.data!;
-      if (message.isPairingRequest) {
-        context.read<PairingCubit>().receivePairingRequest(
-              pair: response.requestingUsername!,
-              pairingCode: response.pairingCode!,
-            );
-      } else if (message.isPairingResponse) {
-        context.read<UsersCubit>().savePair(
-              pair: response.confirmedPair!,
-            );
-      }
-    },
-  );
-  final messageSent = MessagesListener(
-    listenWhen: (previous, current) {
-      return previous.sentMessage != current.sentMessage;
-    },
-    listener: (context, state) async {
-      MessagesCubit.sendToPair(context, message: state.sentMessage!);
-    },
-  );
-}
-
 class _KissListeners {
-  List<KissListener> get listeners => [sentListener];
+  List<KissListener> get listeners => [sentListener, receivedListener];
+
   final sentListener = KissListener(
     listenWhen: (previous, current) {
       return previous.sentKiss != current.sentKiss;
     },
     listener: (context, state) {
-      // TODO sent
-      context
-          .read<StatusNotifierCubit>()
-          .showSuccess(state.sentKiss!.type + ' sented!');
+      final message = state.sentKiss!.type + ' sented!';
+      context.read<StatusNotifierCubit>().showSuccess(message);
     },
   );
+
   final receivedListener = KissListener(
     listenWhen: (previous, current) {
       return previous.receivedKiss != current.receivedKiss;
     },
     listener: (context, state) {
-      context
-          .read<StatusNotifierCubit>()
-          .showSuccess(state.receivedKiss!.type + ' received!');
+      final message = state.receivedKiss!.type + ' received!';
+      context.read<StatusNotifierCubit>().showSuccess(message);
     },
   );
 }

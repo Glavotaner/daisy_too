@@ -39,7 +39,7 @@ class _PairingCode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      PairingCubit.pairingCode(context),
+      context.select((PairingCubit cubit) => cubit.state.pairingCode),
       style: const TextStyle(fontSize: 24),
     );
   }
