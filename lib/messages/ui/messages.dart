@@ -43,7 +43,6 @@ class MessagesPage extends StatelessWidget {
 class _PairingListeners {
   List<PairingListener> get listeners => [
         pairingRequestReceived,
-        pairingResponseReceived,
         pairingRequested,
       ];
 
@@ -57,18 +56,6 @@ class _PairingListeners {
       final pairingProvider = context.read<PairingCubit>();
       await ReceivedPairingRequest.asModal(context);
       pairingProvider.clearPairingState();
-    },
-  );
-
-  final pairingResponseReceived = PairingListener(
-    listenWhen: (previous, current) {
-      final previousResponse = previous.receivedPairingResponse;
-      final currentResponse = current.receivedPairingResponse;
-      return currentResponse != null && currentResponse != previousResponse;
-    },
-    listener: (context, state) {
-      final pair = state.receivedPairingResponse!.data!.confirmedPair!;
-      context.read<UsersCubit>().savePair(pair: pair);
     },
   );
 

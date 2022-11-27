@@ -22,18 +22,6 @@ class Registration extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        PairingListener(
-          listenWhen: (previous, current) {
-            final previousResponse = previous.receivedPairingResponse;
-            final currentResponse = current.receivedPairingResponse;
-            return currentResponse != null &&
-                currentResponse != previousResponse;
-          },
-          listener: (context, state) {
-            final pair = state.receivedPairingResponse!.data!.confirmedPair!;
-            context.read<UsersCubit>().savePair(pair: pair);
-          },
-        ),
         UsersListener(
           listenWhen: (previous, current) {
             return current.hasPair;

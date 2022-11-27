@@ -1,6 +1,7 @@
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/global/router/root_router.dart';
 import 'package:daisy_too/messages/logic/services/messaging.dart';
+import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/app_bar_pairing_button.dart';
@@ -84,6 +85,18 @@ class DaisyTooApp extends StatelessWidget {
               ..clearSnackBars()
               ..showSnackBar(state.snackBar!);
           }),
+          PairingListener(
+            listenWhen: (previous, current) {
+              final previousResponse = previous.receivedPairingResponse;
+              final currentResponse = current.receivedPairingResponse;
+              return currentResponse != null &&
+                  currentResponse != previousResponse;
+            },
+            listener: (context, state) {
+              final pair = state.receivedPairingResponse!.data!.confirmedPair!;
+              context.read<UsersCubit>().savePair(pair: pair);
+            },
+          )
         ],
         child: Scaffold(
           appBar: DaisyAppBar(),
