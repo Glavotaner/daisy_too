@@ -10,22 +10,21 @@ part 'kiss_cubit.freezed.dart';
 class KissCubit extends Cubit<KissState> {
   KissCubit() : super(KissState.initial) {
     messaging.onMessageReceived.listen((message) {
-      // TODO receive
-      // receiveKiss(message.kiss);
+      // TODO filter is message
+      _receiveKiss(Kiss.fromMessage(message));
     });
     messaging.onMessageTapped.listen((message) {
-      // TODO receive
-      // receiveKiss(message.kiss);
+      // TODO filter is message
+      _receiveKiss(Kiss.fromMessage(message));
     });
   }
 
   sendKiss(Kiss kiss) async {
-    // TODO send kiss
-    // await messaging.sendMessage(kiss);
+    await messaging.sendMessage(kiss.message);
     emit(state.copyWith(sentKiss: kiss));
   }
 
-  receiveKiss(Kiss kiss) {
+  _receiveKiss(Kiss kiss) {
     emit(state.copyWith(receivedKiss: kiss));
   }
 }
