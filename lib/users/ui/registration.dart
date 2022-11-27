@@ -1,5 +1,4 @@
 import 'package:daisy_too/types/listeners.dart';
-import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:flutter/material.dart';

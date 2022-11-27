@@ -1,10 +1,6 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/global/router/root_router.dart';
 import 'package:daisy_too/messages/logic/services/messaging.dart';
-import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/app_bar_pairing_button.dart';
