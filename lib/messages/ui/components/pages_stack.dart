@@ -44,10 +44,11 @@ class _PagesStackState extends State<PagesStack> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       final message = await messaging.getStoredMessage();
-      if (message?.isPairingRequest) {
-        context.read<PairingCubit>().receivePairingRequest(message: message!);
-      } else if (message?.isPairingResponse) {
-        final pair = message!.data!.confirmedPair!;
+      if (message == null) return;
+      if (message.isPairingRequest) {
+        context.read<PairingCubit>().receivePairingRequest(message: message);
+      } else if (message.isPairingResponse) {
+        final pair = message.data!.confirmedPair!;
         context.read<UsersCubit>().savePair(pair: pair);
       }
     }
