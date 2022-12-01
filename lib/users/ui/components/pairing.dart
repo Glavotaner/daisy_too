@@ -1,4 +1,5 @@
 import 'package:daisy_too/types/listeners.dart';
+import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing_code_input.dart';
@@ -33,20 +34,23 @@ class Pairing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stepper(
-      currentStep: _pairingStep(context),
-      controlsBuilder: _buildControls,
-      onStepTapped: (step) {
-        if (step == _pairingRequestStep &&
-            context.read<PairingCubit>().state.sentPairingRequest) {
-          context.read<PairingCubit>().clearSentRequest();
-        }
-      },
-      // TODO set active ind
-      steps: [
-        PairingSteps.pairWith,
-        PairingSteps.pairingInput,
-      ],
+    return BlocProvider(
+      create: (context) => PairEditCubit(),
+      child: Stepper(
+        currentStep: _pairingStep(context),
+        controlsBuilder: _buildControls,
+        onStepTapped: (step) {
+          if (step == _pairingRequestStep &&
+              context.read<PairingCubit>().state.sentPairingRequest) {
+            context.read<PairingCubit>().clearSentRequest();
+          }
+        },
+        // TODO set active ind
+        steps: [
+          PairingSteps.pairWith,
+          PairingSteps.pairingInput,
+        ],
+      ),
     );
   }
 
@@ -71,9 +75,9 @@ class RequestPairButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        final requestingUsername = context.read<UsersCubit>().state.username;
         context.read<PairingCubit>().sendPairingRequest(
-              requestingUsername: requestingUsername,
+              requestingUsername: context.read<UsersCubit>().state.username,
+              pair: context.read<PairEditCubit>().state.pair,
             );
       },
       child: const Text('Request pair'),
@@ -87,7 +91,7 @@ class PairingSteps {
       title: const Text('Pair with'),
       content: Builder(
         builder: (context) => TextFormField(
-          onChanged: context.read<PairingCubit>().onPairChange,
+          onChanged: context.read<PairEditCubit>().onPairChange,
           initialValue: context.read<UsersCubit>().state.pair,
         ),
       ),
@@ -109,7 +113,7 @@ class _Pair extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      context.select((PairingCubit value) => value.state.pair),
+      context.select((PairEditCubit value) => value.state.pair),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:daisy_too/types/listeners.dart';
+import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing.dart';
@@ -21,22 +22,25 @@ class Registration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        UsersListener(
-          listenWhen: (previous, current) {
-            return current.hasPair;
-          },
-          listener: (context, _) {
-            context.read<UsersCubit>().onboardUser();
-          },
-        ),
-      ],
-      child: Column(
-        children: const [
-          _RegistrationStepper(),
-          _PairLaterButton(),
+    return BlocProvider(
+      create: (context) => PairEditCubit(),
+      child: MultiBlocListener(
+        listeners: [
+          UsersListener(
+            listenWhen: (previous, current) {
+              return current.hasPair;
+            },
+            listener: (context, _) {
+              context.read<UsersCubit>().onboardUser();
+            },
+          ),
         ],
+        child: Column(
+          children: const [
+            _RegistrationStepper(),
+            _PairLaterButton(),
+          ],
+        ),
       ),
     );
   }

@@ -6,7 +6,6 @@ import 'package:daisy_too/messages/extensions/message_x.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:messaging/interface/message.dart';
@@ -40,11 +39,14 @@ class PairingCubit extends Cubit<PairingState> {
     emit(state.copyWith(pairingRequested: true));
   }
 
-  sendPairingRequest({required String requestingUsername}) async {
+  sendPairingRequest({
+    required String requestingUsername,
+    required String pair,
+  }) async {
     try {
       await _users.requestPair(
         requestingUsername: requestingUsername,
-        pairUsername: state.pair,
+        pairUsername: pair,
       );
       emit(state.copyWith(sentPairingRequest: true));
     } catch (exception) {
@@ -55,11 +57,15 @@ class PairingCubit extends Cubit<PairingState> {
     }
   }
 
-  sendPairingResponse({required String requestingUsername}) async {
+  sendPairingResponse({
+    required String requestingUsername,
+    required String pairingCode,
+    required String pair,
+  }) async {
     try {
       await _users.respondPair(
-        pairingResponse: state.pairingCode,
-        respondingUsername: state.pair,
+        pairingResponse: pairingCode,
+        respondingUsername: pair,
         requestingUsername: requestingUsername,
       );
     } catch (exception) {
@@ -71,49 +77,11 @@ class PairingCubit extends Cubit<PairingState> {
   }
 
   receivePairingRequest({required Message message}) async {
-    emit(state.copyWith(
-      receivedPairingRequest: message,
-      code: message.data!.pairingCode!.split(''),
-      pair: message.data!.requestingUsername!,
-    ));
-  }
-
-  clearPairingState() {
-    emit(PairingState.initial);
+    emit(state.copyWith(receivedPairingRequest: message));
   }
 
   clearSentRequest() {
     emit(state.copyWith(sentPairingRequest: false));
-  }
-
-  copyPairingCode() async {
-    await Clipboard.setData(
-      ClipboardData(text: state.pairingCode),
-    );
-  }
-
-  onPairChange(String pair) {
-    emit(state.copyWith(pair: pair));
-  }
-
-  onCodeChange(String value) {
-    final code = [...state.code];
-    final cellIndex = state.focusedCellIndex;
-    code[cellIndex] = value;
-    int focusedCellIndex = state.focusedCellIndex;
-    if (value.isEmpty && focusedCellIndex > 0) {
-      focusedCellIndex--;
-    } else if (value.isNotEmpty && focusedCellIndex != 5) {
-      focusedCellIndex++;
-    }
-    emit(state.copyWith(
-      code: code,
-      focusedCellIndex: focusedCellIndex,
-    ));
-  }
-
-  onCellChange(int index) {
-    emit(state.copyWith(focusedCellIndex: index));
   }
 
   checkReceivedRequestsOnAppResume() async {

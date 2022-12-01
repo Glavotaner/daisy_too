@@ -3,6 +3,7 @@ import 'package:daisy_too/main.dart';
 import 'package:daisy_too/messages/logic/cubit/kiss_cubit.dart';
 import 'package:daisy_too/messages/ui/components/kiss_pages_library.dart';
 import 'package:daisy_too/types/listeners.dart';
+import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 
@@ -53,7 +54,7 @@ class _PairingListeners {
       return currentRequest != null && currentRequest != previousRequest;
     },
     listener: (context, state) async {
-      final pairingProvider = context.read<PairingCubit>();
+      final pairingProvider = context.read<PairEditCubit>();
       await ReceivedPairingRequest.asModal(context);
       pairingProvider.clearPairingState();
     },
@@ -64,7 +65,7 @@ class _PairingListeners {
       return !previous.pairingRequested && current.pairingRequested;
     },
     listener: (context, state) async {
-      final pairingProvider = context.read<PairingCubit>();
+      final pairingProvider = context.read<PairEditCubit>();
       await Pairing.asModal(context);
       pairingProvider.clearPairingState();
     },

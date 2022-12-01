@@ -1,4 +1,5 @@
 import 'package:daisy_too/types/listeners.dart';
+import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
 
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
@@ -44,26 +45,26 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: MultiBlocListener(
           listeners: [
-            PairingListener(
+            PairEditListener(
               listenWhen: (_, current) {
                 return current.focusedCellIndex == widget.index &&
                     !focusNode.hasFocus;
               },
               listener: (context, _) {
                 focusNode.requestFocus();
-                context.read<PairingCubit>().onCellChange(widget.index);
+                context.read<PairEditCubit>().onCellChange(widget.index);
               },
             ),
-            PairingListener(
+            PairEditListener(
               listenWhen: (_, current) {
-                return current.codeComplete;
+                return current.code.length == 6;
               },
               listener: (context, _) {
                 _sendPairingResponse(context);
               },
             )
           ],
-          child: BlocSelector<PairingCubit, PairingState, String>(
+          child: BlocSelector<PairEditCubit, PairEditState, String>(
             selector: (state) {
               return state.code[widget.index];
             },
@@ -72,8 +73,8 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
                 textAlign: TextAlign.center,
                 focusNode: focusNode,
                 initialValue: code,
-                onChanged: context.read<PairingCubit>().onCodeChange,
-                onTap: () => context.read<PairingCubit>().onCellChange(
+                onChanged: context.read<PairEditCubit>().onCodeChange,
+                onTap: () => context.read<PairEditCubit>().onCellChange(
                       widget.index,
                     ),
               );
@@ -85,9 +86,10 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
   }
 
   void _sendPairingResponse(BuildContext context) {
-    final requestingUsername = context.read<UsersCubit>().state.username;
     context.read<PairingCubit>().sendPairingResponse(
-          requestingUsername: requestingUsername,
+          requestingUsername: context.read<UsersCubit>().state.username,
+          pairingCode: context.read<PairEditCubit>().state.code.join(''),
+          pair: context.read<PairEditCubit>().state.pair,
         );
   }
 }
