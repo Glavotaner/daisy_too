@@ -8,6 +8,7 @@ class PairingState with _$PairingState {
     required String pair,
     required int focusedCellIndex,
     required List<String> code,
+    required bool sentPairingRequest,
     Message? receivedPairingRequest,
     Message? receivedPairingResponse,
   }) = _PairingState;
@@ -18,6 +19,7 @@ class PairingState with _$PairingState {
         focusedCellIndex: 0,
         receivedPairingResponse: null,
         receivedPairingRequest: null,
+        sentPairingRequest: false,
       );
 
   String get pairingCode => code.join();

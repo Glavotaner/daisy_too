@@ -20,6 +20,7 @@ mixin _$PairingState {
   String get pair => throw _privateConstructorUsedError;
   int get focusedCellIndex => throw _privateConstructorUsedError;
   List<String> get code => throw _privateConstructorUsedError;
+  bool get sentPairingRequest => throw _privateConstructorUsedError;
   Message? get receivedPairingRequest => throw _privateConstructorUsedError;
   Message? get receivedPairingResponse => throw _privateConstructorUsedError;
 
@@ -38,6 +39,7 @@ abstract class $PairingStateCopyWith<$Res> {
       String pair,
       int focusedCellIndex,
       List<String> code,
+      bool sentPairingRequest,
       Message? receivedPairingRequest,
       Message? receivedPairingResponse});
 }
@@ -56,6 +58,7 @@ class _$PairingStateCopyWithImpl<$Res> implements $PairingStateCopyWith<$Res> {
     Object? pair = freezed,
     Object? focusedCellIndex = freezed,
     Object? code = freezed,
+    Object? sentPairingRequest = freezed,
     Object? receivedPairingRequest = freezed,
     Object? receivedPairingResponse = freezed,
   }) {
@@ -76,6 +79,10 @@ class _$PairingStateCopyWithImpl<$Res> implements $PairingStateCopyWith<$Res> {
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      sentPairingRequest: sentPairingRequest == freezed
+          ? _value.sentPairingRequest
+          : sentPairingRequest // ignore: cast_nullable_to_non_nullable
+              as bool,
       receivedPairingRequest: receivedPairingRequest == freezed
           ? _value.receivedPairingRequest
           : receivedPairingRequest // ignore: cast_nullable_to_non_nullable
@@ -100,6 +107,7 @@ abstract class _$$_PairingStateCopyWith<$Res>
       String pair,
       int focusedCellIndex,
       List<String> code,
+      bool sentPairingRequest,
       Message? receivedPairingRequest,
       Message? receivedPairingResponse});
 }
@@ -121,6 +129,7 @@ class __$$_PairingStateCopyWithImpl<$Res>
     Object? pair = freezed,
     Object? focusedCellIndex = freezed,
     Object? code = freezed,
+    Object? sentPairingRequest = freezed,
     Object? receivedPairingRequest = freezed,
     Object? receivedPairingResponse = freezed,
   }) {
@@ -141,6 +150,10 @@ class __$$_PairingStateCopyWithImpl<$Res>
           ? _value._code
           : code // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      sentPairingRequest: sentPairingRequest == freezed
+          ? _value.sentPairingRequest
+          : sentPairingRequest // ignore: cast_nullable_to_non_nullable
+              as bool,
       receivedPairingRequest: receivedPairingRequest == freezed
           ? _value.receivedPairingRequest
           : receivedPairingRequest // ignore: cast_nullable_to_non_nullable
@@ -161,6 +174,7 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
       required this.pair,
       required this.focusedCellIndex,
       required final List<String> code,
+      required this.sentPairingRequest,
       this.receivedPairingRequest,
       this.receivedPairingResponse})
       : _code = code,
@@ -180,13 +194,15 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
   }
 
   @override
+  final bool sentPairingRequest;
+  @override
   final Message? receivedPairingRequest;
   @override
   final Message? receivedPairingResponse;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PairingState(pairingRequested: $pairingRequested, pair: $pair, focusedCellIndex: $focusedCellIndex, code: $code, receivedPairingRequest: $receivedPairingRequest, receivedPairingResponse: $receivedPairingResponse)';
+    return 'PairingState(pairingRequested: $pairingRequested, pair: $pair, focusedCellIndex: $focusedCellIndex, code: $code, sentPairingRequest: $sentPairingRequest, receivedPairingRequest: $receivedPairingRequest, receivedPairingResponse: $receivedPairingResponse)';
   }
 
   @override
@@ -198,6 +214,7 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('pair', pair))
       ..add(DiagnosticsProperty('focusedCellIndex', focusedCellIndex))
       ..add(DiagnosticsProperty('code', code))
+      ..add(DiagnosticsProperty('sentPairingRequest', sentPairingRequest))
       ..add(
           DiagnosticsProperty('receivedPairingRequest', receivedPairingRequest))
       ..add(DiagnosticsProperty(
@@ -216,6 +233,8 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
                 .equals(other.focusedCellIndex, focusedCellIndex) &&
             const DeepCollectionEquality().equals(other._code, _code) &&
             const DeepCollectionEquality()
+                .equals(other.sentPairingRequest, sentPairingRequest) &&
+            const DeepCollectionEquality()
                 .equals(other.receivedPairingRequest, receivedPairingRequest) &&
             const DeepCollectionEquality().equals(
                 other.receivedPairingResponse, receivedPairingResponse));
@@ -228,6 +247,7 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(pair),
       const DeepCollectionEquality().hash(focusedCellIndex),
       const DeepCollectionEquality().hash(_code),
+      const DeepCollectionEquality().hash(sentPairingRequest),
       const DeepCollectionEquality().hash(receivedPairingRequest),
       const DeepCollectionEquality().hash(receivedPairingResponse));
 
@@ -243,6 +263,7 @@ abstract class _PairingState extends PairingState {
       required final String pair,
       required final int focusedCellIndex,
       required final List<String> code,
+      required final bool sentPairingRequest,
       final Message? receivedPairingRequest,
       final Message? receivedPairingResponse}) = _$_PairingState;
   _PairingState._() : super._();
@@ -255,6 +276,8 @@ abstract class _PairingState extends PairingState {
   int get focusedCellIndex;
   @override
   List<String> get code;
+  @override
+  bool get sentPairingRequest;
   @override
   Message? get receivedPairingRequest;
   @override

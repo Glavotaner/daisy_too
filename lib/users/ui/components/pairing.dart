@@ -36,9 +36,14 @@ class Pairing extends StatelessWidget {
     return Stepper(
       currentStep: _pairingStep(context),
       controlsBuilder: _buildControls,
+      onStepTapped: (step) {
+        if (step == _pairingRequestStep &&
+            context.read<PairingCubit>().state.sentPairingRequest) {
+          context.read<PairingCubit>().clearSentRequest();
+        }
+      },
       // TODO set active ind
       steps: [
-        // TODO add ability to change
         PairingSteps.pairWith,
         PairingSteps.pairingInput,
       ],
@@ -52,10 +57,10 @@ class Pairing extends StatelessWidget {
   }
 
   int _pairingStep(BuildContext context) {
-    final pairingRequested = context.select((PairingCubit value) {
-      return value.state.pairingRequested;
+    final sentPairingRequest = context.select((PairingCubit value) {
+      return value.state.sentPairingRequest;
     });
-    return pairingRequested ? _pairingRequestedStep : _pairingRequestStep;
+    return sentPairingRequest ? _pairingRequestedStep : _pairingRequestStep;
   }
 }
 

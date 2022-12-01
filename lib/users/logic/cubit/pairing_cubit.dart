@@ -46,6 +46,7 @@ class PairingCubit extends Cubit<PairingState> {
         requestingUsername: requestingUsername,
         pairUsername: state.pair,
       );
+      emit(state.copyWith(sentPairingRequest: true));
     } catch (exception) {
       log(exception.toString());
       if (exception is BadRequest) {
@@ -79,6 +80,10 @@ class PairingCubit extends Cubit<PairingState> {
 
   clearPairingState() {
     emit(PairingState.initial);
+  }
+
+  clearSentRequest() {
+    emit(state.copyWith(sentPairingRequest: false));
   }
 
   copyPairingCode() async {

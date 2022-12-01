@@ -1,4 +1,5 @@
 import 'package:daisy_too/types/listeners.dart';
+import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +68,12 @@ class _RegistrationStepper extends StatelessWidget {
     return Stepper(
       currentStep: _getRegistrationStep(context),
       controlsBuilder: _buildControls,
+      onStepTapped: (step) {
+        if (step == _pairingRequestStep &&
+            context.read<PairingCubit>().state.sentPairingRequest) {
+          context.read<PairingCubit>().clearSentRequest();
+        }
+      },
       steps: [
         Step(
           title: const Text('Register yourself'),
