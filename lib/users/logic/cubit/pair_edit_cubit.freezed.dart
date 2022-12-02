@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PairEditState {
+  bool get sentPairingRequest => throw _privateConstructorUsedError;
   String get pair => throw _privateConstructorUsedError;
   int get focusedCellIndex => throw _privateConstructorUsedError;
   List<String> get code => throw _privateConstructorUsedError;
@@ -30,7 +31,11 @@ abstract class $PairEditStateCopyWith<$Res> {
   factory $PairEditStateCopyWith(
           PairEditState value, $Res Function(PairEditState) then) =
       _$PairEditStateCopyWithImpl<$Res>;
-  $Res call({String pair, int focusedCellIndex, List<String> code});
+  $Res call(
+      {bool sentPairingRequest,
+      String pair,
+      int focusedCellIndex,
+      List<String> code});
 }
 
 /// @nodoc
@@ -44,11 +49,16 @@ class _$PairEditStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? sentPairingRequest = freezed,
     Object? pair = freezed,
     Object? focusedCellIndex = freezed,
     Object? code = freezed,
   }) {
     return _then(_value.copyWith(
+      sentPairingRequest: sentPairingRequest == freezed
+          ? _value.sentPairingRequest
+          : sentPairingRequest // ignore: cast_nullable_to_non_nullable
+              as bool,
       pair: pair == freezed
           ? _value.pair
           : pair // ignore: cast_nullable_to_non_nullable
@@ -72,7 +82,11 @@ abstract class _$$_PairEditStateCopyWith<$Res>
           _$_PairEditState value, $Res Function(_$_PairEditState) then) =
       __$$_PairEditStateCopyWithImpl<$Res>;
   @override
-  $Res call({String pair, int focusedCellIndex, List<String> code});
+  $Res call(
+      {bool sentPairingRequest,
+      String pair,
+      int focusedCellIndex,
+      List<String> code});
 }
 
 /// @nodoc
@@ -88,11 +102,16 @@ class __$$_PairEditStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? sentPairingRequest = freezed,
     Object? pair = freezed,
     Object? focusedCellIndex = freezed,
     Object? code = freezed,
   }) {
     return _then(_$_PairEditState(
+      sentPairingRequest: sentPairingRequest == freezed
+          ? _value.sentPairingRequest
+          : sentPairingRequest // ignore: cast_nullable_to_non_nullable
+              as bool,
       pair: pair == freezed
           ? _value.pair
           : pair // ignore: cast_nullable_to_non_nullable
@@ -113,12 +132,15 @@ class __$$_PairEditStateCopyWithImpl<$Res>
 
 class _$_PairEditState extends _PairEditState {
   _$_PairEditState(
-      {required this.pair,
+      {required this.sentPairingRequest,
+      required this.pair,
       required this.focusedCellIndex,
       required final List<String> code})
       : _code = code,
         super._();
 
+  @override
+  final bool sentPairingRequest;
   @override
   final String pair;
   @override
@@ -132,7 +154,7 @@ class _$_PairEditState extends _PairEditState {
 
   @override
   String toString() {
-    return 'PairEditState(pair: $pair, focusedCellIndex: $focusedCellIndex, code: $code)';
+    return 'PairEditState(sentPairingRequest: $sentPairingRequest, pair: $pair, focusedCellIndex: $focusedCellIndex, code: $code)';
   }
 
   @override
@@ -140,6 +162,8 @@ class _$_PairEditState extends _PairEditState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PairEditState &&
+            const DeepCollectionEquality()
+                .equals(other.sentPairingRequest, sentPairingRequest) &&
             const DeepCollectionEquality().equals(other.pair, pair) &&
             const DeepCollectionEquality()
                 .equals(other.focusedCellIndex, focusedCellIndex) &&
@@ -149,6 +173,7 @@ class _$_PairEditState extends _PairEditState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(sentPairingRequest),
       const DeepCollectionEquality().hash(pair),
       const DeepCollectionEquality().hash(focusedCellIndex),
       const DeepCollectionEquality().hash(_code));
@@ -161,11 +186,14 @@ class _$_PairEditState extends _PairEditState {
 
 abstract class _PairEditState extends PairEditState {
   factory _PairEditState(
-      {required final String pair,
+      {required final bool sentPairingRequest,
+      required final String pair,
       required final int focusedCellIndex,
       required final List<String> code}) = _$_PairEditState;
   _PairEditState._() : super._();
 
+  @override
+  bool get sentPairingRequest;
   @override
   String get pair;
   @override

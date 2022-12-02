@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
 
-import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,9 +10,23 @@ class PairingCodeInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(6, _PairingCodeInputCell.new),
+    return PairEditListener(
+      listenWhen: (previous, current) {
+        return !previous.codeComplete && current.codeComplete;
+      },
+      listener: (context, _) {
+        _sendPairingResponse(context);
+      },
+      child: Row(
+        children: List.generate(6, _PairingCodeInputCell.new),
+      ),
     );
+  }
+
+  void _sendPairingResponse(BuildContext context) {
+    context.read<PairEditCubit>().sendPairingResponse(
+          requestingUsername: context.read<UsersCubit>().state.username,
+        );
   }
 }
 
@@ -45,55 +56,46 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
       width: 40,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
-        child: MultiBlocListener(
-          listeners: [
-            PairEditListener(
-              listenWhen: (_, current) {
-                return current.focusedCellIndex == widget.index &&
-                    !focusNode.hasFocus;
-              },
-              listener: (context, _) {
-                focusNode.requestFocus();
-                context.read<PairEditCubit>().onCellChange(widget.index);
-              },
-            ),
-            PairEditListener(
-              listenWhen: (previous, current) {
-                return !previous.codeComplete && current.codeComplete;
-              },
-              listener: (context, _) {
-                _sendPairingResponse(context);
-              },
-            )
-          ],
-          child: BlocSelector<PairEditCubit, PairEditState, String>(
-            selector: (state) {
-              return state.code[widget.index];
+        child: PairEditListener(
+            listenWhen: (_, current) {
+              return current.focusedCellIndex == widget.index &&
+                  !focusNode.hasFocus;
             },
-            builder: (context, code) {
-              return TextFormField(
-                textAlign: TextAlign.center,
-                focusNode: focusNode,
-                initialValue: code,
-                onChanged: context.read<PairEditCubit>().onCodeChange,
-                onTap: () => context.read<PairEditCubit>().onCellChange(
-                      widget.index,
-                    ),
-              );
+            listener: (context, _) {
+              focusNode.requestFocus();
+              context.read<PairEditCubit>().onCellChange(widget.index);
             },
-          ),
-        ),
+            child: _PairingCodeCell(focusNode: focusNode, index: widget.index)),
       ),
     );
   }
+}
 
-  void _sendPairingResponse(BuildContext context) {
-    // TODO fires repeatedly
-    log('sent pairing response');
-    context.read<PairingCubit>().sendPairingResponse(
-          requestingUsername: context.read<UsersCubit>().state.username,
-          pairingCode: context.read<PairEditCubit>().state.code.join(''),
-          pair: context.read<PairEditCubit>().state.pair,
-        );
+class _PairingCodeCell extends StatelessWidget {
+  const _PairingCodeCell({
+    Key? key,
+    required this.focusNode,
+    required this.index,
+  }) : super(key: key);
+
+  final int index;
+  final FocusNode focusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    final code = context.select((PairEditCubit value) {
+      value.state.code[index];
+    });
+    return TextFormField(
+      textAlign: TextAlign.center,
+      initialValue: code,
+      focusNode: focusNode,
+      onChanged: context.read<PairEditCubit>().onCodeChange,
+      onTap: () => _onCellChange(context),
+    );
+  }
+
+  void _onCellChange(BuildContext context) {
+    context.read<PairEditCubit>().onCellChange(index);
   }
 }

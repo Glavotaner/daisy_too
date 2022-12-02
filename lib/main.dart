@@ -44,10 +44,7 @@ Future<void> bootstrap() async {
     users: users,
     statusNotifier: statusNotifier,
   );
-  final pairingProvider = PairingCubit(
-    users: users,
-    statusNotifier: statusNotifier,
-  );
+  final pairingProvider = PairingCubit();
   runApp(DaisyTooApp(
     usersProvider: usersProvider,
     pairingProvider: pairingProvider,

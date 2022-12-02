@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PairingState {
   bool get pairingRequested => throw _privateConstructorUsedError;
-  bool get sentPairingRequest => throw _privateConstructorUsedError;
   Message? get receivedPairingRequest => throw _privateConstructorUsedError;
   Message? get receivedPairingResponse => throw _privateConstructorUsedError;
 
@@ -33,7 +32,6 @@ abstract class $PairingStateCopyWith<$Res> {
       _$PairingStateCopyWithImpl<$Res>;
   $Res call(
       {bool pairingRequested,
-      bool sentPairingRequest,
       Message? receivedPairingRequest,
       Message? receivedPairingResponse});
 }
@@ -49,7 +47,6 @@ class _$PairingStateCopyWithImpl<$Res> implements $PairingStateCopyWith<$Res> {
   @override
   $Res call({
     Object? pairingRequested = freezed,
-    Object? sentPairingRequest = freezed,
     Object? receivedPairingRequest = freezed,
     Object? receivedPairingResponse = freezed,
   }) {
@@ -57,10 +54,6 @@ class _$PairingStateCopyWithImpl<$Res> implements $PairingStateCopyWith<$Res> {
       pairingRequested: pairingRequested == freezed
           ? _value.pairingRequested
           : pairingRequested // ignore: cast_nullable_to_non_nullable
-              as bool,
-      sentPairingRequest: sentPairingRequest == freezed
-          ? _value.sentPairingRequest
-          : sentPairingRequest // ignore: cast_nullable_to_non_nullable
               as bool,
       receivedPairingRequest: receivedPairingRequest == freezed
           ? _value.receivedPairingRequest
@@ -83,7 +76,6 @@ abstract class _$$_PairingStateCopyWith<$Res>
   @override
   $Res call(
       {bool pairingRequested,
-      bool sentPairingRequest,
       Message? receivedPairingRequest,
       Message? receivedPairingResponse});
 }
@@ -102,7 +94,6 @@ class __$$_PairingStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? pairingRequested = freezed,
-    Object? sentPairingRequest = freezed,
     Object? receivedPairingRequest = freezed,
     Object? receivedPairingResponse = freezed,
   }) {
@@ -110,10 +101,6 @@ class __$$_PairingStateCopyWithImpl<$Res>
       pairingRequested: pairingRequested == freezed
           ? _value.pairingRequested
           : pairingRequested // ignore: cast_nullable_to_non_nullable
-              as bool,
-      sentPairingRequest: sentPairingRequest == freezed
-          ? _value.sentPairingRequest
-          : sentPairingRequest // ignore: cast_nullable_to_non_nullable
               as bool,
       receivedPairingRequest: receivedPairingRequest == freezed
           ? _value.receivedPairingRequest
@@ -132,7 +119,6 @@ class __$$_PairingStateCopyWithImpl<$Res>
 class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
   _$_PairingState(
       {required this.pairingRequested,
-      required this.sentPairingRequest,
       this.receivedPairingRequest,
       this.receivedPairingResponse})
       : super._();
@@ -140,15 +126,13 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
   @override
   final bool pairingRequested;
   @override
-  final bool sentPairingRequest;
-  @override
   final Message? receivedPairingRequest;
   @override
   final Message? receivedPairingResponse;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PairingState(pairingRequested: $pairingRequested, sentPairingRequest: $sentPairingRequest, receivedPairingRequest: $receivedPairingRequest, receivedPairingResponse: $receivedPairingResponse)';
+    return 'PairingState(pairingRequested: $pairingRequested, receivedPairingRequest: $receivedPairingRequest, receivedPairingResponse: $receivedPairingResponse)';
   }
 
   @override
@@ -157,7 +141,6 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'PairingState'))
       ..add(DiagnosticsProperty('pairingRequested', pairingRequested))
-      ..add(DiagnosticsProperty('sentPairingRequest', sentPairingRequest))
       ..add(
           DiagnosticsProperty('receivedPairingRequest', receivedPairingRequest))
       ..add(DiagnosticsProperty(
@@ -172,8 +155,6 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
             const DeepCollectionEquality()
                 .equals(other.pairingRequested, pairingRequested) &&
             const DeepCollectionEquality()
-                .equals(other.sentPairingRequest, sentPairingRequest) &&
-            const DeepCollectionEquality()
                 .equals(other.receivedPairingRequest, receivedPairingRequest) &&
             const DeepCollectionEquality().equals(
                 other.receivedPairingResponse, receivedPairingResponse));
@@ -183,7 +164,6 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(pairingRequested),
-      const DeepCollectionEquality().hash(sentPairingRequest),
       const DeepCollectionEquality().hash(receivedPairingRequest),
       const DeepCollectionEquality().hash(receivedPairingResponse));
 
@@ -196,15 +176,12 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
 abstract class _PairingState extends PairingState {
   factory _PairingState(
       {required final bool pairingRequested,
-      required final bool sentPairingRequest,
       final Message? receivedPairingRequest,
       final Message? receivedPairingResponse}) = _$_PairingState;
   _PairingState._() : super._();
 
   @override
   bool get pairingRequested;
-  @override
-  bool get sentPairingRequest;
   @override
   Message? get receivedPairingRequest;
   @override

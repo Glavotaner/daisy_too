@@ -1,6 +1,5 @@
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
-import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:flutter/material.dart';
@@ -74,8 +73,8 @@ class _RegistrationStepper extends StatelessWidget {
       controlsBuilder: _buildControls,
       onStepTapped: (step) {
         if (step == _pairingRequestStep &&
-            context.read<PairingCubit>().state.sentPairingRequest) {
-          context.read<PairingCubit>().clearSentRequest();
+            context.read<PairEditCubit>().state.sentPairingRequest) {
+          context.read<PairEditCubit>().clearSentRequest();
         }
       },
       steps: [
@@ -105,7 +104,7 @@ class _RegistrationStepper extends StatelessWidget {
   }
 
   int _getRegistrationStep(BuildContext context) {
-    final sentPairingRequest = context.select((PairingCubit value) {
+    final sentPairingRequest = context.select((PairEditCubit value) {
       return value.state.sentPairingRequest;
     });
     final isRegistered = context.select((UsersCubit value) {

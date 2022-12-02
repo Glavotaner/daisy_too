@@ -45,8 +45,8 @@ class Pairing extends StatelessWidget {
       controlsBuilder: _buildControls,
       onStepTapped: (step) {
         if (step == _pairingRequestStep &&
-            context.read<PairingCubit>().state.sentPairingRequest) {
-          context.read<PairingCubit>().clearSentRequest();
+            context.read<PairEditCubit>().state.sentPairingRequest) {
+          context.read<PairEditCubit>().clearSentRequest();
         }
       },
       // TODO set active ind
@@ -64,7 +64,7 @@ class Pairing extends StatelessWidget {
   }
 
   int _pairingStep(BuildContext context) {
-    final sentPairingRequest = context.select((PairingCubit value) {
+    final sentPairingRequest = context.select((PairEditCubit value) {
       return value.state.sentPairingRequest;
     });
     return sentPairingRequest ? _pairingRequestedStep : _pairingRequestStep;
@@ -78,9 +78,8 @@ class RequestPairButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        context.read<PairingCubit>().sendPairingRequest(
+        context.read<PairEditCubit>().sendPairingRequest(
               requestingUsername: context.read<UsersCubit>().state.username,
-              pair: context.read<PairEditCubit>().state.pair,
             );
       },
       child: const Text('Request pair'),
