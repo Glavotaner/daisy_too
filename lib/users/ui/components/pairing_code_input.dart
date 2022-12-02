@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
 
@@ -56,8 +58,8 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
               },
             ),
             PairEditListener(
-              listenWhen: (_, current) {
-                return current.code.length == 6;
+              listenWhen: (previous, current) {
+                return !previous.codeComplete && current.codeComplete;
               },
               listener: (context, _) {
                 _sendPairingResponse(context);
@@ -86,6 +88,8 @@ class _PairingCodeInputCellState extends State<_PairingCodeInputCell> {
   }
 
   void _sendPairingResponse(BuildContext context) {
+    // TODO fires repeatedly
+    log('sent pairing response');
     context.read<PairingCubit>().sendPairingResponse(
           requestingUsername: context.read<UsersCubit>().state.username,
           pairingCode: context.read<PairEditCubit>().state.code.join(''),

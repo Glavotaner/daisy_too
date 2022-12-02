@@ -105,16 +105,18 @@ class _RegistrationStepper extends StatelessWidget {
   }
 
   int _getRegistrationStep(BuildContext context) {
-    final selectedPair = context.select((UsersCubit value) {
-      return value.state.pair;
+    final sentPairingRequest = context.select((PairingCubit value) {
+      return value.state.sentPairingRequest;
     });
-    if (selectedPair.isNotEmpty) {
+    final isRegistered = context.select((UsersCubit value) {
+      return value.state.isRegistered;
+    });
+    if (sentPairingRequest) {
       return _pairingRequestedStep;
+    } else if (isRegistered) {
+      return _pairingRequestStep;
     } else {
-      final isRegistered = context.select((UsersCubit value) {
-        return value.state.isRegistered;
-      });
-      return isRegistered ? _pairingRequestStep : _registrationStep;
+      return _registrationStep;
     }
   }
 }

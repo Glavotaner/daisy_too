@@ -84,6 +84,10 @@ class PairingCubit extends Cubit<PairingState> {
     emit(state.copyWith(sentPairingRequest: false));
   }
 
+  clearRequestedPairing() {
+    emit(state.copyWith(pairingRequested: false));
+  }
+
   checkReceivedRequestsOnAppResume() async {
     throw UnimplementedError();
   }

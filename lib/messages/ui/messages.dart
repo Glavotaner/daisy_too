@@ -53,10 +53,8 @@ class _PairingListeners {
       final currentRequest = current.receivedPairingRequest;
       return currentRequest != null && currentRequest != previousRequest;
     },
-    listener: (context, state) async {
-      final pairingProvider = context.read<PairEditCubit>();
-      await ReceivedPairingRequest.asModal(context);
-      pairingProvider.clearPairingState();
+    listener: (context, state) {
+      ReceivedPairingRequest.asModal(context);
     },
   );
 
@@ -65,9 +63,9 @@ class _PairingListeners {
       return !previous.pairingRequested && current.pairingRequested;
     },
     listener: (context, state) async {
-      final pairingProvider = context.read<PairEditCubit>();
+      final provider = context.read<PairingCubit>();
       await Pairing.asModal(context);
-      pairingProvider.clearPairingState();
+      provider.clearRequestedPairing();
     },
   );
 }

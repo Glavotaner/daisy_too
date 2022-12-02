@@ -13,16 +13,22 @@ class Pairing extends StatelessWidget {
     return showModalBottomSheet(
       context: context,
       builder: (_) {
-        return UsersListener(
-          listenWhen: (previous, current) {
-            return previous.pair != current.pair;
-          },
-          listener: (context, state) {
-            Navigator.of(context).pop();
-          },
-          child: const Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: Pairing(),
+        return BlocProvider.value(
+          value: context.read<PairingCubit>(),
+          child: BlocProvider(
+            create: (context) => PairEditCubit(),
+            child: UsersListener(
+              listenWhen: (previous, current) {
+                return previous.pair != current.pair;
+              },
+              listener: (context, state) {
+                Navigator.of(context).pop();
+              },
+              child: const Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Pairing(),
+              ),
+            ),
           ),
         );
       },
@@ -34,23 +40,20 @@ class Pairing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PairEditCubit(),
-      child: Stepper(
-        currentStep: _pairingStep(context),
-        controlsBuilder: _buildControls,
-        onStepTapped: (step) {
-          if (step == _pairingRequestStep &&
-              context.read<PairingCubit>().state.sentPairingRequest) {
-            context.read<PairingCubit>().clearSentRequest();
-          }
-        },
-        // TODO set active ind
-        steps: [
-          PairingSteps.pairWith,
-          PairingSteps.pairingInput,
-        ],
-      ),
+    return Stepper(
+      currentStep: _pairingStep(context),
+      controlsBuilder: _buildControls,
+      onStepTapped: (step) {
+        if (step == _pairingRequestStep &&
+            context.read<PairingCubit>().state.sentPairingRequest) {
+          context.read<PairingCubit>().clearSentRequest();
+        }
+      },
+      // TODO set active ind
+      steps: [
+        PairingSteps.pairWith,
+        PairingSteps.pairingInput,
+      ],
     );
   }
 

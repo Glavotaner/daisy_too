@@ -8,4 +8,5 @@ class PairEditState with _$PairEditState {
     required int focusedCellIndex,
     required List<String> code,
   }) = _PairEditState;
+  get codeComplete => code.where((c) => c.isNotEmpty).length == 6;
 }
