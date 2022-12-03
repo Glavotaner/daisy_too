@@ -24,6 +24,8 @@ class PairingCubit extends Cubit<PairingState> {
     if (message.isPairingRequest) {
       log('pairing request received');
       receivePairingRequest(message: message);
+    } else if (message.isPairingResponse) {
+      receivePairingResponse(message: message);
     }
   }
 
@@ -35,8 +37,19 @@ class PairingCubit extends Cubit<PairingState> {
     emit(state.copyWith(receivedPairingRequest: message));
   }
 
+  receivePairingResponse({required Message message}) async {
+    emit(state.copyWith(receivedPairingResponse: message));
+  }
+
   clearRequestedPairing() {
     emit(state.copyWith(pairingRequested: false));
+  }
+
+  clearMessages() {
+    emit(state.copyWith(
+      receivedPairingResponse: null,
+      receivedPairingRequest: null,
+    ));
   }
 
   copyPairingCode() async {

@@ -11,7 +11,6 @@ class ReceivedPairingRequest extends StatelessWidget {
       context: context,
       builder: (_) => BlocProvider.value(
         value: context.read<PairingCubit>(),
-        // TODO doesn't work
         child: PairingListener(
           listenWhen: (_, current) => current.receivedPairingResponse != null,
           listener: (context, state) {

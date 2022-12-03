@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/main.dart';
 import 'package:daisy_too/messages/logic/cubit/kiss_cubit.dart';
@@ -52,8 +54,10 @@ class _PairingListeners {
       final currentRequest = current.receivedPairingRequest;
       return currentRequest != null && currentRequest != previousRequest;
     },
-    listener: (context, state) {
-      ReceivedPairingRequest.asModal(context);
+    listener: (context, state) async {
+      final provider = context.read<PairingCubit>();
+      await ReceivedPairingRequest.asModal(context);
+      Timer(const Duration(milliseconds: 500), provider.clearMessages);
     },
   );
 
