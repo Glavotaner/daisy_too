@@ -12,14 +12,28 @@ class AppBarPairingButton extends StatelessWidget {
       return cubit.state.isOnboarded;
     });
     return isOnboarded
-        ? TextButton.icon(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-            ),
-            onPressed: context.read<PairingCubit>().requestPair,
-            icon: const Icon(Icons.favorite),
-            label: const Text('Pair'),
-          )
+        ? const _PairButton()
         : const IgnorePointer(ignoring: true);
+  }
+}
+
+class _PairButton extends StatelessWidget {
+  const _PairButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final hasPair = context.select((UsersCubit value) => value.state.hasPair);
+    return TextButton.icon(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all(
+          hasPair ? Colors.redAccent : Colors.white,
+        ),
+      ),
+      onPressed: context.read<PairingCubit>().requestPair,
+      icon: const Icon(Icons.favorite),
+      label: const Text('Pair'),
+    );
   }
 }
