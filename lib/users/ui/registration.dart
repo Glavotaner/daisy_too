@@ -33,6 +33,14 @@ class Registration extends StatelessWidget {
               context.read<UsersCubit>().onboardUser();
             },
           ),
+          PairEditListener(
+            listenWhen: (previous, current) {
+              return current.sentPairingResponse;
+            },
+            listener: (context, state) {
+              context.read<UsersCubit>().savePair(pair: state.pair);
+            },
+          )
         ],
         child: Column(
           children: const [

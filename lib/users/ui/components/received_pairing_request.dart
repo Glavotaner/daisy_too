@@ -1,4 +1,5 @@
-import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
+import 'package:daisy_too/types/listeners.dart';
+import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,27 +9,35 @@ class ReceivedPairingRequest extends StatelessWidget {
     return showModalBottomSheet(
       constraints: const BoxConstraints(maxHeight: 200),
       context: context,
-      builder: (_) => const ReceivedPairingRequest(),
+      builder: (_) => BlocProvider.value(
+        value: context.read<PairingCubit>(),
+        // TODO doesn't work
+        child: PairingListener(
+          listenWhen: (_, current) => current.receivedPairingResponse != null,
+          listener: (context, state) {
+            Navigator.of(context).pop();
+          },
+          child: const ReceivedPairingRequest(),
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const _PairingCode(),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: TextButton.icon(
-              onPressed: context.read<PairEditCubit>().copyPairingCode,
-              label: const Text('Copy code'),
-              icon: const Icon(Icons.note_alt),
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const _PairingCode(),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: TextButton.icon(
+            onPressed: context.read<PairingCubit>().copyPairingCode,
+            label: const Text('Copy code'),
+            icon: const Icon(Icons.note_alt),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -39,7 +48,9 @@ class _PairingCode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      context.select((PairEditCubit cubit) => cubit.state.code.join('')),
+      context.select((PairingCubit value) {
+        return value.state.receivedPairingRequest!.data!.pairingCode!;
+      }),
       style: const TextStyle(fontSize: 24),
     );
   }

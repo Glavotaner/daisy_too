@@ -72,6 +72,7 @@ class UsersCubit extends Cubit<UsersState> {
   savePair({required String pair}) async {
     log('pair saved');
     await keyValueStorage.set<String>(key: 'pair', value: pair);
+    messaging.setPair(pair);
     emit(state.copyWith(pair: pair));
   }
 

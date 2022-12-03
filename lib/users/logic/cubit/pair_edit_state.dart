@@ -5,6 +5,7 @@ class PairEditState with _$PairEditState {
   const PairEditState._();
   factory PairEditState({
     required bool sentPairingRequest,
+    required bool sentPairingResponse,
     required String pair,
     required int focusedCellIndex,
     required List<String> code,

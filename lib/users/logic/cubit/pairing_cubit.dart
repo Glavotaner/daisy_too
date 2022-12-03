@@ -5,6 +5,7 @@ import 'package:daisy_too/messages/extensions/message_x.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:messaging/interface/message.dart';
@@ -36,6 +37,14 @@ class PairingCubit extends Cubit<PairingState> {
 
   clearRequestedPairing() {
     emit(state.copyWith(pairingRequested: false));
+  }
+
+  copyPairingCode() async {
+    await Clipboard.setData(
+      ClipboardData(
+        text: state.receivedPairingRequest!.data!.pairingCode!,
+      ),
+    );
   }
 
   checkReceivedRequestsOnAppResume() async {

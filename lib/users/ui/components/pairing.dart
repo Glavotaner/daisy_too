@@ -17,11 +17,12 @@ class Pairing extends StatelessWidget {
           value: context.read<PairingCubit>(),
           child: BlocProvider(
             create: (context) => PairEditCubit(),
-            child: UsersListener(
+            child: PairEditListener(
               listenWhen: (previous, current) {
-                return previous.pair != current.pair;
+                return current.sentPairingResponse;
               },
               listener: (context, state) {
+                context.read<UsersCubit>().savePair(pair: state.pair);
                 Navigator.of(context).pop();
               },
               child: const Padding(

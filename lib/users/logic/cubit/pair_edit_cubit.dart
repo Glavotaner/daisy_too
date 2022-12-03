@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:daisy_too/main.dart';
-import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:web_api/implementation/web_api_http.dart';
 
@@ -13,6 +12,7 @@ class PairEditCubit extends Cubit<PairEditState> {
   PairEditCubit()
       : super(PairEditState(
           sentPairingRequest: false,
+          sentPairingResponse: false,
           pair: '',
           code: List.generate(6, (_) => ''),
           focusedCellIndex: 0,
@@ -40,12 +40,6 @@ class PairEditCubit extends Cubit<PairEditState> {
 
   onCellChange(int index) {
     emit(state.copyWith(focusedCellIndex: index));
-  }
-
-  copyPairingCode() async {
-    await Clipboard.setData(
-      ClipboardData(text: state.code.join('')),
-    );
   }
 
   clearPairingState() {
@@ -86,6 +80,7 @@ class PairEditCubit extends Cubit<PairEditState> {
         respondingUsername: state.pair,
         requestingUsername: requestingUsername,
       );
+      emit(state.copyWith(sentPairingResponse: true));
     } catch (exception) {
       log(exception.toString());
       if (exception is BadRequest) {

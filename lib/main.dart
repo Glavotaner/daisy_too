@@ -82,6 +82,7 @@ class DaisyTooApp extends StatelessWidget {
               ..clearSnackBars()
               ..showSnackBar(state.snackBar!);
           }),
+          // TODO move away from here?
           PairingListener(
             listenWhen: (previous, current) {
               final previousResponse = previous.receivedPairingResponse;
