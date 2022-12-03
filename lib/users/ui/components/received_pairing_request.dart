@@ -44,7 +44,10 @@ class ReceivedPairingRequest extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
-                style: const TextStyle(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 18),
               )),
             ),
             TextButton.icon(
