@@ -24,19 +24,21 @@ class ReceivedPairingRequest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const _PairingCode(),
-        Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: TextButton.icon(
-            onPressed: context.read<PairingCubit>().copyPairingCode,
-            label: const Text('Copy code'),
-            icon: const Icon(Icons.note_alt),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const _PairingCode(),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: TextButton.icon(
+              onPressed: context.read<PairingCubit>().copyPairingCode,
+              label: const Text('Copy code'),
+              icon: const Icon(Icons.note_alt),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
