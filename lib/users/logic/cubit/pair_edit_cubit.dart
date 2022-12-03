@@ -66,7 +66,7 @@ class PairEditCubit extends Cubit<PairEditState> {
     } catch (exception) {
       log(exception.toString());
       if (exception is BadRequest) {
-        // TODO statusNotifier.showError(exception.message);
+        statusNotifier.showError(exception.message);
       }
     }
   }
@@ -85,7 +85,7 @@ class PairEditCubit extends Cubit<PairEditState> {
       log(exception.toString());
       if (exception is BadRequest) {
         clearPairingCode();
-        // TODO statusNotifier.showError(exception.message);
+        statusNotifier.showError(exception.message);
       }
     }
   }

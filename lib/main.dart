@@ -39,6 +39,7 @@ Future<void> bootstrap() async {
   GetIt.I.registerLazySingleton<Users>(() => users);
   GetIt.I.registerLazySingleton<MessagingService>(() => messaging);
   final statusNotifier = StatusNotifierCubit();
+  GetIt.I.registerLazySingleton<StatusNotifierCubit>(() => statusNotifier);
   final usersProvider = UsersCubit(
     keyValueStorage: keyValueSharedPrefs,
     users: users,
@@ -131,3 +132,4 @@ class _DaisyAppBarState extends State<DaisyAppBar> {
 
 Users get users => GetIt.I<Users>();
 MessagingService get messaging => GetIt.I<MessagingService>();
+StatusNotifierCubit get statusNotifier => GetIt.I<StatusNotifierCubit>();
