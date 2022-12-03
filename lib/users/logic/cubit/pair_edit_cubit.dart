@@ -66,7 +66,7 @@ class PairEditCubit extends Cubit<PairEditState> {
     } catch (exception) {
       log(exception.toString());
       if (exception is BadRequest) {
-        // statusNotifier.showError(exception.message);
+        // TODO statusNotifier.showError(exception.message);
       }
     }
   }
@@ -85,12 +85,13 @@ class PairEditCubit extends Cubit<PairEditState> {
       log(exception.toString());
       if (exception is BadRequest) {
         clearPairingCode();
-        // statusNotifier.showError(exception.message);
+        // TODO statusNotifier.showError(exception.message);
       }
     }
   }
 
   clearPairingCode() async {
+    // TODO doesn't work
     for (final index in [0, 1, 2, 3, 4, 5]) {
       _clearCodeAtIndex(index);
       await Future.delayed(const Duration(milliseconds: 100));
