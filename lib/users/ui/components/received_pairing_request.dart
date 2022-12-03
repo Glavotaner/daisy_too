@@ -13,7 +13,7 @@ class ReceivedPairingRequest extends StatelessWidget {
         value: context.read<PairingCubit>(),
         child: PairingListener(
           listenWhen: (_, current) => current.receivedPairingResponse != null,
-          listener: (context, state) {
+          listener: (context, _) {
             Navigator.of(context).pop();
           },
           child: const ReceivedPairingRequest(),

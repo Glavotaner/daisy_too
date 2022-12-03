@@ -26,17 +26,13 @@ class Registration extends StatelessWidget {
       child: MultiBlocListener(
         listeners: [
           UsersListener(
-            listenWhen: (previous, current) {
-              return current.hasPair;
-            },
+            listenWhen: (_, current) => current.hasPair,
             listener: (context, _) {
               context.read<UsersCubit>().onboardUser();
             },
           ),
           PairEditListener(
-            listenWhen: (previous, current) {
-              return current.sentPairingResponse;
-            },
+            listenWhen: (_, current) => current.sentPairingResponse,
             listener: (context, state) {
               context.read<UsersCubit>().savePair(pair: state.pair);
             },

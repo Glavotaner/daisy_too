@@ -54,7 +54,7 @@ class _PairingListeners {
       final currentRequest = current.receivedPairingRequest;
       return currentRequest != null && currentRequest != previousRequest;
     },
-    listener: (context, state) async {
+    listener: (context, _) async {
       final provider = context.read<PairingCubit>();
       await ReceivedPairingRequest.asModal(context);
       Timer(const Duration(milliseconds: 500), provider.clearMessages);
@@ -65,7 +65,7 @@ class _PairingListeners {
     listenWhen: (previous, current) {
       return !previous.pairingRequested && current.pairingRequested;
     },
-    listener: (context, state) async {
+    listener: (context, _) async {
       final provider = context.read<PairingCubit>();
       await Pairing.asModal(context);
       provider.clearRequestedPairing();

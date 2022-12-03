@@ -20,7 +20,7 @@ class Pairing extends StatelessWidget {
               pair: context.read<UsersCubit>().state.pair,
             ),
             child: PairEditListener(
-              listenWhen: (previous, current) {
+              listenWhen: (_, current) {
                 return current.sentPairingResponse;
               },
               listener: (context, state) {
