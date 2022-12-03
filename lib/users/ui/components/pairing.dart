@@ -16,7 +16,9 @@ class Pairing extends StatelessWidget {
         return BlocProvider.value(
           value: context.read<PairingCubit>(),
           child: BlocProvider(
-            create: (context) => PairEditCubit(),
+            create: (context) => PairEditCubit(
+              pair: context.read<UsersCubit>().state.pair,
+            ),
             child: PairEditListener(
               listenWhen: (previous, current) {
                 return current.sentPairingResponse;
@@ -95,7 +97,7 @@ class PairingSteps {
       content: Builder(
         builder: (context) => TextFormField(
           onChanged: context.read<PairEditCubit>().onPairChange,
-          initialValue: context.read<UsersCubit>().state.pair,
+          initialValue: context.read<PairEditCubit>().state.pair,
         ),
       ),
       subtitle: const _Pair(),

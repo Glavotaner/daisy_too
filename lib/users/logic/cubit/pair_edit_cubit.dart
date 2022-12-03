@@ -9,11 +9,11 @@ part 'pair_edit_state.dart';
 part 'pair_edit_cubit.freezed.dart';
 
 class PairEditCubit extends Cubit<PairEditState> {
-  PairEditCubit()
+  PairEditCubit({String? pair})
       : super(PairEditState(
           sentPairingRequest: false,
           sentPairingResponse: false,
-          pair: '',
+          pair: pair ?? '',
           code: List.generate(6, (_) => ''),
           focusedCellIndex: 0,
         ));
