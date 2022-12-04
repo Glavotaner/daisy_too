@@ -1,6 +1,7 @@
 library users;
 
 import 'package:users/classes/endpoints.dart';
+import 'package:users/classes/payloads.dart';
 import 'package:web_api/interface/web_api.dart';
 
 class Users {
@@ -9,39 +10,23 @@ class Users {
 
   const Users({required this.api});
 
-  register({
-    required String username,
-    required String token,
-  }) {
-    return _callApi(Endpoints.register, body: {
-      'username': username,
-      'token': token,
-    });
+  register(RegistrationData data) {
+    return _callApi(Endpoints.register, body: data);
   }
 
-  requestPair({
-    required String requestingUsername,
-    required String pairUsername,
-  }) {
-    return _callApi(Endpoints.requestPair, body: {
-      'requestingUsername': requestingUsername,
-      'pairUsername': pairUsername,
-    });
+  requestPair(PairRequestData data) {
+    return _callApi(Endpoints.requestPair, body: data);
   }
 
-  respondPair({
-    required String requestingUsername,
-    required String respondingUsername,
-    required String pairingResponse,
-  }) {
-    return _callApi(Endpoints.respondPair, body: {
-      'requestingUsername': requestingUsername,
-      'respondingUsername': respondingUsername,
-      'pairingResponse': pairingResponse,
-    });
+  respondPair(PairingResponseData data) {
+    return _callApi(Endpoints.respondPair, body: data);
   }
 
-  Future<void> _callApi(String endpoint, {required Map<String, dynamic> body}) {
-    return api.post('${appUrl}user/$endpoint', body: body);
+  Future<void> _callApi(String endpoint, {required Jsonable body}) {
+    return api.post('${appUrl}user/$endpoint', body: body.toJson());
   }
+}
+
+abstract class Jsonable {
+  Map<String, dynamic> toJson();
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:daisy_too/main.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:users/classes/payloads.dart';
 import 'package:web_api/implementation/web_api_http.dart';
 
 part 'pair_edit_state.dart';
@@ -58,10 +59,10 @@ class PairEditCubit extends Cubit<PairEditState> {
     required String requestingUsername,
   }) async {
     try {
-      await users.requestPair(
-        requestingUsername: requestingUsername,
+      await users.requestPair(PairRequestData(
         pairUsername: state.pair,
-      );
+        requestingUsername: requestingUsername,
+      ));
       emit(state.copyWith(sentPairingRequest: true));
     } catch (exception) {
       log(exception.toString());
@@ -75,11 +76,11 @@ class PairEditCubit extends Cubit<PairEditState> {
     required String requestingUsername,
   }) async {
     try {
-      await users.respondPair(
+      await users.respondPair(PairingResponseData(
         pairingResponse: state.code.join(''),
         respondingUsername: state.pair,
         requestingUsername: requestingUsername,
-      );
+      ));
       emit(state.copyWith(sentPairingResponse: true));
     } catch (exception) {
       log(exception.toString());

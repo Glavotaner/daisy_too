@@ -9,6 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:key_value/key_value.dart';
+import 'package:users/classes/payloads.dart';
 import 'package:users/users.dart';
 import 'package:web_api/implementation/web_api_http.dart';
 part 'users_cubit.freezed.dart';
@@ -55,7 +56,10 @@ class UsersCubit extends Cubit<UsersState> {
 
   registerUser() async {
     try {
-      await users.register(username: state.username, token: state.token);
+      await users.register(RegistrationData(
+        username: state.username,
+        token: state.token,
+      ));
       await keyValueStorage.set<String>(key: 'user', value: state.username);
       emit(state.copyWith(isRegistered: true));
     } catch (exception) {
