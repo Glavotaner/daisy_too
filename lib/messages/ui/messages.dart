@@ -4,6 +4,7 @@ import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/main.dart';
 import 'package:daisy_too/messages/logic/cubit/kiss_cubit.dart';
 import 'package:daisy_too/messages/ui/components/kiss_pages_library.dart';
+import 'package:daisy_too/messages/ui/components/received_kiss.dart';
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
@@ -78,22 +79,24 @@ class _KissListeners {
   List<KissListener> get listeners => [sentListener, receivedListener];
 
   final sentListener = KissListener(
-    listenWhen: (previous, current) {
-      return previous.sentKiss != current.sentKiss;
+    listenWhen: (_, current) {
+      return current.sentKiss != null;
     },
     listener: (context, state) {
       final message = state.sentKiss!.type + ' sented!';
       context.read<StatusNotifierCubit>().showSuccess(message);
+      context.read<KissCubit>().clearSentKiss();
     },
   );
 
   final receivedListener = KissListener(
     listenWhen: (previous, current) {
-      return previous.receivedKiss != current.receivedKiss;
+      return previous.receivedKiss == null && current.receivedKiss != null;
     },
-    listener: (context, state) {
-      final message = state.receivedKiss!.type + ' received!';
-      context.read<StatusNotifierCubit>().showSuccess(message);
+    listener: (context, _) async {
+      final provider = context.read<KissCubit>();
+      await ReceivedKiss.show(context);
+      Timer(const Duration(milliseconds: 500), provider.clearReceivedKiss);
     },
   );
 }

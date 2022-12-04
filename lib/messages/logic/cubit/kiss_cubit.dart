@@ -31,4 +31,12 @@ class KissCubit extends Cubit<KissState> {
       emit(state.copyWith(receivedKiss: Kiss.fromMessage(data)));
     }
   }
+
+  clearSentKiss() {
+    emit(state.copyWith(sentKiss: null));
+  }
+
+  clearReceivedKiss() {
+    emit(state.copyWith(receivedKiss: null));
+  }
 }
