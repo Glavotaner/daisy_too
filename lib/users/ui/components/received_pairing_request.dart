@@ -26,7 +26,6 @@ class ReceivedPairingRequest extends StatelessWidget {
   Widget build(BuildContext context) {
     final pairingRequest =
         context.read<PairingCubit>().state.receivedPairingRequest!;
-    final pair = pairingRequest.data!.requestingUsername;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Center(
@@ -40,7 +39,7 @@ class ReceivedPairingRequest extends StatelessWidget {
                 text: 'Pair with ',
                 children: [
                   TextSpan(
-                    text: pair,
+                    text: pairingRequest.requestingUsername,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
@@ -69,7 +68,7 @@ class _PairingCode extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       context.select((PairingCubit value) {
-        return value.state.receivedPairingRequest!.data!.pairingCode!;
+        return value.state.receivedPairingRequest!.pairingCode;
       }),
       style: const TextStyle(fontSize: 24),
     );

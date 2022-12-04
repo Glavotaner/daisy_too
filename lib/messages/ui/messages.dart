@@ -12,6 +12,7 @@ import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:daisy_too/users/ui/components/received_pairing_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:messaging/interface/message.dart';
 
 part 'components/swipe_hint.dart';
 part 'components/pages_stack.dart';

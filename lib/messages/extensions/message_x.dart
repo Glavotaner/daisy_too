@@ -12,11 +12,7 @@ extension FcmMessages on RemoteMessage {
     }
     Data? data;
     if (this.data.isNotEmpty) {
-      data = Data(
-        confirmedPair: this.data['confirmedPair'],
-        pairingCode: this.data['pairingCode'],
-        requestingUsername: this.data['requestingUsername'],
-      );
+      data = Data.fromJson(this.data);
     }
     return Message(notification: notification, data: data);
   }

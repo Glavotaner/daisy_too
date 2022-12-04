@@ -9,6 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:key_value/key_value.dart';
+import 'package:messaging/interface/message.dart' as msg;
 import 'package:users/classes/payloads.dart';
 import 'package:users/users.dart';
 import 'package:web_api/implementation/web_api_http.dart';
@@ -29,9 +30,9 @@ class UsersCubit extends Cubit<UsersState> {
   }
 
   void _savePairOnReceivedResponse(RemoteMessage remoteMessage) {
-    final message = remoteMessage.message;
-    if (message.isPairingResponse) {
-      savePair(pair: message.data!.confirmedPair!);
+    final data = remoteMessage.message.data;
+    if (data is msg.PairingResponseData) {
+      savePair(pair: data.confirmedPair);
     }
   }
 

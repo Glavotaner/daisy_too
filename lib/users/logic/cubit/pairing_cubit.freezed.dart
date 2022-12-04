@@ -17,8 +17,10 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PairingState {
   bool get pairingRequested => throw _privateConstructorUsedError;
-  Message? get receivedPairingRequest => throw _privateConstructorUsedError;
-  Message? get receivedPairingResponse => throw _privateConstructorUsedError;
+  PairingRequestData? get receivedPairingRequest =>
+      throw _privateConstructorUsedError;
+  PairingResponseData? get receivedPairingResponse =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PairingStateCopyWith<PairingState> get copyWith =>
@@ -32,8 +34,8 @@ abstract class $PairingStateCopyWith<$Res> {
       _$PairingStateCopyWithImpl<$Res>;
   $Res call(
       {bool pairingRequested,
-      Message? receivedPairingRequest,
-      Message? receivedPairingResponse});
+      PairingRequestData? receivedPairingRequest,
+      PairingResponseData? receivedPairingResponse});
 }
 
 /// @nodoc
@@ -58,11 +60,11 @@ class _$PairingStateCopyWithImpl<$Res> implements $PairingStateCopyWith<$Res> {
       receivedPairingRequest: receivedPairingRequest == freezed
           ? _value.receivedPairingRequest
           : receivedPairingRequest // ignore: cast_nullable_to_non_nullable
-              as Message?,
+              as PairingRequestData?,
       receivedPairingResponse: receivedPairingResponse == freezed
           ? _value.receivedPairingResponse
           : receivedPairingResponse // ignore: cast_nullable_to_non_nullable
-              as Message?,
+              as PairingResponseData?,
     ));
   }
 }
@@ -76,8 +78,8 @@ abstract class _$$_PairingStateCopyWith<$Res>
   @override
   $Res call(
       {bool pairingRequested,
-      Message? receivedPairingRequest,
-      Message? receivedPairingResponse});
+      PairingRequestData? receivedPairingRequest,
+      PairingResponseData? receivedPairingResponse});
 }
 
 /// @nodoc
@@ -105,11 +107,11 @@ class __$$_PairingStateCopyWithImpl<$Res>
       receivedPairingRequest: receivedPairingRequest == freezed
           ? _value.receivedPairingRequest
           : receivedPairingRequest // ignore: cast_nullable_to_non_nullable
-              as Message?,
+              as PairingRequestData?,
       receivedPairingResponse: receivedPairingResponse == freezed
           ? _value.receivedPairingResponse
           : receivedPairingResponse // ignore: cast_nullable_to_non_nullable
-              as Message?,
+              as PairingResponseData?,
     ));
   }
 }
@@ -126,9 +128,9 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
   @override
   final bool pairingRequested;
   @override
-  final Message? receivedPairingRequest;
+  final PairingRequestData? receivedPairingRequest;
   @override
-  final Message? receivedPairingResponse;
+  final PairingResponseData? receivedPairingResponse;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -176,16 +178,16 @@ class _$_PairingState extends _PairingState with DiagnosticableTreeMixin {
 abstract class _PairingState extends PairingState {
   factory _PairingState(
       {required final bool pairingRequested,
-      final Message? receivedPairingRequest,
-      final Message? receivedPairingResponse}) = _$_PairingState;
+      final PairingRequestData? receivedPairingRequest,
+      final PairingResponseData? receivedPairingResponse}) = _$_PairingState;
   _PairingState._() : super._();
 
   @override
   bool get pairingRequested;
   @override
-  Message? get receivedPairingRequest;
+  PairingRequestData? get receivedPairingRequest;
   @override
-  Message? get receivedPairingResponse;
+  PairingResponseData? get receivedPairingResponse;
   @override
   @JsonKey(ignore: true)
   _$$_PairingStateCopyWith<_$_PairingState> get copyWith =>

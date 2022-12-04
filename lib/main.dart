@@ -91,7 +91,7 @@ class DaisyTooApp extends StatelessWidget {
                   currentResponse != previousResponse;
             },
             listener: (context, state) {
-              final pair = state.receivedPairingResponse!.data!.confirmedPair!;
+              final pair = state.receivedPairingResponse!.confirmedPair;
               context.read<UsersCubit>().savePair(pair: pair);
             },
           )

@@ -2,17 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'message.g.dart';
 
 @JsonSerializable()
-class Message {
-  final Notification? notification;
-  final Data? data;
-  const Message({this.notification, this.data});
-  factory Message.fromJson(dynamic json) => _$MessageFromJson(json);
-  toJson() => _$MessageToJson(this);
-  get isPairingRequest => data?.requestingUsername != null;
-  get isPairingResponse => data?.confirmedPair != null;
-}
-
-@JsonSerializable()
 class Notification {
   final String? title;
   final String? body;
@@ -22,15 +11,48 @@ class Notification {
 }
 
 @JsonSerializable()
-class Data {
-  final String? requestingUsername;
-  final String? pairingCode;
-  final String? confirmedPair;
-  const Data({
-    this.requestingUsername,
-    this.pairingCode,
-    this.confirmedPair,
+class Message {
+  final Notification? notification;
+  final Data? data;
+  const Message({this.notification, this.data});
+  factory Message.fromJson(Map<String, dynamic> json) =>
+      _$MessageFromJson(json);
+  toJson() => _$MessageToJson(this);
+}
+
+@JsonSerializable(createFactory: false)
+class PairingRequestData implements Data {
+  final String requestingUsername;
+  final String pairingCode;
+  const PairingRequestData({
+    required this.requestingUsername,
+    required this.pairingCode,
   });
-  factory Data.fromJson(dynamic json) => _$DataFromJson(json);
-  toJson() => _$DataToJson(this);
+  @override
+  Map<String, dynamic> toJson() => _$PairingRequestDataToJson(this);
+}
+
+@JsonSerializable(createFactory: false)
+class PairingResponseData implements Data {
+  final String confirmedPair;
+  const PairingResponseData({required this.confirmedPair});
+  @override
+  Map<String, dynamic> toJson() => _$PairingResponseDataToJson(this);
+}
+
+abstract class Data {
+  factory Data.fromJson(Map<String, dynamic> json) {
+    final pairingCode = json['pairingCode'];
+    final confirmedPair = json['confirmedPair'];
+    if (pairingCode != null) {
+      final requestingUsername = json['requestingUsername'];
+      return PairingRequestData(
+        requestingUsername: requestingUsername,
+        pairingCode: pairingCode,
+      );
+    } else {
+      return PairingResponseData(confirmedPair: confirmedPair);
+    }
+  }
+  Map<String, dynamic> toJson();
 }

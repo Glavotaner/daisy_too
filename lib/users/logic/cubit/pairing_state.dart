@@ -5,8 +5,8 @@ class PairingState with _$PairingState {
   const PairingState._();
   factory PairingState({
     required bool pairingRequested,
-    Message? receivedPairingRequest,
-    Message? receivedPairingResponse,
+    PairingRequestData? receivedPairingRequest,
+    PairingResponseData? receivedPairingResponse,
   }) = _PairingState;
   static PairingState get initial => PairingState(
         pairingRequested: false,
