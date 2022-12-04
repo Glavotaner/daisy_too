@@ -47,6 +47,7 @@ class Pairing extends StatelessWidget {
       currentStep: _pairingStep(context),
       controlsBuilder: _buildControls,
       onStepTapped: (step) {
+        // TODO repeated 1 ?
         if (step == _pairingRequestStep &&
             context.read<PairEditCubit>().state.sentPairingRequest) {
           context.read<PairEditCubit>().clearSentRequest();
@@ -61,12 +62,14 @@ class Pairing extends StatelessWidget {
   }
 
   Widget _buildControls(context, detail) {
+    // TODO repeated 2 ?
     return detail.currentStep == _pairingRequestedStep
         ? const IgnorePointer()
         : const RequestPairButton();
   }
 
   int _pairingStep(BuildContext context) {
+    // TODO repeated 3 ?
     final sentPairingRequest = context.select((PairEditCubit value) {
       return value.state.sentPairingRequest;
     });

@@ -76,6 +76,7 @@ class _RegistrationStepper extends StatelessWidget {
       currentStep: _getRegistrationStep(context),
       controlsBuilder: _buildControls,
       onStepTapped: (step) {
+        // TODO repeated 1 ?
         if (step == _pairingRequestStep &&
             context.read<PairEditCubit>().state.sentPairingRequest) {
           context.read<PairEditCubit>().clearSentRequest();
@@ -101,6 +102,7 @@ class _RegistrationStepper extends StatelessWidget {
       case _registrationStep:
         return const _RegisterButton();
       case _pairingRequestStep:
+        // TODO repeated 2 ?
         return const RequestPairButton();
       default:
         return const IgnorePointer();
@@ -108,6 +110,7 @@ class _RegistrationStepper extends StatelessWidget {
   }
 
   int _getRegistrationStep(BuildContext context) {
+    // TODO repeated 3 ?
     final sentPairingRequest = context.select((PairEditCubit value) {
       return value.state.sentPairingRequest;
     });
