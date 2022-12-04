@@ -52,7 +52,7 @@ class Pairing extends StatelessWidget {
           context.read<PairEditCubit>().clearSentRequest();
         }
       },
-      // TODO set active ind
+      // TODO set active ind, states
       steps: [
         PairingSteps.pairWith,
         PairingSteps.pairingInput,
