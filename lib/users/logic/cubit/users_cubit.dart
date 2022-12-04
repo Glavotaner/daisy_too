@@ -46,6 +46,9 @@ class UsersCubit extends Cubit<UsersState> {
       ]);
       final pair = storedData[0] as String?;
       final isOnboarded = storedData[1] as bool?;
+      if (pair != null) {
+        messaging.setPair(pair);
+      }
       emit(state.copyWith(
         isRegistered: true,
         username: registeredUser,
