@@ -52,7 +52,12 @@ class PairEditCubit extends Cubit<PairEditState> {
   }
 
   clearSentRequest() {
-    emit(state.copyWith(sentPairingRequest: false));
+    emit(state.copyWith(
+      sentPairingRequest: false,
+      sentPairingResponse: false,
+      code: List.generate(6, (_) => ''),
+      focusedCellIndex: 0,
+    ));
   }
 
   sendPairingRequest({
