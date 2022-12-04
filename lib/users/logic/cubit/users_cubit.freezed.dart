@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UsersState {
   bool get isRegistered => throw _privateConstructorUsedError;
-  bool get isEditing => throw _privateConstructorUsedError;
   bool get isOnboarded => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String get token => throw _privateConstructorUsedError;
@@ -35,7 +34,6 @@ abstract class $UsersStateCopyWith<$Res> {
       _$UsersStateCopyWithImpl<$Res>;
   $Res call(
       {bool isRegistered,
-      bool isEditing,
       bool isOnboarded,
       String username,
       String token,
@@ -53,7 +51,6 @@ class _$UsersStateCopyWithImpl<$Res> implements $UsersStateCopyWith<$Res> {
   @override
   $Res call({
     Object? isRegistered = freezed,
-    Object? isEditing = freezed,
     Object? isOnboarded = freezed,
     Object? username = freezed,
     Object? token = freezed,
@@ -63,10 +60,6 @@ class _$UsersStateCopyWithImpl<$Res> implements $UsersStateCopyWith<$Res> {
       isRegistered: isRegistered == freezed
           ? _value.isRegistered
           : isRegistered // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isEditing: isEditing == freezed
-          ? _value.isEditing
-          : isEditing // ignore: cast_nullable_to_non_nullable
               as bool,
       isOnboarded: isOnboarded == freezed
           ? _value.isOnboarded
@@ -97,7 +90,6 @@ abstract class _$$_UsersStateCopyWith<$Res>
   @override
   $Res call(
       {bool isRegistered,
-      bool isEditing,
       bool isOnboarded,
       String username,
       String token,
@@ -117,7 +109,6 @@ class __$$_UsersStateCopyWithImpl<$Res> extends _$UsersStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isRegistered = freezed,
-    Object? isEditing = freezed,
     Object? isOnboarded = freezed,
     Object? username = freezed,
     Object? token = freezed,
@@ -127,10 +118,6 @@ class __$$_UsersStateCopyWithImpl<$Res> extends _$UsersStateCopyWithImpl<$Res>
       isRegistered: isRegistered == freezed
           ? _value.isRegistered
           : isRegistered // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isEditing: isEditing == freezed
-          ? _value.isEditing
-          : isEditing // ignore: cast_nullable_to_non_nullable
               as bool,
       isOnboarded: isOnboarded == freezed
           ? _value.isOnboarded
@@ -157,7 +144,6 @@ class __$$_UsersStateCopyWithImpl<$Res> extends _$UsersStateCopyWithImpl<$Res>
 class _$_UsersState extends _UsersState {
   _$_UsersState(
       {required this.isRegistered,
-      required this.isEditing,
       required this.isOnboarded,
       required this.username,
       required this.token,
@@ -166,8 +152,6 @@ class _$_UsersState extends _UsersState {
 
   @override
   final bool isRegistered;
-  @override
-  final bool isEditing;
   @override
   final bool isOnboarded;
   @override
@@ -186,7 +170,6 @@ class _$_UsersState extends _UsersState {
 abstract class _UsersState extends UsersState {
   factory _UsersState(
       {required final bool isRegistered,
-      required final bool isEditing,
       required final bool isOnboarded,
       required final String username,
       required final String token,
@@ -195,8 +178,6 @@ abstract class _UsersState extends UsersState {
 
   @override
   bool get isRegistered;
-  @override
-  bool get isEditing;
   @override
   bool get isOnboarded;
   @override
