@@ -46,6 +46,7 @@ class _PagesStackState extends State<PagesStack> with WidgetsBindingObserver {
       final message = await messaging.getStoredMessage();
       if (message == null) return;
       var data = message.data;
+      // TODO repeated 4
       if (data is PairingRequestData) {
         context.read<PairingCubit>().receivePairingRequest(message: data);
       } else if (data is PairingResponseData) {

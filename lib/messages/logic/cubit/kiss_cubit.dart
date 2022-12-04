@@ -5,24 +5,17 @@ import 'package:daisy_too/main.dart';
 import 'package:daisy_too/messages/extensions/message_x.dart';
 import 'package:daisy_too/messages/models/kiss/kiss.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:messaging/interface/message.dart';
 
 part 'kiss_state.dart';
 part 'kiss_cubit.freezed.dart';
 
 class KissCubit extends Cubit<KissState> {
   KissCubit() : super(KissState.initial) {
-    messaging.onMessageReceived.listen((message) {
-      if (message.isKiss) {
-        log('kiss received');
-        _receiveKiss(Kiss.fromMessage(message));
-      }
-    });
-    messaging.onMessageTapped.listen((message) {
-      if (message.isKiss) {
-        _receiveKiss(Kiss.fromMessage(message));
-      }
-    });
+    messaging.onMessageReceived.listen(_receiveKiss);
+    messaging.onMessageTapped.listen(_receiveKiss);
   }
 
   sendKiss(Kiss kiss) async {
@@ -30,7 +23,12 @@ class KissCubit extends Cubit<KissState> {
     emit(state.copyWith(sentKiss: kiss));
   }
 
-  _receiveKiss(Kiss kiss) {
-    emit(state.copyWith(receivedKiss: kiss));
+  _receiveKiss(RemoteMessage remoteMessage) {
+    final message = remoteMessage.message;
+    var data = message.data;
+    if (data is KissData) {
+      log('kiss received');
+      emit(state.copyWith(receivedKiss: Kiss.fromMessage(data)));
+    }
   }
 }

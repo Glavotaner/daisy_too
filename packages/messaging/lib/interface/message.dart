@@ -20,7 +20,7 @@ class Message {
   toJson() => _$MessageToJson(this);
 }
 
-@JsonSerializable(createFactory: false)
+@JsonSerializable()
 class PairingRequestData implements Data {
   final String requestingUsername;
   final String pairingCode;
@@ -28,30 +28,45 @@ class PairingRequestData implements Data {
     required this.requestingUsername,
     required this.pairingCode,
   });
+  factory PairingRequestData.fromJson(dynamic json) =>
+      _$PairingRequestDataFromJson(json);
   @override
   Map<String, dynamic> toJson() => _$PairingRequestDataToJson(this);
 }
 
-@JsonSerializable(createFactory: false)
+@JsonSerializable()
 class PairingResponseData implements Data {
   final String confirmedPair;
   const PairingResponseData({required this.confirmedPair});
+  factory PairingResponseData.fromJson(dynamic json) =>
+      _$PairingResponseDataFromJson(json);
   @override
   Map<String, dynamic> toJson() => _$PairingResponseDataToJson(this);
 }
 
+@JsonSerializable()
+class KissData implements Data {
+  final String kissType;
+  final String localMessage;
+  final String? image;
+  const KissData({
+    required this.kissType,
+    this.image,
+    String? localMessage,
+  }) : localMessage = localMessage ?? kissType;
+  factory KissData.fromJson(dynamic json) => _$KissDataFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => _$KissDataToJson(this);
+}
+
 abstract class Data {
   factory Data.fromJson(Map<String, dynamic> json) {
-    final pairingCode = json['pairingCode'];
-    final confirmedPair = json['confirmedPair'];
-    if (pairingCode != null) {
-      final requestingUsername = json['requestingUsername'];
-      return PairingRequestData(
-        requestingUsername: requestingUsername,
-        pairingCode: pairingCode,
-      );
+    if (json.containsKey('pairingCode')) {
+      return PairingRequestData.fromJson(json);
+    } else if (json.containsKey('confirmedPair')) {
+      return PairingResponseData.fromJson(json);
     } else {
-      return PairingResponseData(confirmedPair: confirmedPair);
+      return KissData.fromJson(json);
     }
   }
   Map<String, dynamic> toJson();

@@ -1,11 +1,10 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:messaging/interface/message.dart';
 
 part 'kiss.g.dart';
 
 @JsonSerializable()
-class Kiss {
+class Kiss implements Data {
   const Kiss({
     required this.type,
     this.imageFile,
@@ -16,10 +15,10 @@ class Kiss {
       : type = 'Kiss request',
         imageFile = null,
         customMessage = request;
-  Kiss.fromMessage(RemoteMessage message)
-      : type = message.data['kissType'],
-        customMessage = message.data['customMessage'],
-        imageFile = message.data['imageFile'];
+  Kiss.fromMessage(KissData message)
+      : type = message.kissType,
+        customMessage = message.localMessage,
+        imageFile = message.image;
 
   factory Kiss.fromJson(Map<String, dynamic> json) => _$KissFromJson(json);
 
@@ -44,11 +43,16 @@ class Kiss {
 
   get message => Message(
         notification: Notification(title: type, body: customMessage ?? type),
-        // TODO data
+        data: KissData(
+          kissType: type,
+          image: imageFile,
+          localMessage: customMessage,
+        ),
       );
 
   String? get assetPath =>
       imageFile == null ? null : 'assets/kisses/$imageFile';
 
+  @override
   toJson() => _$KissToJson(this);
 }

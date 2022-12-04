@@ -22,6 +22,7 @@ class PairingCubit extends Cubit<PairingState> {
   void _receiveMessagePairingRequest(RemoteMessage remoteMessage) {
     final message = remoteMessage.message;
     var data = message.data;
+    // TODO repeated 4
     if (data is PairingRequestData) {
       log('pairing request received');
       receivePairingRequest(message: data);

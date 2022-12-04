@@ -31,14 +31,37 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'data': instance.data,
     };
 
+PairingRequestData _$PairingRequestDataFromJson(Map<String, dynamic> json) =>
+    PairingRequestData(
+      requestingUsername: json['requestingUsername'] as String,
+      pairingCode: json['pairingCode'] as String,
+    );
+
 Map<String, dynamic> _$PairingRequestDataToJson(PairingRequestData instance) =>
     <String, dynamic>{
       'requestingUsername': instance.requestingUsername,
       'pairingCode': instance.pairingCode,
     };
 
+PairingResponseData _$PairingResponseDataFromJson(Map<String, dynamic> json) =>
+    PairingResponseData(
+      confirmedPair: json['confirmedPair'] as String,
+    );
+
 Map<String, dynamic> _$PairingResponseDataToJson(
         PairingResponseData instance) =>
     <String, dynamic>{
       'confirmedPair': instance.confirmedPair,
+    };
+
+KissData _$KissDataFromJson(Map<String, dynamic> json) => KissData(
+      kissType: json['kissType'] as String,
+      image: json['image'] as String?,
+      localMessage: json['localMessage'] as String?,
+    );
+
+Map<String, dynamic> _$KissDataToJson(KissData instance) => <String, dynamic>{
+      'kissType': instance.kissType,
+      'localMessage': instance.localMessage,
+      'image': instance.image,
     };
