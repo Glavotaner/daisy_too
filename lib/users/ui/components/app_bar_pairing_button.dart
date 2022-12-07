@@ -8,9 +8,7 @@ class AppBarPairingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isOnboarded = context.select((UsersCubit cubit) {
-      return cubit.state.isOnboarded;
-    });
+    final isOnboarded = UsersCubit.isOnboarded(context);
     return isOnboarded
         ? const _PairButton()
         : const IgnorePointer(ignoring: true);

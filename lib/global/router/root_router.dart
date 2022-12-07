@@ -3,7 +3,6 @@ import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 
 import 'package:daisy_too/users/ui/registration.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RootRouter extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
@@ -13,9 +12,7 @@ class RootRouter extends RouterDelegate
 
   @override
   Widget build(BuildContext context) {
-    final isOnboarded = context.select((UsersCubit cubit) {
-      return cubit.state.isOnboarded;
-    });
+    final isOnboarded = UsersCubit.isOnboarded(context);
     // TODO add splash screen
     return Navigator(
       pages: [

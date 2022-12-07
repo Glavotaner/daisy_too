@@ -6,6 +6,7 @@ import 'package:daisy_too/messages/extensions/message_x.dart';
 
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:key_value/key_value.dart';
@@ -27,6 +28,12 @@ class UsersCubit extends Cubit<UsersState> {
   }) : super(UsersState.initial) {
     messaging.onMessageReceived.listen(_savePairOnReceivedResponse);
     messaging.onMessageTapped.listen(_savePairOnReceivedResponse);
+  }
+
+  static isOnboarded(BuildContext context) {
+    return context.select((UsersCubit cubit) {
+      return cubit.state.isOnboarded;
+    });
   }
 
   void _savePairOnReceivedResponse(RemoteMessage remoteMessage) {

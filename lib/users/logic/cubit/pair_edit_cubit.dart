@@ -1,7 +1,8 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:daisy_too/main.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:users/classes/payloads.dart';
 import 'package:web_api/implementation/web_api_http.dart';
@@ -18,6 +19,12 @@ class PairEditCubit extends Cubit<PairEditState> {
           code: List.generate(6, (_) => ''),
           focusedCellIndex: 0,
         ));
+
+  static sentPairingRequest(BuildContext context) {
+    return context.select((PairEditCubit value) {
+      return value.state.sentPairingRequest;
+    });
+  }
 
   onPairChange(String pair) {
     emit(state.copyWith(pair: pair));
