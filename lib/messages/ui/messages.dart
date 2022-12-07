@@ -7,13 +7,11 @@ import 'package:daisy_too/messages/ui/components/kiss_pages_library.dart';
 import 'package:daisy_too/messages/ui/components/received_kiss.dart';
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
-import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
 
 import 'package:daisy_too/users/ui/components/pairing.dart';
 import 'package:daisy_too/users/ui/components/received_pairing_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:messaging/interface/message.dart';
 
 part 'components/swipe_hint.dart';
 part 'components/pages_stack.dart';
