@@ -11,4 +11,5 @@ class PairEditState with _$PairEditState {
     required List<String> code,
   }) = _PairEditState;
   get codeComplete => code.where((c) => c.isNotEmpty).length == 6;
+  get initialPairingCode => List.generate(6, (_) => '');
 }

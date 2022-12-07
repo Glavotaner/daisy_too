@@ -53,7 +53,7 @@ class PairEditCubit extends Cubit<PairEditState> {
   clearPairingState() {
     emit(state.copyWith(
       pair: '',
-      code: List.generate(6, (_) => ''),
+      code: state.initialPairingCode,
       focusedCellIndex: 0,
     ));
   }
@@ -62,7 +62,7 @@ class PairEditCubit extends Cubit<PairEditState> {
     emit(state.copyWith(
       sentPairingRequest: false,
       sentPairingResponse: false,
-      code: List.generate(6, (_) => ''),
+      code: state.initialPairingCode,
       focusedCellIndex: 0,
     ));
   }
