@@ -10,7 +10,7 @@ class Registration extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  static registration() {
+  static page() {
     const route = 'registration';
     return const MaterialPage(
       child: Registration(),

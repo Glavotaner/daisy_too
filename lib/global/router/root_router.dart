@@ -13,18 +13,15 @@ class RootRouter extends RouterDelegate
 
   @override
   Widget build(BuildContext context) {
-    final pages = <Page>[];
     final isOnboarded = context.select((UsersCubit cubit) {
       return cubit.state.isOnboarded;
     });
     // TODO add splash screen
-    if (isOnboarded) {
-      pages.add(MessagesPage.page());
-    } else {
-      pages.add(Registration.registration());
-    }
     return Navigator(
-      pages: pages,
+      pages: [
+        if (isOnboarded) MessagesPage.page(),
+        if (!isOnboarded) Registration.page(),
+      ],
       onPopPage: (route, result) => false,
     );
   }
