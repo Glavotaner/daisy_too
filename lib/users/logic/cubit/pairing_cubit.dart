@@ -15,19 +15,23 @@ part 'pairing_state.dart';
 
 class PairingCubit extends Cubit<PairingState> {
   PairingCubit() : super(PairingState.initial) {
-    messaging.onMessageReceived.listen(_receiveMessagePairingRequest);
-    messaging.onMessageTapped.listen(_receiveMessagePairingRequest);
+    messaging.onMessageReceived.listen(_handleReceivedMessage);
+    messaging.onMessageTapped.listen(_handleReceivedMessage);
   }
 
-  void _receiveMessagePairingRequest(RemoteMessage remoteMessage) {
-    final message = remoteMessage.message;
-    var data = message.data;
-    // TODO repeated 4
-    if (data is PairingRequestData) {
+  void handlePotentialPairingMessage(Data messageData) {
+    if (messageData is PairingRequestData) {
       log('pairing request received');
-      receivePairingRequest(message: data);
-    } else if (data is PairingResponseData) {
-      receivePairingResponse(message: data);
+      receivePairingRequest(message: messageData);
+    } else if (messageData is PairingResponseData) {
+      receivePairingResponse(message: messageData);
+    }
+  }
+
+  void _handleReceivedMessage(RemoteMessage remoteMessage) {
+    Data? data = remoteMessage.message.data;
+    if (data != null) {
+      handlePotentialPairingMessage(data);
     }
   }
 

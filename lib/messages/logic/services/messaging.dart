@@ -87,6 +87,7 @@ class MessagingService {
 
 Future<void> processBackgroundMessage(RemoteMessage remoteMessage) async {
   final message = remoteMessage.message;
+  // TODO elseif pairing response
   if (message.data is PairingRequestData) {
     final storage = await KeyValueStorageSharedPrefs.instance;
     storage.set<String>(
