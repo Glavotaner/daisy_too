@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/main.dart';
 
 import 'package:equatable/equatable.dart';
@@ -17,11 +16,10 @@ part 'users_state.dart';
 class UsersCubit extends Cubit<UsersState> {
   final KeyValueStorage keyValueStorage;
   final Users users;
-  final StatusNotifierCubit statusNotifier;
+
   UsersCubit({
     required this.keyValueStorage,
     required this.users,
-    required this.statusNotifier,
   }) : super(UsersState.initial);
 
   static isOnboarded(BuildContext context) {

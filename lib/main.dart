@@ -43,7 +43,6 @@ Future<void> bootstrap() async {
   final usersProvider = UsersCubit(
     keyValueStorage: keyValueSharedPrefs,
     users: users,
-    statusNotifier: statusNotifier,
   );
   final pairingProvider = PairingCubit();
   runApp(DaisyTooApp(
