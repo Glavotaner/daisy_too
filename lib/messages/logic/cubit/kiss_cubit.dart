@@ -27,7 +27,7 @@ class KissCubit extends Cubit<KissState> {
     final message = remoteMessage.message;
     var data = message.data;
     if (data is KissData) {
-      log('kiss received');
+      log('kiss received' + data.toString());
       emit(state.copyWith(receivedKiss: Kiss.fromMessage(data)));
     }
   }

@@ -21,9 +21,10 @@ class PairingCubit extends Cubit<PairingState> {
 
   void handlePotentialPairingMessage(Data messageData) {
     if (messageData is PairingRequestData) {
-      log('pairing request received');
+      _logPairing('request received');
       receivePairingRequest(message: messageData);
     } else if (messageData is PairingResponseData) {
+      _logPairing('response received');
       receivePairingResponse(message: messageData);
     }
   }
@@ -68,5 +69,9 @@ class PairingCubit extends Cubit<PairingState> {
 
   checkReceivedRequestsOnAppResume() async {
     throw UnimplementedError();
+  }
+
+  _logPairing(String message) {
+    log(message, name: 'pairing');
   }
 }
