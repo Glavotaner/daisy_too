@@ -2,15 +2,12 @@ import 'dart:developer';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/main.dart';
-import 'package:daisy_too/messages/extensions/message_x.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:key_value/key_value.dart';
-import 'package:messaging/interface/message.dart' as msg;
 import 'package:users/classes/payloads.dart';
 import 'package:users/users.dart';
 import 'package:web_api/implementation/web_api_http.dart';
@@ -25,22 +22,12 @@ class UsersCubit extends Cubit<UsersState> {
     required this.keyValueStorage,
     required this.users,
     required this.statusNotifier,
-  }) : super(UsersState.initial) {
-    messaging.onMessageReceived.listen(_savePairOnReceivedResponse);
-    messaging.onMessageTapped.listen(_savePairOnReceivedResponse);
-  }
+  }) : super(UsersState.initial);
 
   static isOnboarded(BuildContext context) {
     return context.select((UsersCubit cubit) {
       return cubit.state.isOnboarded;
     });
-  }
-
-  void _savePairOnReceivedResponse(RemoteMessage remoteMessage) {
-    final data = remoteMessage.message.data;
-    if (data is msg.PairingResponseData) {
-      savePair(pair: data.confirmedPair);
-    }
   }
 
   checkUser() async {
@@ -52,6 +39,7 @@ class UsersCubit extends Cubit<UsersState> {
         keyValueStorage.get<bool>(key: 'userOnboarded'),
       ]);
       final pair = storedData[0] as String?;
+      _logUser('stored pair ' + (pair ?? 'none'));
       final isOnboarded = storedData[1] as bool?;
       if (pair != null) {
         messaging.setPair(pair);
@@ -85,7 +73,7 @@ class UsersCubit extends Cubit<UsersState> {
   }
 
   savePair({required String pair}) async {
-    log('pair saved');
+    _logUser('pair saved ' + pair);
     await keyValueStorage.set<String>(key: 'pair', value: pair);
     messaging.setPair(pair);
     emit(state.copyWith(pair: pair));
@@ -102,7 +90,11 @@ class UsersCubit extends Cubit<UsersState> {
 
   _refreshToken() async {
     final token = await messaging.getToken();
-    log('new token');
+    _logUser('new token ' + (token ?? 'none'));
     emit(state.copyWith(token: token!));
+  }
+
+  _logUser(String message) {
+    log(message, name: 'user');
   }
 }
