@@ -13,7 +13,7 @@ class Kiss implements Data {
 
   Kiss.fromRequest(String request)
       : type = 'Kiss request',
-        imageFile = null,
+        imageFile = 'request.png',
         customMessage = request;
   Kiss.fromMessage(KissData message)
       : type = message.kissType,
