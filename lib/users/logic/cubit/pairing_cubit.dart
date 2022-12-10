@@ -67,10 +67,6 @@ class PairingCubit extends Cubit<PairingState> {
     );
   }
 
-  checkReceivedRequestsOnAppResume() async {
-    throw UnimplementedError();
-  }
-
   _logPairing(String message) {
     log(message, name: 'pairing');
   }
