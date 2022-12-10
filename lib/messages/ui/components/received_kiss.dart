@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReceivedKiss extends StatelessWidget {
   const ReceivedKiss({Key? key}) : super(key: key);
-  // TODO size modal
   static show(BuildContext context) {
     return showDialog(
         context: context,
@@ -19,6 +18,7 @@ class ReceivedKiss extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const AlertDialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 120),
       title: _KissHeader(),
       content: Center(
         child: _KissImage(),
