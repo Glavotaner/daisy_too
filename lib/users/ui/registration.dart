@@ -72,8 +72,26 @@ class _RegistrationStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentStep = _getRegistrationStep(context);
+    StepState? registrationState;
+    StepState? pairWithState;
+    StepState? pairRequestState;
+    switch (currentStep) {
+      case _registrationStep:
+        registrationState = StepState.editing;
+        break;
+      case _pairingRequestStep:
+        pairWithState = StepState.editing;
+        break;
+      case _pairingRequestedStep:
+        {
+          pairWithState = StepState.complete;
+          pairRequestState = StepState.editing;
+        }
+        break;
+    }
     return Stepper(
-      currentStep: _getRegistrationStep(context),
+      currentStep: currentStep,
       controlsBuilder: _buildControls,
       onStepTapped: (step) {
         if (step == _pairingRequestStep &&
@@ -83,6 +101,8 @@ class _RegistrationStepper extends StatelessWidget {
       },
       steps: [
         Step(
+          state: registrationState ?? StepState.complete,
+          isActive: registrationState == StepState.editing,
           title: const Text('Register yourself'),
           subtitle: const _Username(),
           content: TextFormField(
@@ -90,8 +110,8 @@ class _RegistrationStepper extends StatelessWidget {
             initialValue: context.read<UsersCubit>().state.username,
           ),
         ),
-        PairingSteps.pairWith,
-        PairingSteps.pairingInput,
+        PairWithStep(context, state: pairWithState),
+        PairRequestStep(context, state: pairRequestState),
       ],
     );
   }

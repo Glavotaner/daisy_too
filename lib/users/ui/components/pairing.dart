@@ -47,8 +47,9 @@ class Pairing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentStep = _pairingStep(context);
     return Stepper(
-      currentStep: _pairingStep(context),
+      currentStep: currentStep,
       controlsBuilder: _buildControls,
       onStepTapped: (step) {
         if (step == _pairingRequestStep &&
@@ -56,11 +57,16 @@ class Pairing extends StatelessWidget {
           context.read<PairEditCubit>().clearSentRequest();
         }
       },
-      // TODO set active ind, states
       // TODO loading
       steps: [
-        PairingSteps.pairWith,
-        PairingSteps.pairingInput,
+        PairWithStep(context,
+            state: currentStep == _pairingRequestStep
+                ? StepState.editing
+                : StepState.complete),
+        PairRequestStep(context,
+            state: currentStep == _pairingRequestedStep
+                ? StepState.editing
+                : null),
       ],
     );
   }
@@ -93,28 +99,6 @@ class RequestPairButton extends StatelessWidget {
   }
 }
 
-class PairingSteps {
-  static get pairWith {
-    return Step(
-      title: const Text('Pair with'),
-      content: Builder(
-        builder: (context) => TextFormField(
-          onChanged: context.read<PairEditCubit>().onPairChange,
-          initialValue: context.read<PairEditCubit>().state.pair,
-        ),
-      ),
-      subtitle: const _Pair(),
-    );
-  }
-
-  static get pairingInput {
-    return const Step(
-      title: Text('Pairing code'),
-      content: PairingCodeInput(),
-    );
-  }
-}
-
 class _Pair extends StatelessWidget {
   const _Pair({Key? key}) : super(key: key);
 
@@ -124,4 +108,32 @@ class _Pair extends StatelessWidget {
       context.select((PairEditCubit value) => value.state.pair),
     );
   }
+}
+
+class PairRequestStep extends Step {
+  const PairRequestStep(
+    BuildContext context, {
+    StepState? state,
+  }) : super(
+          state: state ?? StepState.indexed,
+          isActive: state == StepState.editing,
+          content: const PairingCodeInput(),
+          title: const Text('Pairing code'),
+        );
+}
+
+class PairWithStep extends Step {
+  PairWithStep(
+    BuildContext context, {
+    StepState? state,
+  }) : super(
+          state: state ?? StepState.indexed,
+          isActive: state == StepState.editing,
+          content: TextFormField(
+            onChanged: context.read<PairEditCubit>().onPairChange,
+            initialValue: context.read<PairEditCubit>().state.pair,
+          ),
+          title: const Text('Pair with'),
+          subtitle: const _Pair(),
+        );
 }
