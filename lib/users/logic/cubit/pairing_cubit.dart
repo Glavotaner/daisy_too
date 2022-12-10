@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:daisy_too/main.dart';
@@ -17,7 +18,6 @@ class PairingCubit extends Cubit<PairingState> {
   PairingCubit() : super(PairingState.initial) {
     // TODO implement action button for send pairing code
     messaging.onMessageReceived.listen(_handleReceivedMessage);
-    // TODO conflicts with message check on resume
     messaging.onMessageTapped.listen(_handleReceivedMessage);
   }
 
@@ -68,6 +68,15 @@ class PairingCubit extends Cubit<PairingState> {
         text: state.receivedPairingRequest!.pairingCode,
       ),
     );
+  }
+
+  handleMessagesOnAppResume() async {
+    // wait in case pairing message was opened via notification tap
+    await Future.delayed(const Duration(milliseconds: 250));
+    final data = await messaging.getStoredMessage();
+    if (data != null) {
+      handlePotentialPairingMessage(data as Data);
+    }
   }
 
   _logPairing(String message) {

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
-import 'package:daisy_too/main.dart';
 import 'package:daisy_too/messages/logic/cubit/kiss_cubit.dart';
 import 'package:daisy_too/messages/ui/components/kiss_pages_library.dart';
 import 'package:daisy_too/messages/ui/components/received_kiss.dart';

@@ -41,12 +41,9 @@ class _PagesStackState extends State<PagesStack> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    // TODO conflicts with tapped notification
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      final data = await messaging.getStoredMessage();
-      if (data == null) return;
-      context.read<PairingCubit>().handlePotentialPairingMessage(data);
+      context.read<PairingCubit>().handleMessagesOnAppResume();
     }
   }
 }
