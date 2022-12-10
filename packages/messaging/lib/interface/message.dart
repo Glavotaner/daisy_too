@@ -21,27 +21,36 @@ class Message {
 }
 
 @JsonSerializable()
-class PairingRequestData implements Data {
+class PairingRequestData implements Data, StoredData {
   final String requestingUsername;
   final String pairingCode;
-  const PairingRequestData({
+  PairingRequestData({
     required this.requestingUsername,
     required this.pairingCode,
-  });
+  }) : storageKey = MessageStorageKeys.pairingRequest;
   factory PairingRequestData.fromJson(dynamic json) =>
-      _$PairingRequestDataFromJson(json);
+      _$PairingRequestDataFromJson(json)
+        ..storageKey = MessageStorageKeys.pairingRequest;
   @override
   Map<String, dynamic> toJson() => _$PairingRequestDataToJson(this);
+  @override
+  @JsonKey(ignore: true)
+  String storageKey;
 }
 
 @JsonSerializable()
-class PairingResponseData implements Data {
+class PairingResponseData implements Data, StoredData {
   final String confirmedPair;
-  const PairingResponseData({required this.confirmedPair});
+  PairingResponseData({required this.confirmedPair})
+      : storageKey = MessageStorageKeys.pairingResponse;
   factory PairingResponseData.fromJson(dynamic json) =>
-      _$PairingResponseDataFromJson(json);
+      _$PairingResponseDataFromJson(json)
+        ..storageKey = MessageStorageKeys.pairingResponse;
   @override
   Map<String, dynamic> toJson() => _$PairingResponseDataToJson(this);
+  @override
+  @JsonKey(ignore: true)
+  String storageKey;
 }
 
 @JsonSerializable()
@@ -70,4 +79,13 @@ abstract class Data {
     }
   }
   Map<String, dynamic> toJson();
+}
+
+abstract class StoredData {
+  abstract String storageKey;
+}
+
+class MessageStorageKeys {
+  static const pairingRequest = 'pairingRequest';
+  static const pairingResponse = 'pairingResponse';
 }

@@ -63,16 +63,32 @@ class MessagingService {
     }
   }
 
-  Future<Message?> getStoredMessage() async {
+  Future<Data?> getStoredMessage() async {
     // reload prefs cache on app return from background
     await keyValueStorage.implementation.reload();
-    final message = await keyValueStorage.get<String>(key: 'pairing');
-    _clearStoredMessage();
-    return message == null ? null : Message.fromJson(jsonDecode(message));
+    final messages = await _getMessages();
+    return _getDataOfType<PairingRequestData>(messages) ??
+        _getDataOfType<PairingResponseData>(messages);
   }
 
-  _clearStoredMessage() async {
-    return keyValueStorage.remove(key: 'pairing');
+  Data? _getDataOfType<T>(List<Data> data) {
+    final dataIndex = data.indexWhere((m) => m is T);
+    return dataIndex > -1 ? data[dataIndex] : null;
+  }
+
+  Future<List<Data>> _getMessages() async {
+    final messages = await Future.wait([
+      keyValueStorage.get<String>(key: MessageStorageKeys.pairingRequest),
+      keyValueStorage.get<String>(key: MessageStorageKeys.pairingResponse),
+    ]);
+    return messages
+        .where((m) => m != null)
+        .map((m) => Data.fromJson(jsonDecode(m!)))
+        .toList();
+  }
+
+  clearStoredMessage(String storageKey) async {
+    return keyValueStorage.remove(key: storageKey);
   }
 
   _processForegroundMessage(RemoteMessage remoteMessage) {
@@ -86,13 +102,12 @@ class MessagingService {
 }
 
 Future<void> processBackgroundMessage(RemoteMessage remoteMessage) async {
-  final message = remoteMessage.message;
-  // TODO elseif pairing response
-  if (message.data is PairingRequestData) {
+  final data = remoteMessage.message.data;
+  if (data != null && data is StoredData) {
     final storage = await KeyValueStorageSharedPrefs.instance;
     storage.set<String>(
-      key: 'pairing',
-      value: jsonEncode(message.toJson()),
+      key: (data as StoredData).storageKey,
+      value: jsonEncode(data.toJson()),
     );
   }
 }

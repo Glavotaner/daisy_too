@@ -27,6 +27,7 @@ class PairingCubit extends Cubit<PairingState> {
       _logPairing('response received');
       receivePairingResponse(message: messageData);
     }
+    messaging.clearStoredMessage((messageData as StoredData).storageKey);
   }
 
   void _handleReceivedMessage(RemoteMessage remoteMessage) {
