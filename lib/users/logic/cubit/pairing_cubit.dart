@@ -15,7 +15,9 @@ part 'pairing_state.dart';
 
 class PairingCubit extends Cubit<PairingState> {
   PairingCubit() : super(PairingState.initial) {
+    // TODO implement action button for send pairing code
     messaging.onMessageReceived.listen(_handleReceivedMessage);
+    // TODO conflicts with message check on resume
     messaging.onMessageTapped.listen(_handleReceivedMessage);
   }
 

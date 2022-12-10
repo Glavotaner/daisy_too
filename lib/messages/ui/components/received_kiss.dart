@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReceivedKiss extends StatelessWidget {
   const ReceivedKiss({Key? key}) : super(key: key);
+  // TODO size modal
   static show(BuildContext context) {
     return showDialog(
         context: context,
