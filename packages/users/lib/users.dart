@@ -5,7 +5,7 @@ import 'package:users/classes/payloads.dart';
 import 'package:web_api/interface/web_api.dart';
 
 class Users {
-  static const String appUrl = 'http://10.0.2.2:3000/api/';
+  static const String appUrl = 'https://sunrise-aware-melon.glitch.me/api/';
   final WebApi api;
 
   const Users({required this.api});
