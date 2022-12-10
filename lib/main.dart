@@ -92,6 +92,9 @@ class DaisyTooApp extends StatelessWidget {
             listener: (context, state) {
               final pair = state.receivedPairingResponse!.confirmedPair;
               context.read<UsersCubit>().savePair(pair: pair);
+              context
+                  .read<StatusNotifierCubit>()
+                  .showSuccess('You are paired with $pair!');
             },
           )
         ],

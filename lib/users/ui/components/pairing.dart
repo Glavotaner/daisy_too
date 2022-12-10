@@ -1,3 +1,4 @@
+import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
@@ -25,6 +26,9 @@ class Pairing extends StatelessWidget {
               },
               listener: (context, state) {
                 context.read<UsersCubit>().savePair(pair: state.pair);
+                context
+                    .read<StatusNotifierCubit>()
+                    .showSuccess('You are paired with ${state.pair}!');
                 Navigator.of(context).pop();
               },
               child: const Padding(
