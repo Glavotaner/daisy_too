@@ -57,6 +57,7 @@ class Pairing extends StatelessWidget {
         }
       },
       // TODO set active ind, states
+      // TODO loading
       steps: [
         PairingSteps.pairWith,
         PairingSteps.pairingInput,
