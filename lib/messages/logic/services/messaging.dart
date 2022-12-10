@@ -63,7 +63,7 @@ class MessagingService {
     }
   }
 
-  Future<Data?> getStoredMessage() async {
+  Future<StoredData?> getStoredMessage() async {
     // reload prefs cache on app return from background
     await keyValueStorage.implementation.reload();
     final messages = await _getMessages();
@@ -71,19 +71,19 @@ class MessagingService {
         _getDataOfType<PairingResponseData>(messages);
   }
 
-  Data? _getDataOfType<T>(List<Data> data) {
+  StoredData? _getDataOfType<T>(List<StoredData> data) {
     final dataIndex = data.indexWhere((m) => m is T);
     return dataIndex > -1 ? data[dataIndex] : null;
   }
 
-  Future<List<Data>> _getMessages() async {
+  Future<List<StoredData>> _getMessages() async {
     final messages = await Future.wait([
       keyValueStorage.get<String>(key: MessageStorageKeys.pairingRequest),
       keyValueStorage.get<String>(key: MessageStorageKeys.pairingResponse),
     ]);
     return messages
         .where((m) => m != null)
-        .map((m) => Data.fromJson(jsonDecode(m!)))
+        .map((m) => Data.fromJson(jsonDecode(m!)) as StoredData)
         .toList();
   }
 
