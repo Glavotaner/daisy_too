@@ -96,14 +96,19 @@ class RequestPairButton extends StatelessWidget {
             onPressed: null,
             child: Text('Sending request...', style: bold),
           )
-        : TextButton(
+        : TextButton.icon(
             onPressed: () {
-              context.read<PairEditCubit>().sendPairingRequest(
-                    requestingUsername:
-                        context.read<UsersCubit>().state.username,
-                  );
+              sendRequest(context);
             },
-            child: const Text('Request pair', style: bold));
+            label: const Text('Request pair', style: bold),
+            icon: const Icon(Icons.favorite),
+          );
+  }
+
+  void sendRequest(BuildContext context) {
+    context.read<PairEditCubit>().sendPairingRequest(
+          requestingUsername: context.read<UsersCubit>().state.username,
+        );
   }
 }
 
