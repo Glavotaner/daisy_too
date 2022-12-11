@@ -126,7 +126,10 @@ class PairRequestStep extends Step {
           state: state ?? StepState.indexed,
           isActive: state == StepState.editing,
           content: const PairingCodeInput(),
-          title: const Text('Pairing code'),
+          title: const Text(
+            'Pairing code',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         );
 }
 
@@ -141,7 +144,10 @@ class PairWithStep extends Step {
             onChanged: context.read<PairEditCubit>().onPairChange,
             initialValue: context.read<PairEditCubit>().state.pair,
           ),
-          title: const Text('Pair with'),
+          title: const Text(
+            'Pair with',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           subtitle: const _Pair(),
         );
 }
