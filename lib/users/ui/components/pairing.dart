@@ -57,7 +57,6 @@ class Pairing extends StatelessWidget {
           context.read<PairEditCubit>().clearSentRequest();
         }
       },
-      // TODO loading
       steps: [
         PairWithStep(context,
             state: currentStep == _pairingRequestStep
@@ -88,14 +87,23 @@ class RequestPairButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        context.read<PairEditCubit>().sendPairingRequest(
-              requestingUsername: context.read<UsersCubit>().state.username,
-            );
-      },
-      child: const Text('Request pair'),
-    );
+    final isSendingRequest = context.select((PairEditCubit value) {
+      return value.state.sendingPairingRequest;
+    });
+    const bold = TextStyle(fontWeight: FontWeight.bold);
+    return isSendingRequest
+        ? const TextButton(
+            onPressed: null,
+            child: Text('Sending request...', style: bold),
+          )
+        : TextButton(
+            onPressed: () {
+              context.read<PairEditCubit>().sendPairingRequest(
+                    requestingUsername:
+                        context.read<UsersCubit>().state.username,
+                  );
+            },
+            child: const Text('Request pair', style: bold));
   }
 }
 

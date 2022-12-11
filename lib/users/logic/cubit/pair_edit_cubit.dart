@@ -13,6 +13,7 @@ part 'pair_edit_cubit.freezed.dart';
 class PairEditCubit extends Cubit<PairEditState> {
   PairEditCubit({String? pair})
       : super(PairEditState(
+          sendingPairingRequest: false,
           sentPairingRequest: false,
           sentPairingResponse: false,
           pair: pair ?? '',
@@ -60,6 +61,7 @@ class PairEditCubit extends Cubit<PairEditState> {
 
   clearSentRequest() {
     emit(state.copyWith(
+      sendingPairingRequest: false,
       sentPairingRequest: false,
       sentPairingResponse: false,
       code: state.initialPairingCode,
@@ -70,6 +72,7 @@ class PairEditCubit extends Cubit<PairEditState> {
   sendPairingRequest({
     required String requestingUsername,
   }) async {
+    emit(state.copyWith(sendingPairingRequest: true));
     try {
       await users.requestPair(PairRequestData(
         pairUsername: state.pair,

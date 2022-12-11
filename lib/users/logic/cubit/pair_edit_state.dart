@@ -4,6 +4,7 @@ part of 'pair_edit_cubit.dart';
 class PairEditState with _$PairEditState {
   const PairEditState._();
   factory PairEditState({
+    required bool sendingPairingRequest,
     required bool sentPairingRequest,
     required bool sentPairingResponse,
     required String pair,
