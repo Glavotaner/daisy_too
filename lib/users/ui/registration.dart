@@ -100,7 +100,6 @@ class _RegistrationStepper extends StatelessWidget {
         }
       },
       steps: [
-        // TODO loading
         Step(
           state: registrationState ?? StepState.complete,
           isActive: registrationState == StepState.editing,
@@ -165,10 +164,19 @@ class _RegisterButton extends StatelessWidget {
       return value.state.isRegistering;
     });
     return isRegistering
-        ? const Text('Sending username...')
+        ? const TextButton(
+            onPressed: null,
+            child: Text(
+              'Registering..',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )
         : TextButton(
             onPressed: context.read<UsersCubit>().registerUser,
-            child: const Text('Register'),
+            child: const Text(
+              'Register',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           );
   }
 }

@@ -25,5 +25,6 @@ class UsersState extends Equatable with _$UsersState {
   bool get canMessage => hasPair && hasToken;
 
   @override
-  List<Object?> get props => [isRegistered, isOnboarded, username, token, pair];
+  List<Object?> get props =>
+      [isRegistered, isRegistering, isOnboarded, username, token, pair];
 }

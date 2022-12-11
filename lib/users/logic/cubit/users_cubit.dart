@@ -62,7 +62,7 @@ class UsersCubit extends Cubit<UsersState> {
         token: state.token,
       ));
       await keyValueStorage.set<String>(key: 'user', value: state.username);
-      emit(state.copyWith(isRegistered: true));
+      emit(state.copyWith(isRegistered: true, isRegistering: false));
     } catch (exception) {
       log(exception.toString());
       String message = exception is BadRequest
