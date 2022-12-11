@@ -14,7 +14,9 @@ class Notification {
 class Message {
   final Notification? notification;
   final Data? data;
-  const Message({this.notification, this.data});
+  @JsonKey(name: 'android_channel_id')
+  final String? channel;
+  const Message({this.notification, this.data, this.channel});
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);
   toJson() => _$MessageToJson(this);

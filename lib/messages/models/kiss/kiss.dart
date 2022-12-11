@@ -48,6 +48,7 @@ class Kiss implements Data {
           image: imageFile,
           localMessage: customMessage,
         ),
+        channel: 'kisses',
       );
 
   String? get assetPath =>
