@@ -34,6 +34,7 @@ class MessagingService {
     FirebaseMessaging.onBackgroundMessage(processBackgroundMessage);
   }
 
+  // TODO use channels
   void _registerNotificationChannels() {
     const pairingNotificationChannel = fln.AndroidNotificationChannel(
       'pairing',
