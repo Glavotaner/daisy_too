@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UsersState {
   bool get isRegistered => throw _privateConstructorUsedError;
-  bool get isOnboarded => throw _privateConstructorUsedError;
+  bool? get isOnboarded => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String get token => throw _privateConstructorUsedError;
   String get pair => throw _privateConstructorUsedError;
@@ -34,7 +34,7 @@ abstract class $UsersStateCopyWith<$Res> {
       _$UsersStateCopyWithImpl<$Res>;
   $Res call(
       {bool isRegistered,
-      bool isOnboarded,
+      bool? isOnboarded,
       String username,
       String token,
       String pair});
@@ -64,7 +64,7 @@ class _$UsersStateCopyWithImpl<$Res> implements $UsersStateCopyWith<$Res> {
       isOnboarded: isOnboarded == freezed
           ? _value.isOnboarded
           : isOnboarded // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       username: username == freezed
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -90,7 +90,7 @@ abstract class _$$_UsersStateCopyWith<$Res>
   @override
   $Res call(
       {bool isRegistered,
-      bool isOnboarded,
+      bool? isOnboarded,
       String username,
       String token,
       String pair});
@@ -122,7 +122,7 @@ class __$$_UsersStateCopyWithImpl<$Res> extends _$UsersStateCopyWithImpl<$Res>
       isOnboarded: isOnboarded == freezed
           ? _value.isOnboarded
           : isOnboarded // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       username: username == freezed
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -153,7 +153,7 @@ class _$_UsersState extends _UsersState {
   @override
   final bool isRegistered;
   @override
-  final bool isOnboarded;
+  final bool? isOnboarded;
   @override
   final String username;
   @override
@@ -170,7 +170,7 @@ class _$_UsersState extends _UsersState {
 abstract class _UsersState extends UsersState {
   factory _UsersState(
       {required final bool isRegistered,
-      required final bool isOnboarded,
+      required final bool? isOnboarded,
       required final String username,
       required final String token,
       required final String pair}) = _$_UsersState;
@@ -179,7 +179,7 @@ abstract class _UsersState extends UsersState {
   @override
   bool get isRegistered;
   @override
-  bool get isOnboarded;
+  bool? get isOnboarded;
   @override
   String get username;
   @override

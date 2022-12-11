@@ -24,11 +24,12 @@ class UsersCubit extends Cubit<UsersState> {
 
   static isOnboarded(BuildContext context) {
     return context.select((UsersCubit cubit) {
-      return cubit.state.isOnboarded;
+      return cubit.state.isOnboarded ?? false;
     });
   }
 
   checkUser() async {
+    await Future.delayed(const Duration(seconds: 1));
     _refreshToken();
     final registeredUser = await keyValueStorage.get<String>(key: 'user');
     if (registeredUser != null) {
@@ -48,6 +49,8 @@ class UsersCubit extends Cubit<UsersState> {
         pair: pair ?? '',
         isOnboarded: isOnboarded ?? false,
       ));
+    } else {
+      emit(state.copyWith(isOnboarded: false));
     }
   }
 

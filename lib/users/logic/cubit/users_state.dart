@@ -5,14 +5,14 @@ class UsersState extends Equatable with _$UsersState {
   const UsersState._();
   factory UsersState({
     required bool isRegistered,
-    required bool isOnboarded,
+    required bool? isOnboarded,
     required String username,
     required String token,
     required String pair,
   }) = _UsersState;
   static UsersState get initial => UsersState(
         isRegistered: false,
-        isOnboarded: false,
+        isOnboarded: null,
         username: '',
         token: '',
         pair: '',
