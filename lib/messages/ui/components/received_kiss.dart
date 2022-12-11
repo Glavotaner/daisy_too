@@ -17,6 +17,7 @@ class ReceivedKiss extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO display custom message
     return const AlertDialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 120),
       title: _KissHeader(),
