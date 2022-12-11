@@ -45,9 +45,9 @@ class UsersCubit extends Cubit<UsersState> {
       }
       emit(state.copyWith(
         isRegistered: true,
+        isOnboarded: isOnboarded ?? false,
         username: registeredUser,
         pair: pair ?? '',
-        isOnboarded: isOnboarded ?? false,
       ));
     } else {
       emit(state.copyWith(isOnboarded: false));
@@ -56,6 +56,7 @@ class UsersCubit extends Cubit<UsersState> {
 
   registerUser() async {
     try {
+      emit(state.copyWith(isRegistering: true));
       await users.register(RegistrationData(
         username: state.username,
         token: state.token,

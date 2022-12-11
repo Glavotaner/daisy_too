@@ -100,6 +100,7 @@ class _RegistrationStepper extends StatelessWidget {
         }
       },
       steps: [
+        // TODO loading
         Step(
           state: registrationState ?? StepState.complete,
           isActive: registrationState == StepState.editing,
@@ -160,9 +161,14 @@ class _RegisterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: context.read<UsersCubit>().registerUser,
-      child: const Text('Register'),
-    );
+    final isRegistering = context.select((UsersCubit value) {
+      return value.state.isRegistering;
+    });
+    return isRegistering
+        ? const Text('Sending username...')
+        : TextButton(
+            onPressed: context.read<UsersCubit>().registerUser,
+            child: const Text('Register'),
+          );
   }
 }
