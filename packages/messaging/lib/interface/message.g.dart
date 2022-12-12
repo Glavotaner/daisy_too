@@ -24,13 +24,13 @@ Message _$MessageFromJson(Map<String, dynamic> json) => Message(
       data: json['data'] == null
           ? null
           : Data.fromJson(json['data'] as Map<String, dynamic>),
-      channel: json['android_channel_id'] as String?,
+      channel: json['channel'] as String?,
     );
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'notification': instance.notification,
       'data': instance.data,
-      'android_channel_id': instance.channel,
+      'channel': instance.channel,
     };
 
 PairingRequestData _$PairingRequestDataFromJson(Map<String, dynamic> json) =>
