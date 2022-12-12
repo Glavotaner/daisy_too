@@ -20,7 +20,7 @@ class UsersCubit extends Cubit<UsersState> {
   UsersCubit({
     required this.keyValueStorage,
     required this.users,
-  }) : super(UsersState.initial);
+  }) : super(UsersState.initial());
 
   static isOnboarded(BuildContext context) {
     return context.select((UsersCubit cubit) {

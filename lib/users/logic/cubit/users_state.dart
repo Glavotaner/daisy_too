@@ -11,7 +11,7 @@ class UsersState extends Equatable with _$UsersState {
     required String token,
     required String pair,
   }) = _UsersState;
-  static UsersState get initial => UsersState(
+  factory UsersState.initial() => UsersState(
         isRegistered: false,
         isRegistering: false,
         isOnboarded: null,
@@ -25,6 +25,12 @@ class UsersState extends Equatable with _$UsersState {
   bool get canMessage => hasPair && hasToken;
 
   @override
-  List<Object?> get props =>
-      [isRegistered, isRegistering, isOnboarded, username, token, pair];
+  List<Object?> get props => [
+        isRegistered,
+        isRegistering,
+        isOnboarded,
+        username,
+        token,
+        pair,
+      ];
 }

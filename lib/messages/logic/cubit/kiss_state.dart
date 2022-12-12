@@ -7,8 +7,6 @@ class KissState extends Equatable with _$KissState {
     Kiss? sentKiss,
     Kiss? receivedKiss,
   }) = _KissState;
-  static KissState get initial => KissState();
-
   @override
   List<Object?> get props => [sentKiss, receivedKiss];
 }

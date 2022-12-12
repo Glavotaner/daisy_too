@@ -8,7 +8,7 @@ class PairingState with _$PairingState {
     PairingRequestData? receivedPairingRequest,
     PairingResponseData? receivedPairingResponse,
   }) = _PairingState;
-  static PairingState get initial => PairingState(
+  factory PairingState.initial() => PairingState(
         pairingRequested: false,
         receivedPairingResponse: null,
         receivedPairingRequest: null,

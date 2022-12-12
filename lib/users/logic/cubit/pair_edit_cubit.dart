@@ -11,15 +11,7 @@ part 'pair_edit_state.dart';
 part 'pair_edit_cubit.freezed.dart';
 
 class PairEditCubit extends Cubit<PairEditState> {
-  PairEditCubit({String? pair})
-      : super(PairEditState(
-          sendingPairingRequest: false,
-          sentPairingRequest: false,
-          sentPairingResponse: false,
-          pair: pair ?? '',
-          code: List.generate(6, (_) => ''),
-          focusedCellIndex: 0,
-        ));
+  PairEditCubit({String? pair}) : super(PairEditState.initial(pair: pair));
 
   static sentPairingRequest(BuildContext context) {
     return context.select((PairEditCubit value) {
@@ -54,7 +46,7 @@ class PairEditCubit extends Cubit<PairEditState> {
   clearPairingState() {
     emit(state.copyWith(
       pair: '',
-      code: state.initialPairingCode,
+      code: PairEditState.initialPairingCode,
       focusedCellIndex: 0,
     ));
   }
@@ -64,7 +56,7 @@ class PairEditCubit extends Cubit<PairEditState> {
       sendingPairingRequest: false,
       sentPairingRequest: false,
       sentPairingResponse: false,
-      code: state.initialPairingCode,
+      code: PairEditState.initialPairingCode,
       focusedCellIndex: 0,
     ));
   }

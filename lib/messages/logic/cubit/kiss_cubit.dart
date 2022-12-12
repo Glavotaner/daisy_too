@@ -13,7 +13,7 @@ part 'kiss_state.dart';
 part 'kiss_cubit.freezed.dart';
 
 class KissCubit extends Cubit<KissState> {
-  KissCubit() : super(KissState.initial) {
+  KissCubit() : super(KissState()) {
     messaging.onMessageReceived.listen(_receiveKiss);
     messaging.onMessageTapped.listen(_receiveKiss);
   }

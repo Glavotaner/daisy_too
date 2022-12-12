@@ -11,6 +11,14 @@ class PairEditState with _$PairEditState {
     required int focusedCellIndex,
     required List<String> code,
   }) = _PairEditState;
+  factory PairEditState.initial({String? pair}) => PairEditState(
+        sendingPairingRequest: false,
+        sentPairingRequest: false,
+        sentPairingResponse: false,
+        pair: pair ?? '',
+        code: initialPairingCode,
+        focusedCellIndex: 0,
+      );
   get codeComplete => code.where((c) => c.isNotEmpty).length == 6;
-  get initialPairingCode => List.generate(6, (_) => '');
+  static get initialPairingCode => List.generate(6, (_) => '');
 }
