@@ -17,14 +17,13 @@ class ReceivedKiss extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO display custom message
     return const AlertDialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 120),
       title: _KissHeader(),
       content: Center(
         child: _KissImage(),
       ),
-      actions: [_SendKissBackButton()],
+      actions: [Center(child: _SendKissBackButton())],
     );
   }
 }
@@ -35,7 +34,7 @@ class _KissHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final kiss = context.select((KissCubit value) => value.state.receivedKiss);
-    return Text('You recieved ${kiss!.type}');
+    return Text('You recieved ${kiss!.message}');
   }
 }
 
@@ -59,7 +58,10 @@ class _SendKissBackButton extends StatelessWidget {
     return TextButton.icon(
       onPressed: () => _sendBacc(context),
       icon: const Icon(Icons.favorite),
-      label: const Text('Send kiss bacc'),
+      label: const Text(
+        'Send kiss bacc',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
     );
   }
 

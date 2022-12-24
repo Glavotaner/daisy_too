@@ -1,19 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: non_constant_identifier_names
+
 part of 'kiss.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Kiss _$KissFromJson(Map<String, dynamic> json) => Kiss(
+_$_Kiss _$$_KissFromJson(Map<String, dynamic> json) => _$_Kiss(
       type: json['type'] as String,
       imageFile: json['imageFile'] as String?,
-      customMessage: json['customMessage'] as String?,
+      message: json['message'] as String?,
     );
 
-Map<String, dynamic> _$KissToJson(Kiss instance) => <String, dynamic>{
+Map<String, dynamic> _$$_KissToJson(_$_Kiss instance) => <String, dynamic>{
       'type': instance.type,
       'imageFile': instance.imageFile,
-      'customMessage': instance.customMessage,
+      'message': instance.message,
     };

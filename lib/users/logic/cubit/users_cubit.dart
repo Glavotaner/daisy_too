@@ -29,7 +29,7 @@ class UsersCubit extends Cubit<UsersState> {
   }
 
   checkUser() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     _refreshToken();
     final registeredUser = await keyValueStorage.get<String>(key: 'user');
     if (registeredUser != null) {

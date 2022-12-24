@@ -59,11 +59,11 @@ Map<String, dynamic> _$PairingResponseDataToJson(
 KissData _$KissDataFromJson(Map<String, dynamic> json) => KissData(
       kissType: json['kissType'] as String,
       image: json['image'] as String?,
-      localMessage: json['localMessage'] as String?,
+      message: json['message'] as String?,
     );
 
 Map<String, dynamic> _$KissDataToJson(KissData instance) => <String, dynamic>{
       'kissType': instance.kissType,
-      'localMessage': instance.localMessage,
+      'message': instance.message,
       'image': instance.image,
     };

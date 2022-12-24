@@ -16,7 +16,23 @@ class KissSelection extends StatefulWidget {
 
 class _KissSelectionState extends State<KissSelection>
     with TickerProviderStateMixin {
-  final List<Kiss> kisses = Kiss.kisses;
+  final kisses = [
+    Kiss(
+      type: 'baby kiss',
+      imageFile: 'boss-baby.png',
+      message: 'You received just a small babby kiss!',
+    ),
+    Kiss(
+      type: 'boss baby kiss',
+      imageFile: 'boss-baby.png',
+      message: 'Wao you received boss baby kiss!',
+    ),
+    Kiss(
+      type: 'big kiss',
+      imageFile: 'boss-baby.png',
+      message: 'You just received biiiig kiss!',
+    ),
+  ];
   late PageController _pageController;
 
   _animateToInitialPage() {

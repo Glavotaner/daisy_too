@@ -57,13 +57,13 @@ class PairingResponseData implements Data, StoredData {
 @JsonSerializable()
 class KissData implements Data {
   final String kissType;
-  final String localMessage;
+  final String message;
   final String? image;
   const KissData({
     required this.kissType,
     this.image,
-    String? localMessage,
-  }) : localMessage = localMessage ?? kissType;
+    String? message,
+  }) : message = message ?? kissType;
   factory KissData.fromJson(dynamic json) => _$KissDataFromJson(json);
   @override
   Map<String, dynamic> toJson() => _$KissDataToJson(this);

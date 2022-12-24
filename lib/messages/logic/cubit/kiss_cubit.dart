@@ -19,7 +19,7 @@ class KissCubit extends Cubit<KissState> {
   }
 
   sendKiss(Kiss kiss) async {
-    await messaging.sendMessage(kiss.message);
+    await messaging.sendMessage(kiss.toMessage());
     emit(state.copyWith(sentKiss: kiss));
   }
 

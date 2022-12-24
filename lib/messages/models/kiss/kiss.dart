@@ -1,59 +1,46 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:messaging/interface/message.dart';
 
+part 'kiss.freezed.dart';
 part 'kiss.g.dart';
 
-@JsonSerializable()
-class Kiss implements Data {
-  const Kiss({
-    required this.type,
-    this.imageFile,
-    this.customMessage,
-  });
+@freezed
+class Kiss with _$Kiss implements Data {
+  const Kiss._();
+  factory Kiss({
+    required String type,
+    String? imageFile,
+    String? message,
+  }) = _Kiss;
 
-  Kiss.fromRequest(String request)
-      : type = 'Kiss request',
-        imageFile = 'request.png',
-        customMessage = request;
-  Kiss.fromMessage(KissData message)
-      : type = message.kissType,
-        customMessage = message.localMessage,
-        imageFile = message.image;
+  factory Kiss.fromRequest(String request) {
+    return Kiss(
+      type: 'Kiss request',
+      imageFile: 'request.png',
+      message: request,
+    );
+  }
+
+  factory Kiss.fromMessage(KissData message) {
+    return Kiss(
+      type: message.kissType,
+      imageFile: message.image,
+      message: message.message,
+    );
+  }
 
   factory Kiss.fromJson(Map<String, dynamic> json) => _$KissFromJson(json);
 
-  static const kisses = [
-    Kiss(
-      type: 'baby kiss',
-      imageFile: 'boss-baby.png',
-    ),
-    Kiss(
-      type: 'boss baby kiss',
-      imageFile: 'boss-baby.png',
-    ),
-    Kiss(
-      type: 'big kiss',
-      imageFile: 'boss-baby.png',
-    ),
-  ];
-
-  final String type;
-  final String? imageFile;
-  final String? customMessage;
-
-  get message => Message(
-        notification: Notification(title: type, body: customMessage ?? type),
+  toMessage() => Message(
+        notification: Notification(title: type, body: message ?? type),
         data: KissData(
           kissType: type,
           image: imageFile,
-          localMessage: customMessage,
+          message: message ?? 'You received kiss!',
         ),
         channel: 'kisses',
       );
 
   String? get assetPath =>
       imageFile == null ? null : 'assets/kisses/$imageFile';
-
-  @override
-  toJson() => _$KissToJson(this);
 }

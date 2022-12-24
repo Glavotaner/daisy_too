@@ -70,12 +70,13 @@ class PairEditCubit extends Cubit<PairEditState> {
         pairUsername: state.pair,
         requestingUsername: requestingUsername,
       ));
-      emit(state.copyWith(sentPairingRequest: true));
     } catch (exception) {
       log(exception.toString());
       if (exception is BadRequest) {
         statusNotifier.showError(exception.message);
       }
+    } finally {
+      emit(state.copyWith(sentPairingRequest: true));
     }
   }
 

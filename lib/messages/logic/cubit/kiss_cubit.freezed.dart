@@ -29,6 +29,9 @@ abstract class $KissStateCopyWith<$Res> {
   factory $KissStateCopyWith(KissState value, $Res Function(KissState) then) =
       _$KissStateCopyWithImpl<$Res>;
   $Res call({Kiss? sentKiss, Kiss? receivedKiss});
+
+  $KissCopyWith<$Res>? get sentKiss;
+  $KissCopyWith<$Res>? get receivedKiss;
 }
 
 /// @nodoc
@@ -55,6 +58,28 @@ class _$KissStateCopyWithImpl<$Res> implements $KissStateCopyWith<$Res> {
               as Kiss?,
     ));
   }
+
+  @override
+  $KissCopyWith<$Res>? get sentKiss {
+    if (_value.sentKiss == null) {
+      return null;
+    }
+
+    return $KissCopyWith<$Res>(_value.sentKiss!, (value) {
+      return _then(_value.copyWith(sentKiss: value));
+    });
+  }
+
+  @override
+  $KissCopyWith<$Res>? get receivedKiss {
+    if (_value.receivedKiss == null) {
+      return null;
+    }
+
+    return $KissCopyWith<$Res>(_value.receivedKiss!, (value) {
+      return _then(_value.copyWith(receivedKiss: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -64,6 +89,11 @@ abstract class _$$_KissStateCopyWith<$Res> implements $KissStateCopyWith<$Res> {
       __$$_KissStateCopyWithImpl<$Res>;
   @override
   $Res call({Kiss? sentKiss, Kiss? receivedKiss});
+
+  @override
+  $KissCopyWith<$Res>? get sentKiss;
+  @override
+  $KissCopyWith<$Res>? get receivedKiss;
 }
 
 /// @nodoc
