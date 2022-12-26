@@ -100,16 +100,7 @@ class _RegistrationStepper extends StatelessWidget {
         }
       },
       steps: [
-        Step(
-          state: registrationState ?? StepState.complete,
-          isActive: registrationState == StepState.editing,
-          title: const Text('Register yourself'),
-          subtitle: const _Username(),
-          content: TextFormField(
-            onChanged: context.read<UsersCubit>().onUsernameChange,
-            initialValue: context.read<UsersCubit>().state.username,
-          ),
-        ),
+        _RegistrationStep(context, state: registrationState),
         PairWithStep(context, state: pairWithState),
         PairRequestStep(context, state: pairRequestState),
       ],
@@ -132,14 +123,26 @@ class _RegistrationStepper extends StatelessWidget {
     final isRegistered = context.select((UsersCubit value) {
       return value.state.isRegistered;
     });
-    if (sentPairingRequest) {
-      return _pairingRequestedStep;
-    } else if (isRegistered) {
-      return _pairingRequestStep;
-    } else {
-      return _registrationStep;
-    }
+    return sentPairingRequest
+        ? _pairingRequestedStep
+        : isRegistered
+            ? _pairingRequestStep
+            : _registrationStep;
   }
+}
+
+class _RegistrationStep extends Step {
+  _RegistrationStep(BuildContext context, {StepState? state})
+      : super(
+          state: state ?? StepState.complete,
+          isActive: state == StepState.editing,
+          title: const Text('Register yourself'),
+          subtitle: const _Username(),
+          content: TextFormField(
+            onChanged: context.read<UsersCubit>().onUsernameChange,
+            initialValue: context.read<UsersCubit>().state.username,
+          ),
+        );
 }
 
 class _Username extends StatelessWidget {
