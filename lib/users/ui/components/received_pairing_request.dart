@@ -50,7 +50,7 @@ class ReceivedPairingRequest extends StatelessWidget {
               )),
             ),
             TextButton.icon(
-              onPressed: context.read<PairingCubit>().copyPairingCode,
+              onPressed: () => context.read<PairingCubit>().copyPairingCode(),
               label: const _PairingCode(),
               icon: const Icon(Icons.note_alt),
             ),

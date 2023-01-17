@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:daisy_too/messages/constants/channels.dart';
+import 'package:daisy_too/messages/constants/keys.dart';
 import 'package:daisy_too/messages/extensions/message_x.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
@@ -28,21 +30,36 @@ class MessagingService {
     return FirebaseMessaging.instance.getToken();
   }
 
+  @pragma('vm:entry-point')
+  static onActionTapped(fln.NotificationResponse details) async {
+    final preferences = await KeyValueStorageSharedPrefs.instance;
+    await preferences.set(key: details.actionId!, value: details.payload!);
+  }
+
   void _setUpMessageHandlers() {
     FirebaseMessaging.onMessage.listen(_processForegroundMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(_processForegroundMessage);
     FirebaseMessaging.onBackgroundMessage(processBackgroundMessage);
+    fln.FlutterLocalNotificationsPlugin().initialize(
+      const fln.InitializationSettings(
+        android: fln.AndroidInitializationSettings('launch_background'),
+      ),
+      onDidReceiveBackgroundNotificationResponse: onActionTapped,
+      onDidReceiveNotificationResponse: onActionTapped,
+    );
   }
 
   void _registerNotificationChannels() {
-    const pairingNotificationChannel = fln.AndroidNotificationChannel(
-      'pairing',
-      'Pairing',
+    const pairing = Channel.pairing();
+    const kisses = Channel.kisses();
+    final pairingNotificationChannel = fln.AndroidNotificationChannel(
+      pairing.id,
+      pairing.name,
       description: 'Pairing requests and responses',
     );
-    const kissesNotificationChannel = fln.AndroidNotificationChannel(
-      'kisses',
-      'Kisses',
+    final kissesNotificationChannel = fln.AndroidNotificationChannel(
+      kisses.id,
+      kisses.name,
       description: 'Received kisses',
     );
     fln.FlutterLocalNotificationsPlugin().resolvePlatformSpecificImplementation<
@@ -103,13 +120,64 @@ class MessagingService {
 
 Future<void> processBackgroundMessage(RemoteMessage remoteMessage) async {
   final data = remoteMessage.message.data;
-  if (data != null && data is StoredData) {
+  if (data is StoredData) {
     final storage = await KeyValueStorageSharedPrefs.instance;
     storage.set<String>(
       key: (data as StoredData).storageKey,
-      value: jsonEncode(data.toJson()),
+      value: jsonEncode(data!.toJson()),
     );
   }
+  if (data is PairingRequestData) {
+    _showPairingRequestNotification(data);
+  } else if (data is KissData) {
+    _showKissNotification(data);
+  }
+}
+
+void _showPairingRequestNotification(PairingRequestData data) {
+  const copyCode = fln.AndroidNotificationAction(
+    MessageActionKeys.copyPairingCode,
+    'Copy pairing code',
+    showsUserInterface: true,
+  );
+  const channel = Channel.pairing();
+  final details = fln.NotificationDetails(
+    android: fln.AndroidNotificationDetails(
+      channel.id,
+      channel.name,
+      actions: [copyCode],
+    ),
+  );
+  fln.FlutterLocalNotificationsPlugin().show(
+    1,
+    'Pairing request',
+    '${data.requestingUsername} wants to pair with you!',
+    details,
+    payload: data.pairingCode,
+  );
+}
+
+void _showKissNotification(KissData data) {
+  const sendBacc = fln.AndroidNotificationAction(
+    MessageActionKeys.sendKissBacc,
+    'Send kiss bacc',
+    showsUserInterface: true,
+  );
+  const channel = Channel.pairing();
+  final details = fln.NotificationDetails(
+    android: fln.AndroidNotificationDetails(
+      channel.id,
+      channel.name,
+      actions: [sendBacc],
+    ),
+  );
+  fln.FlutterLocalNotificationsPlugin().show(
+    2,
+    data.kissType,
+    data.message,
+    details,
+    payload: jsonEncode(data.toJson()),
+  );
 }
 
 class NoPairException {

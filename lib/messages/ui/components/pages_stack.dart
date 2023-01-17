@@ -41,8 +41,27 @@ class _PagesStackState extends State<PagesStack> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
+      final preferences = await KeyValueStorageSharedPrefs.instance;
+      await preferences.implementation.reload();
+      final actionMessages = await Future.wait([
+        preferences.get<String>(key: MessageActionKeys.copyPairingCode),
+        preferences.get<String>(key: MessageActionKeys.sendKissBacc),
+      ]);
+      final copy = actionMessages[0];
+      if (copy != null) {
+        context.read<PairingCubit>().copyPairingCode(copy);
+        preferences.remove(key: MessageActionKeys.copyPairingCode);
+        return;
+      }
+      final sendBacc = actionMessages[1];
+      if (sendBacc != null) {
+        final kiss = Kiss.fromMessage(jsonDecode(sendBacc));
+        context.read<KissCubit>().sendKiss(kiss);
+        preferences.remove(key: MessageActionKeys.sendKissBacc);
+        return;
+      }
       context.read<PairingCubit>().handleMessagesOnAppResume();
     }
   }

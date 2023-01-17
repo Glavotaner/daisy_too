@@ -32,7 +32,6 @@ class Kiss with _$Kiss implements Data {
   factory Kiss.fromJson(Map<String, dynamic> json) => _$KissFromJson(json);
 
   toMessage() => Message(
-        notification: Notification(title: type, body: message ?? type),
         data: KissData(
           kissType: type,
           image: imageFile,

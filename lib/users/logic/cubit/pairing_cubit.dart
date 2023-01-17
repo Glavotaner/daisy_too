@@ -16,7 +16,6 @@ part 'pairing_state.dart';
 
 class PairingCubit extends Cubit<PairingState> {
   PairingCubit() : super(PairingState.initial()) {
-    // TODO implement action button for send pairing code
     messaging.onMessageReceived.listen(_handleReceivedMessage);
     messaging.onMessageTapped.listen(_handleReceivedMessage);
   }
@@ -25,11 +24,12 @@ class PairingCubit extends Cubit<PairingState> {
     if (messageData is PairingRequestData) {
       _logPairing('request received');
       receivePairingRequest(message: messageData);
+      messaging.clearStoredMessage(messageData.storageKey);
     } else if (messageData is PairingResponseData) {
       _logPairing('response received');
       receivePairingResponse(message: messageData);
+      messaging.clearStoredMessage(messageData.storageKey);
     }
-    messaging.clearStoredMessage((messageData as StoredData).storageKey);
   }
 
   void _handleReceivedMessage(RemoteMessage remoteMessage) {
@@ -43,11 +43,11 @@ class PairingCubit extends Cubit<PairingState> {
     emit(state.copyWith(pairingRequested: true));
   }
 
-  receivePairingRequest({required PairingRequestData message}) async {
+  receivePairingRequest({required PairingRequestData message}) {
     emit(state.copyWith(receivedPairingRequest: message));
   }
 
-  receivePairingResponse({required PairingResponseData message}) async {
+  receivePairingResponse({required PairingResponseData message}) {
     emit(state.copyWith(receivedPairingResponse: message));
   }
 
@@ -62,11 +62,9 @@ class PairingCubit extends Cubit<PairingState> {
     ));
   }
 
-  copyPairingCode() async {
+  copyPairingCode([String? code]) async {
     await Clipboard.setData(
-      ClipboardData(
-        text: state.receivedPairingRequest!.pairingCode,
-      ),
+      ClipboardData(text: code ?? state.receivedPairingRequest!.pairingCode),
     );
   }
 
