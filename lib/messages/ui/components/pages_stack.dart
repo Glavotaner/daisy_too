@@ -57,7 +57,8 @@ class _PagesStackState extends State<PagesStack> with WidgetsBindingObserver {
       }
       final sendBacc = actionMessages[1];
       if (sendBacc != null) {
-        final kiss = Kiss.fromMessage(jsonDecode(sendBacc));
+        final kissData = KissData.fromJson(jsonDecode(sendBacc));
+        final kiss = Kiss.fromMessage(kissData);
         context.read<KissCubit>().sendKiss(kiss);
         preferences.remove(key: MessageActionKeys.sendKissBacc);
         return;

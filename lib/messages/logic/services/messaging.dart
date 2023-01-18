@@ -32,8 +32,11 @@ class MessagingService {
 
   @pragma('vm:entry-point')
   static onActionTapped(fln.NotificationResponse details) async {
-    final preferences = await KeyValueStorageSharedPrefs.instance;
-    await preferences.set(key: details.actionId!, value: details.payload!);
+    // TODO fix tap not on action
+    if (details.actionId != null) {
+      final preferences = await KeyValueStorageSharedPrefs.instance;
+      await preferences.set(key: details.actionId!, value: details.payload!);
+    }
   }
 
   void _setUpMessageHandlers() {
@@ -42,7 +45,7 @@ class MessagingService {
     FirebaseMessaging.onBackgroundMessage(processBackgroundMessage);
     fln.FlutterLocalNotificationsPlugin().initialize(
       const fln.InitializationSettings(
-        android: fln.AndroidInitializationSettings('launch_background'),
+        android: fln.AndroidInitializationSettings('ic_notification'),
       ),
       onDidReceiveBackgroundNotificationResponse: onActionTapped,
       onDidReceiveNotificationResponse: onActionTapped,

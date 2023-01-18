@@ -17,7 +17,7 @@ class Kiss with _$Kiss implements Data {
     return Kiss(
       type: 'Kiss request',
       imageFile: 'request.png',
-      message: request,
+      message: request.isEmpty ? 'I wanna a kiss' : request,
     );
   }
 

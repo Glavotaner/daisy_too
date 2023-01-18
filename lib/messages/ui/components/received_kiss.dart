@@ -34,7 +34,7 @@ class _KissHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final kiss = context.select((KissCubit value) => value.state.receivedKiss);
-    return Text('You recieved ${kiss!.message}');
+    return Text('You recieved ${kiss!.type}');
   }
 }
 
