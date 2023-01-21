@@ -145,6 +145,7 @@ class PairWithStep extends Step {
           content: TextFormField(
             onChanged: context.read<PairEditCubit>().onPairChange,
             initialValue: context.read<PairEditCubit>().state.pair,
+            keyboardType: TextInputType.number,
           ),
           title: const Text('Pair with'),
           subtitle: const _Pair(),
