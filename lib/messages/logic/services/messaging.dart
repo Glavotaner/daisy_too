@@ -32,7 +32,6 @@ class MessagingService {
 
   @pragma('vm:entry-point')
   static onActionTapped(fln.NotificationResponse details) async {
-    // TODO fix tap not on action
     if (details.actionId != null) {
       final preferences = await KeyValueStorageSharedPrefs.instance;
       await preferences.set(key: details.actionId!, value: details.payload!);

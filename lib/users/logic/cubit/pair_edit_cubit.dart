@@ -94,23 +94,9 @@ class PairEditCubit extends Cubit<PairEditState> {
     } catch (exception) {
       log(exception.toString());
       if (exception is BadRequest) {
-        clearPairingCode();
+        emit(state.copyWith(code: []));
         statusNotifier.showError(exception.message);
       }
     }
-  }
-
-  clearPairingCode() async {
-    // TODO doesn't work
-    for (final index in [0, 1, 2, 3, 4, 5]) {
-      _clearCodeAtIndex(index);
-      await Future.delayed(const Duration(milliseconds: 100));
-    }
-  }
-
-  _clearCodeAtIndex(int index) {
-    final codes = [...state.code];
-    codes[0] = '';
-    emit(state.copyWith(code: codes));
   }
 }

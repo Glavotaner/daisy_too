@@ -22,7 +22,6 @@ class _PairButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO loading
     final hasPair = context.select((UsersCubit value) => value.state.hasPair);
     return TextButton.icon(
       style: ButtonStyle(
