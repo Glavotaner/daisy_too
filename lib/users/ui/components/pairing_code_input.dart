@@ -90,6 +90,7 @@ class _PairingCodeCell extends StatelessWidget {
       textAlign: TextAlign.center,
       initialValue: code,
       focusNode: focusNode,
+      keyboardType: TextInputType.number,
       onChanged: context.read<PairEditCubit>().onCodeChange,
       onTap: () => _onCellChange(context),
     );
