@@ -1,4 +1,4 @@
-package com.example.daisy_too
+package com.mglavas.daisy
 
 import io.flutter.embedding.android.FlutterActivity
 
