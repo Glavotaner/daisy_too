@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:daisy_too/main.dart';
-import 'package:daisy_too/messages/extensions/message_x.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:daisy_too/messages/logic/services/messaging.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:messaging/interface/message.dart';
 
@@ -16,8 +17,19 @@ part 'pairing_state.dart';
 
 class PairingCubit extends Cubit<PairingState> {
   PairingCubit() : super(PairingState.initial()) {
-    messaging.onMessageReceived.listen(_handleReceivedMessage);
-    messaging.onMessageTapped.listen(_handleReceivedMessage);
+    messaging.onNotificationReceived.where((event) {
+      return event is PairingRequestData || event is PairingResponseData;
+    }).listen(handlePotentialPairingMessage);
+    messaging.onNotificationTapped
+        .where((event) => event.id == Notifications.pairingRequest.index)
+        .listen(_copyPairingCode);
+  }
+
+  _copyPairingCode(NotificationResponse notificationResponse) {
+    final PairingRequestData request = Data.fromJson(
+      jsonDecode(notificationResponse.payload!),
+    ) as PairingRequestData;
+    copyPairingCode(request.pairingCode);
   }
 
   void handlePotentialPairingMessage(Data messageData) {
@@ -29,13 +41,6 @@ class PairingCubit extends Cubit<PairingState> {
       _logPairing('response received');
       receivePairingResponse(message: messageData);
       messaging.clearStoredMessage(messageData.storageKey);
-    }
-  }
-
-  void _handleReceivedMessage(RemoteMessage remoteMessage) {
-    Data? data = remoteMessage.message.data;
-    if (data != null) {
-      handlePotentialPairingMessage(data);
     }
   }
 
