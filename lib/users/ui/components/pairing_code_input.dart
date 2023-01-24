@@ -15,18 +15,14 @@ class PairingCodeInput extends StatelessWidget {
         return !previous.codeComplete && current.codeComplete;
       },
       listener: (context, _) {
-        _sendPairingResponse(context);
+        context.read<PairEditCubit>().sendPairingResponse(
+          requestingUsername: context.read<UsersCubit>().state.username,
+        );
       },
       child: Row(
         children: List.generate(6, _PairingCodeInputCell.new),
       ),
     );
-  }
-
-  void _sendPairingResponse(BuildContext context) {
-    context.read<PairEditCubit>().sendPairingResponse(
-          requestingUsername: context.read<UsersCubit>().state.username,
-        );
   }
 }
 
@@ -92,11 +88,7 @@ class _PairingCodeCell extends StatelessWidget {
       focusNode: focusNode,
       keyboardType: TextInputType.number,
       onChanged: context.read<PairEditCubit>().onCodeChange,
-      onTap: () => _onCellChange(context),
+      onTap: () => context.read<PairEditCubit>().onCellChange(index),
     );
-  }
-
-  void _onCellChange(BuildContext context) {
-    context.read<PairEditCubit>().onCellChange(index);
   }
 }

@@ -6,13 +6,13 @@ import 'package:daisy_too/messages/extensions/message_x.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
     as fln;
-import 'package:key_value/key_value.dart';
 import 'package:messaging/interface/message.dart';
 import 'package:messaging/messaging.dart';
 
+import '../../../main.dart';
+
 class MessagingService {
   final Messaging messaging;
-  final KeyValueStorage keyValueStorage;
   final _onActionNotificationTapped =
       StreamController<fln.NotificationResponse>.broadcast();
   late final Stream<fln.NotificationResponse> onNotificationTapped;
@@ -20,7 +20,7 @@ class MessagingService {
   late final Stream<Data> onNotificationReceived;
   String? _pair;
 
-  MessagingService({required this.messaging, required this.keyValueStorage}) {
+  MessagingService({required this.messaging}) {
     _registerNotificationChannels();
     _setUpMessageHandlers();
     onNotificationTapped = _onActionNotificationTapped.stream;
@@ -47,10 +47,9 @@ class MessagingService {
 
   @pragma('vm:entry-point')
   static onBackgroundNotificationTap(fln.NotificationResponse details) async {
-    final preferences = await KeyValueStorageSharedPrefs.instance;
-    await preferences.set(
-      key: details.actionId ?? details.id.toString(),
-      value: jsonEncode(details.toJson()),
+    await sharedPreferences.setString(
+      details.actionId ?? details.id.toString(),
+      jsonEncode(details.toJson()),
     );
   }
 
@@ -100,7 +99,7 @@ class MessagingService {
 
   Future<StoredData?> getStoredMessage() async {
     // reload prefs cache on app return from background
-    await keyValueStorage.implementation.reload();
+    await sharedPreferences.reload();
     final messages = await _getMessages();
     return _getDataOfType<PairingRequestData>(messages) ??
         _getDataOfType<PairingResponseData>(messages);
@@ -112,10 +111,10 @@ class MessagingService {
   }
 
   Future<List<StoredData>> _getMessages() async {
-    final messages = await Future.wait([
-      keyValueStorage.get<String>(key: MessageStorageKeys.pairingRequest),
-      keyValueStorage.get<String>(key: MessageStorageKeys.pairingResponse),
-    ]);
+    final messages = [
+      sharedPreferences.getString(MessageStorageKeys.pairingRequest),
+      sharedPreferences.getString(MessageStorageKeys.pairingResponse),
+    ];
     return messages
         .where((m) => m != null)
         .map((m) => Data.fromJson(jsonDecode(m!)) as StoredData)
@@ -123,7 +122,7 @@ class MessagingService {
   }
 
   clearStoredMessage(String storageKey) async {
-    return keyValueStorage.remove(key: storageKey);
+    return sharedPreferences.remove(storageKey);
   }
 
   _processForegroundMessage(RemoteMessage remoteMessage) {
@@ -136,16 +135,15 @@ class MessagingService {
   }
 
   void handleBackgroundNotificationActions() async {
-    final preferences = await KeyValueStorageSharedPrefs.instance;
-    await preferences.implementation.reload();
-    final actionMessages = await Future.wait([
-      preferences.get<String>(
-        key: Notifications.kiss.index.toString(),
+    await sharedPreferences.reload();
+    final actionMessages = [
+      sharedPreferences.getString(
+        Notifications.kiss.index.toString(),
       ),
-      preferences.get<String>(
-        key: Notifications.pairingRequest.index.toString(),
+      sharedPreferences.getString(
+        Notifications.pairingRequest.index.toString(),
       ),
-    ]);
+    ];
     for (String? message in actionMessages) {
       if (message != null) {
         final messageJson = jsonDecode(message);
@@ -157,7 +155,7 @@ class MessagingService {
               .values[messageJson['notificationResponseType']],
         );
         notifyTappedMessage(response);
-        preferences.remove(key: response.actionId ?? response.id.toString());
+        sharedPreferences.remove(response.actionId ?? response.id.toString());
       }
     }
   }
@@ -166,10 +164,9 @@ class MessagingService {
 Future<void> processBackgroundMessage(RemoteMessage remoteMessage) async {
   final data = remoteMessage.message.data;
   if (data is StoredData) {
-    final storage = await KeyValueStorageSharedPrefs.instance;
-    storage.set<String>(
-      key: (data as StoredData).storageKey,
-      value: jsonEncode(data!.toJson()),
+    sharedPreferences.setString(
+      (data as StoredData).storageKey,
+      jsonEncode(data!.toJson()),
     );
   }
   if (data is PairingRequestData) {

@@ -4,15 +4,14 @@ import 'package:daisy_too/messages/logic/services/messaging.dart';
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
-import 'package:daisy_too/users/ui/components/app_bar_pairing_button.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
-import 'package:key_value/key_value.dart';
 import 'package:messaging/messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:users/users.dart';
 import 'package:web_api/implementation/web_api_http.dart';
 
@@ -28,22 +27,17 @@ Future<void> bootstrap() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final keyValueSharedPrefs = await KeyValueStorageSharedPrefs.instance;
   final apiProtocol = WebApiHttp();
   final users = Users(api: apiProtocol);
   final messagingApi = Messaging(api: apiProtocol);
-  final messaging = MessagingService(
-    messaging: messagingApi,
-    keyValueStorage: keyValueSharedPrefs,
-  );
+  final messaging = MessagingService(messaging: messagingApi);
+  final statusNotifier = StatusNotifierCubit();
+  final sharedPrefs = await SharedPreferences.getInstance();
   GetIt.I.registerLazySingleton<Users>(() => users);
   GetIt.I.registerLazySingleton<MessagingService>(() => messaging);
-  final statusNotifier = StatusNotifierCubit();
   GetIt.I.registerLazySingleton<StatusNotifierCubit>(() => statusNotifier);
-  final usersProvider = UsersCubit(
-    keyValueStorage: keyValueSharedPrefs,
-    users: users,
-  );
+  GetIt.I.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
+  final usersProvider = UsersCubit(users: users);
   final pairingProvider = PairingCubit();
   runApp(DaisyTooApp(
     usersProvider: usersProvider,
@@ -125,8 +119,40 @@ class _DaisyAppBarState extends State<DaisyAppBar> {
         statusBarColor: Colors.blue,
         systemNavigationBarColor: Colors.white,
       ),
-      actions: const [AppBarPairingButton()],
+      actions: const [_AppBarPairingButton()],
       title: const Text('Daisy'),
+    );
+  }
+}
+
+class _AppBarPairingButton extends StatelessWidget {
+  const _AppBarPairingButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return UsersCubit.isOnboarded(context)
+        ? const _PairButton()
+        : const IgnorePointer(ignoring: true);
+  }
+}
+
+class _PairButton extends StatelessWidget {
+  const _PairButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final hasPair = context.select((UsersCubit value) => value.state.hasPair);
+    return TextButton.icon(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all(
+          hasPair ? Colors.redAccent : Colors.white,
+        ),
+      ),
+      onPressed: context.read<PairingCubit>().requestPair,
+      icon: const Icon(Icons.favorite),
+      label: const Text('Pair'),
     );
   }
 }
@@ -134,3 +160,4 @@ class _DaisyAppBarState extends State<DaisyAppBar> {
 Users get users => GetIt.I<Users>();
 MessagingService get messaging => GetIt.I<MessagingService>();
 StatusNotifierCubit get statusNotifier => GetIt.I<StatusNotifierCubit>();
+SharedPreferences get sharedPreferences => GetIt.I<SharedPreferences>();

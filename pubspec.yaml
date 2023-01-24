@@ -16,8 +16,7 @@ dependencies:
   get_it:
   flutter_native_splash:
   flutter_local_notifications:
-  key_value:
-    path: '../key_value'
+  shared_preferences:
   users:
     path: 'packages/users'
   messaging:
