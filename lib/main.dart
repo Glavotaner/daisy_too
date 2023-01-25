@@ -1,9 +1,11 @@
 import 'package:daisy_too/global/logic/cubit/status_notifier_cubit.dart';
-import 'package:daisy_too/global/router/root_router.dart';
 import 'package:daisy_too/messages/logic/services/messaging.dart';
+import 'package:daisy_too/messages/ui/messages.dart';
+import 'package:daisy_too/splash/splash.dart';
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pairing_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
+import 'package:daisy_too/users/ui/registration.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -95,12 +97,39 @@ class DaisyTooApp extends StatelessWidget {
         child: Scaffold(
           appBar: DaisyAppBar(),
           body: Router(
-            routerDelegate: RootRouter(),
+            routerDelegate: _RootRouter(),
             backButtonDispatcher: RootBackButtonDispatcher(),
           ),
         ),
       ),
     ));
+  }
+}
+
+class _RootRouter extends RouterDelegate
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin {
+  @override
+  final GlobalKey<NavigatorState> navigatorKey;
+  _RootRouter() : navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  Widget build(BuildContext context) {
+    final isOnboarded = context.select((UsersCubit cubit) {
+      return cubit.state.isOnboarded;
+    });
+    return Navigator(
+      pages: [
+        if (isOnboarded ?? false) MessagesPage.page(),
+        if (isOnboarded != null && !isOnboarded) Registration.page(),
+        if (isOnboarded == null) SplashScreen.page(),
+      ],
+      onPopPage: (route, result) => false,
+    );
+  }
+
+  @override
+  Future<void> setNewRoutePath(configuration) {
+    return Future.value();
   }
 }
 

@@ -1,7 +1,8 @@
 import 'package:daisy_too/types/listeners.dart';
 import 'package:daisy_too/users/logic/cubit/pair_edit_cubit.dart';
 import 'package:daisy_too/users/logic/cubit/users_cubit.dart';
-import 'package:daisy_too/users/ui/components/pairing.dart';
+import 'package:daisy_too/users/ui/components/request_pair_button.dart';
+import 'package:daisy_too/users/ui/components/pairing_steps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
