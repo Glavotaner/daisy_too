@@ -14,8 +14,6 @@ import 'package:daisy_too/users/ui/components/pairing_steps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'components/pages_stack.dart';
-
 class MessagesPage extends StatelessWidget {
   const MessagesPage({Key? key}) : super(key: key);
   static page() {
@@ -635,11 +633,7 @@ class _Kiss extends StatelessWidget {
               ],
             ),
           ),
-          _KissTap(
-            onTap: () {
-              context.read<KissCubit>().sendKiss(kiss);
-            },
-          )
+          _KissTap(onTap: () => context.read<KissCubit>().sendKiss(kiss))
         ],
       ),
     );
